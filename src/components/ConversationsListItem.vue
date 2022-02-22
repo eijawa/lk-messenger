@@ -38,7 +38,7 @@ const cardBodyStyle = {
 </script>
 
 <template>
-  <a-card 
+  <a-card
     class="conversation-card"
     :bordered="false"
     :body-style="cardBodyStyle"
@@ -54,7 +54,7 @@ const cardBodyStyle = {
         <a-tooltip
           placement="bottom"
           :title="title"
-          mouse-enter-delay="0.6"
+          :mouse-enter-delay="0.6"
         >
           <a-typography-paragraph
             :content="title"
@@ -63,7 +63,7 @@ const cardBodyStyle = {
           >
           </a-typography-paragraph>
         </a-tooltip>
-        
+
         <a-space class="conversation-card__info">
           <readed-label
             v-if="isYourMessage"

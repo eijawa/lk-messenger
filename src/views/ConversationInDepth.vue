@@ -11,7 +11,7 @@ const store = useStore();
 
 const route = useRoute();
 
-const conversation = computed(() => store.state.conversations[route.params.id]);
+const conversation = computed(() => store.state.conversationsModule.state.conversations[route.params.id]);
 
 const siderWidth = 300;
 

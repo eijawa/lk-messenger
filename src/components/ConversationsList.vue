@@ -5,6 +5,8 @@ import { useStore } from 'vuex'
 const store = useStore();
 
 const conversations = computed(() => store.state.conversationsModule.state.conversations);
+
+console.log(conversations.value);
 </script>
 
 <template>

@@ -3,9 +3,9 @@ import { computed } from 'vue'
 
 const props = defineProps({
   date: {
-    type: Date,
+    type: String,
     required: true,
-    default: () => Date.now()
+    default: () => new Date(Date.now()).toISOString(),
   },
   isOnlyTime: {
     type: Boolean,
@@ -33,10 +33,10 @@ const localedTimeOptions = {
 };
 
 const localedDateOptions = {
-  day: 'numeric', 
-  month: 'long', 
-  year: 'numeric', 
-  ...localedTimeOptions, 
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  ...localedTimeOptions,
   second: 'numeric'
 };
 
@@ -54,7 +54,7 @@ const formatDate = (d) => {
   let _diffTime = _today.getTime() - d.getTime();
   let _diffHours = _diffTime / (1000 * 3600);
 
-  // Если с момента сообщения прошло меньше 24 часов, 
+  // Если с момента сообщения прошло меньше 24 часов,
   // либо если всегда нужно только время,
   // то выводим только время
   if (_diffHours <= 24 || props.isOnlyTime) {
@@ -72,15 +72,15 @@ const formatDate = (d) => {
 </script>
 
 <template>
-  <a-tooltip v-if="isRequiredTooltip" :title="localedDate" mouse-enter-delay="1" placement="bottom">
-    <time 
+  <a-tooltip v-if="isRequiredTooltip" :title="localedDate" :mouse-enter-delay="1" placement="bottom">
+    <time
       class="date-label"
       :datetime="date"
     >{{ formattedDate }}</time>
   </a-tooltip>
 
-  <time 
-    v-else 
+  <time
+    v-else
     class="date-label"
     :datetime="date"
   >{{ formattedDate }}</time>
