@@ -1,0 +1,12 @@
+@import './colors';
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.ant-layout-header {
+    background: var(--volsu-black) !important;
+
+    color: white;
+}
