@@ -4,7 +4,7 @@ import { useStore } from 'vuex'
 
 const store = useStore();
 
-const conversations = computed(() => store.state.conversations);
+const conversations = computed(() => store.state.conversationsModule.state.conversations);
 </script>
 
 <template>
