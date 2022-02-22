@@ -1,0 +1,27 @@
+<script setup>
+import MessagesListItem from './MessagesListItem.vue'
+
+const props = defineProps({
+  messages: {
+    type: Array,
+    default: () => []
+  }
+});
+</script>
+
+<template>
+  <a-empty v-if="messages?.length === 0"/>
+  <a-space 
+    v-else
+    direction="vertical"
+  >
+    <messages-list-item
+      v-for="m in messages"
+      :key="m.id"
+      :message="m"
+    ></messages-list-item>
+  </a-space>
+</template>
+
+<style lang="scss" scoped>
+</style>

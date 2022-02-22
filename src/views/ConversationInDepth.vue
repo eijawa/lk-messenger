@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
+import MessagesList from '../components/MessagesList.vue'
 import UploadFileBtn from '../components/UploadFileBtn.vue'
 import MessageInput from '../components/MessageInput.vue'
 
@@ -27,7 +28,7 @@ const layoutHeaderStyle = {
 };
 
 const layoutContentStyle = {
-  'padding': '0 1.25rem'
+  'padding': '1rem 1.25rem'
 };
 </script>
 
@@ -38,7 +39,11 @@ const layoutContentStyle = {
 
     <!-- Messages -->
     <perfect-scrollbar>
-      <a-layout-content :style="layoutContentStyle">{{ conversation.title }}</a-layout-content>
+      <a-layout-content :style="layoutContentStyle">
+        <messages-list
+          :messages="conversation?.messages"
+        ></messages-list>
+      </a-layout-content>
     </perfect-scrollbar>
 
     <!-- Message box and etc. -->

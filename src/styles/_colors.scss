@@ -1,9 +1,13 @@
 $volsu-black: #2b3048;
 $volsu-deep-blue: #143a68;
 $volsu-yellow: #edb81a;
+$volsu-gray: #dbdcdb;
+$volsu-dark-gray: #4c4a49;
 
 :root {
     --volsu-black: #{$volsu-black};
     --volsu-deep-blue: #{$volsu-deep-blue};
     --volsu-yellow: #{$volsu-yellow};
+    --volsu-gray: #{$volsu-gray};
+    --volsu-dark-gray: #{$volsu-dark-gray};
 }

@@ -15,7 +15,25 @@ export default createStore({
             },
             'date': Date.now(),
             'isReaded': true
-          }
+          },
+          'messages': [
+            {
+              'text': 'Hello there! whats up my little buddy, friend, comrad?',
+              'from': {
+                // User-data
+              },
+              'date': Date.now(),
+              'isReaded': true
+            },
+            {
+              'text': 'Hello there! whats up my little buddy, friend, comrad?',
+              'from': {
+                // User-data
+              },
+              'date': Date.now(),
+              'isReaded': true
+            }
+          ]
         },
         {
           'coverSrc': '',
