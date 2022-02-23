@@ -110,6 +110,10 @@ const cardBodyStyle = {
     place-items: center;
   }
 
+  :deep(.ant-card-meta-detail) {
+    width: 100%;
+  }
+
   .ant-typography {
     margin-bottom: 0;
   }

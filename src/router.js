@@ -10,6 +10,7 @@ const routes = [
         component: MessengerView,
         children: [
             {
+                name: 'Chat',
                 path: 'convs/:id',
                 component: ConversationInDepth
             }

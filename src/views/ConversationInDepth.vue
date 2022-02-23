@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
@@ -8,36 +8,30 @@ import UploadFileBtn from '../components/UploadFileBtn.vue'
 import MessageInput from '../components/MessageInput.vue'
 
 const store = useStore();
-
 const route = useRoute();
 
 const conversation = computed(() => store.state.conversationsModule.state.conversations[route.params.id]);
 
-const siderWidth = 300;
-
-const layoutStyle = {
-  'margin-left': siderWidth + 'px'
-};
-
-const layoutHeaderStyle = {
-  'width': '100%',
-  'padding': '1rem 1.25rem',
-  'display': 'inline-flex',
-  'place-items': 'center',
-  'place-content': 'space-between'
-};
-
 const layoutContentStyle = {
   'padding': '1rem 1.25rem'
 };
+
+store.dispatch('openChat');
+
+onBeforeUnmount(() => {
+  store.dispatch('closeChat');
+});
 </script>
 
 <template>
-  <a-layout :style="layoutStyle">
-    <!-- Chat Controls -->
-    <a-layout-header :style="layoutHeaderStyle">{{ conversation.title }}</a-layout-header>
+  <a-layout>
+    <div class="chat-header">
+      <router-link to="/">
+        <div>Назад</div>
+      </router-link>
+      <div>{{ conversation.title }}</div>
+    </div>
 
-    <!-- Messages -->
     <perfect-scrollbar>
       <a-layout-content :style="layoutContentStyle">
         <messages-list
@@ -46,13 +40,9 @@ const layoutContentStyle = {
       </a-layout-content>
     </perfect-scrollbar>
 
-    <!-- Message box and etc. -->
     <a-layout-footer>
       <a-space>
-        <!-- Upload File -->
         <upload-file-btn></upload-file-btn>
-
-        <!-- Message Input -->
         <message-input></message-input>
       </a-space>
     </a-layout-footer>
@@ -60,6 +50,12 @@ const layoutContentStyle = {
 </template>
 
 <style lang="scss" scoped>
+.chat-header {
+  display: flex;
+  gap: 100px;
+}
+
+
 .ps {
   height: 100vh;
 }
