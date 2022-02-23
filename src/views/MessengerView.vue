@@ -61,7 +61,7 @@ const isChatOpened = computed(() => store.state.messengerLayoutModule.isChatOpen
   }
 
   .messenger-conversations-main:not(.messenger-conversations-main-opened) {
-    transform: translate3d(100vh, 0, 0);
+    transform: translate3d(100vw, 0, 0);
   }
 
   @media (min-width: 927px) {
