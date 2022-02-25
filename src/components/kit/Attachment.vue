@@ -1,5 +1,8 @@
 <template>
-  <div v-if="isMinified" class="attachment minified" :class="colorClassName">
+  <div
+v-if="isMinified"
+class="attachment minified"
+:class="colorClassName">
     <font-awesome-icon :icon="['fas', iconName]" size="sm" />
     <span>{{ upperCasedType }}</span>
   </div>
@@ -10,43 +13,44 @@ const props = defineProps({
   attachment: {
     type: Object,
     required: true,
-    default: () => { }
+    default: () => { },
   },
   isMinified: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-let mapAttachmentFileTypeToLocale = {
+const mapAttachmentFileTypeToLocale = {
   '/doc|docx/': 'doc',
   '/ppt|pptx|odp|ppt|pps/': 'ppt',
   '/xls|xlsx/': 'xls',
-  '/zip|rar|7z|tar|gz/': 'zip'
+  '/zip|rar|7z|tar|gz/': 'zip',
 };
 
 let localedType = props.attachment.type.slice(0);
-for (let [key, value] of Object.entries(mapAttachmentFileTypeToLocale)) {
-  if (key.indexOf(props.attachment.type) != -1) {
+// eslint-disable-next-line no-restricted-syntax
+for (const [key, value] of Object.entries(mapAttachmentFileTypeToLocale)) {
+  if (key.indexOf(props.attachment.type) !== -1) {
     localedType = value;
     break;
   }
 }
 
-let mapAttachmentTypeToIcon = {
+const mapAttachmentTypeToIcon = {
   'img': 'file-image',
   'pdf': 'file-pdf',
   'doc': 'file-word',
   'ppt': 'file-powerpoint',
   'xls': 'file-excel',
   'zip': 'file-zipper',
-  'txt': 'file-lines'
+  'txt': 'file-lines',
 };
 
-let iconName = mapAttachmentTypeToIcon[localedType] ?? 'file';
+const iconName = mapAttachmentTypeToIcon[localedType] ?? 'file';
 
-let colorClassName = `atta-color-${localedType}`;
-let upperCasedType = props.attachment.type.toUpperCase();
+const colorClassName = `atta-color-${localedType}`;
+const upperCasedType = props.attachment.type.toUpperCase();
 </script>
 
 <style lang="scss" scoped>

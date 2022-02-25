@@ -41,16 +41,16 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-import getFirstLetters from '../helpers/firstLettersHelper'
+import getFirstLetters from '../helpers/firstLettersHelper';
 
 const props = defineProps({
   chat: {
     type: Object,
     required: true,
-    default: () => { }
-  }
+    default: () => { },
+  },
 });
 
 const emits = defineEmits(['open-info']);

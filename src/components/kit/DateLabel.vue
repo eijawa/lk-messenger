@@ -1,5 +1,24 @@
+<template>
+  <a-tooltip
+      v-if="isRequiredTooltip"
+      :title="localedDate"
+      :mouse-enter-delay="1"
+      placement="bottom">
+    <time
+        class="date-label"
+        :datetime="date"
+    >{{ formattedDate }}</time>
+  </a-tooltip>
+
+  <time
+      v-else
+      class="date-label"
+      :datetime="date"
+  >{{ formattedDate }}</time>
+</template>
+
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   date: {
@@ -9,27 +28,25 @@ const props = defineProps({
   },
   isOnlyTime: {
     type: Boolean,
-    default: false
+    default: false,
   },
   isRequiredTooltip: {
     type: Boolean,
-    default: false
+    default: false,
   },
   locale: {
     type: String,
-    default: 'ru-RU'
-  }
+    default: 'ru-RU',
+  },
 });
 
 // TODO: Заменить затычки d = new Date(d),
 // поскольку с сервера будет прилетать готовый DateTime...
 // (вроде)
 
-const formattedDate = computed(() => formatDate(props.date));
-
 const localedTimeOptions = {
   hour: '2-digit',
-  minute: '2-digit'
+  minute: '2-digit',
 };
 
 const localedDateOptions = {
@@ -37,59 +54,46 @@ const localedDateOptions = {
   month: 'long',
   year: 'numeric',
   ...localedTimeOptions,
-  second: 'numeric'
+  second: 'numeric',
 };
 
 const localedDate = computed(() => {
-  let d = new Date(props.date);
+  const d = new Date(props.date);
   return d.toLocaleDateString(props.locale, localedDateOptions);
 });
 
-const formatDate = (d) => {
-  d = new Date(d);
-  let _result;
+const formatDate = d => {
+  const date = new Date(d);
+  let result;
 
-  let _today = new Date(Date.now());
+  const today = new Date(Date.now());
 
-  let _diffTime = _today.getTime() - d.getTime();
-  let _diffHours = _diffTime / (1000 * 3600);
+  const diffTime = today.getTime() - date.getTime();
+  const diffHours = diffTime / (1000 * 3600);
 
   // Если с момента сообщения прошло меньше 24 часов,
   // либо если всегда нужно только время,
   // то выводим только время
-  if (_diffHours <= 24 || props.isOnlyTime) {
-    _result = d.toLocaleTimeString(props.locale, localedTimeOptions);
+  if (diffHours <= 24 || props.isOnlyTime) {
+    result = date.toLocaleTimeString(props.locale, localedTimeOptions);
   }
-  else if (_diffHours > 24 || _diffHours < 48) {
-    _result = 'Yesterday';
+  else if (diffHours > 24 || diffHours < 48) {
+    result = 'Yesterday';
   }
   else {
-    _result = d.toLocaleDateString();
+    result = date.toLocaleDateString();
   }
 
-  return _result;
+  return result;
 };
+
+const formattedDate = computed(() => formatDate(props.date));
 </script>
-
-<template>
-  <a-tooltip v-if="isRequiredTooltip" :title="localedDate" :mouse-enter-delay="1" placement="bottom">
-    <time
-      class="date-label"
-      :datetime="date"
-    >{{ formattedDate }}</time>
-  </a-tooltip>
-
-  <time
-    v-else
-    class="date-label"
-    :datetime="date"
-  >{{ formattedDate }}</time>
-</template>
 
 <style lang="scss" scoped>
   .date-label {
     font-size: 0.75rem;
-    letter-spacing: 24;
+    letter-spacing: 24px;
 
     color: inherit;
   }

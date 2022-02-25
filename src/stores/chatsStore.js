@@ -11,13 +11,13 @@ export const useChatsStore = defineStore('chatsStore', () => {
         'text': 'Hello there! whats up my little buddy, friend, comrad?',
         'attachment': {
           'type': 'pptx',
-          'url': ''
+          'url': '',
         },
         'from': {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
+        'isReaded': true,
       },
       'messages': [
         {
@@ -26,7 +26,7 @@ export const useChatsStore = defineStore('chatsStore', () => {
             // User-data
           },
           'date': new Date(Date.now()).toISOString(),
-          'isReaded': true
+          'isReaded': true,
         },
         {
           'text': 'Hello there! whats up my little buddy, friend, comrad?',
@@ -34,9 +34,9 @@ export const useChatsStore = defineStore('chatsStore', () => {
             // User-data
           },
           'date': new Date(Date.now()).toISOString(),
-          'isReaded': true
-        }
-      ]
+          'isReaded': true,
+        },
+      ],
     },
     {
       'avatarSrc': '',
@@ -48,8 +48,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -61,8 +61,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -74,8 +74,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -87,8 +87,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -100,8 +100,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -113,8 +113,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -126,8 +126,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -139,8 +139,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -152,8 +152,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -165,8 +165,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -178,8 +178,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -191,8 +191,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -204,8 +204,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -217,8 +217,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -230,8 +230,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -243,8 +243,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -256,8 +256,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -269,8 +269,8 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
+        'isReaded': true,
+      },
     },
     {
       'avatarSrc': '',
@@ -282,9 +282,9 @@ export const useChatsStore = defineStore('chatsStore', () => {
           // User-data
         },
         'date': new Date(Date.now()).toISOString(),
-        'isReaded': true
-      }
-    }
+        'isReaded': true,
+      },
+    },
   ]);
 
   return {

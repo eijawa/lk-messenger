@@ -11,7 +11,7 @@
 //       // Define is it user message or not
 //       return false;
 //     }
-    
+
 //     app.provide('defineMessageBlonging', defineMessageBelonging);
 //   }
 // }

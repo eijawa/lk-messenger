@@ -1,18 +1,16 @@
-<script setup>
-import { PaperClipOutlined } from '@ant-design/icons-vue'
-</script>
-
 <template>
   <a-upload>
-    <a-button
-      size="large"
-      >
+    <a-button size="large"
+    >
       <template #icon>
         <paper-clip-outlined />
       </template>
     </a-button>
   </a-upload>
 </template>
+
+<script setup>
+</script>
 
 <style lang="scss" scoped>
 .ant-btn:hover {

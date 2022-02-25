@@ -4,7 +4,7 @@
       <sidebar-header />
       <chats-list />
     </div>
-    <div class="messenger-main" :class="{'messenger-main-opened': isChatOpened}">
+    <div class="messenger-main" :class="{ 'messenger-main-opened': isChatOpened }">
       <router-view></router-view>
     </div>
   </div>
@@ -12,7 +12,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useMessengerSettingsStore } from "../stores/messengerSettingsStore";
+import { useMessengerSettingsStore } from '../stores/messengerSettingsStore';
 
 import SidebarHeader from '../components/SidebarHeader.vue';
 import ChatsList from '../components/ChatsList.vue';
