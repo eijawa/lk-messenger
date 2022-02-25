@@ -5,7 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
-const path = require('path');
+import { fileURLToPath, URL } from 'url';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,9 +20,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '~': __dirname,
-      '@': path.resolve(__dirname, './src'),
-      'assets': '@/assets',
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 });

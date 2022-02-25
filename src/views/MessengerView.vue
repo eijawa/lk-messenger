@@ -12,11 +12,11 @@
 
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useMessengerSettingsStore } from '../stores/messengerSettingsStore';
+import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 
 import SidebarHeader from '@/components/SidebarHeader.vue';
 import ChatsList from '@/components/ChatsList.vue';
-import { SearchService } from '../services/SearchService';
+import { SearchService } from '@/services/SearchService';
 
 const store = useMessengerSettingsStore();
 

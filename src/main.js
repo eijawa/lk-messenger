@@ -28,7 +28,7 @@ FontAwesomeLibraryCore.add([faArrowLeft, faMagnifyingGlass, faEllipsisVertical])
 FontAwesomeLibraryCore.add([faPaperclip, faPaperPlane]);
 
 createApp(App)
-.component('font-awesome-icon', FontAwesomeIcon)
-.use(router)
-.use(createPinia())
-.mount('#app');
+  .component('font-awesome-icon', FontAwesomeIcon)
+  .use(router)
+  .use(createPinia())
+  .mount('#app');

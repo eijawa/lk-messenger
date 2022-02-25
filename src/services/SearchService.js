@@ -1,8 +1,8 @@
-import { useFetch } from '../helpers/serviceHelper';
+import { useFetch } from '@/helpers/serviceHelper';
 
 export class SearchService {
-    globalSearch = async () => {
-        const response = await useFetch('https://dev.lk.fokin-team.ru/api/find-users-by-username?username=Фокин');
-        return response;
-    };
+  globalSearch = async () => {
+    const response = await useFetch('https://dev.lk.fokin-team.ru:2060/user-info');
+    return response;
+  };
 }
