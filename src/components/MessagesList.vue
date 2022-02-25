@@ -15,12 +15,12 @@
 <script setup>
 import MessagesListItem from '@/components/MessagesListItem.vue';
 
-// const props = defineProps({
-//   messages: {
-//     type: Array,
-//     default: () => [],
-//   },
-// });
+const props = defineProps({
+  messages: {
+    type: Array,
+    default: () => [],
+  },
+});
 </script>
 
 

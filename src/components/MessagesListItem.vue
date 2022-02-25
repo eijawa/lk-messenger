@@ -1,22 +1,15 @@
 <template>
   <a-card
-      class="message-card"
-      :body-style="cardBodyStyle"
-      :style="{ 'float': floatValue }"
+    class="message-card"
+    :body-style="cardBodyStyle"
+    :style="{ 'float': floatValue }"
   >
     <div class="spacer">
       <span class="message-card__text">{{ message.text }}</span>
 
       <div class="end spacer">
-        <date-label
-            :date="message.date"
-            :is-required-tooltip="true"
-            :is-only-time="true"
-        ></date-label>
-        <readed-label
-            v-if="isYourMessage"
-            :is-readed="message.isReaded"
-        ></readed-label>
+        <date-label :date="message.date" :is-required-tooltip="true" :is-only-time="true"></date-label>
+        <readed-label v-if="isYourMessage && message.isReaded"></readed-label>
       </div>
     </div>
   </a-card>
@@ -28,12 +21,12 @@ import { computed } from 'vue';
 import ReadedLabel from '@/components/kit/ReadedLabel.vue';
 import DateLabel from '@/components/kit/DateLabel.vue';
 
-// const props = defineProps({
-//   message: {
-//     type: Object,
-//     default: () => {},
-//   },
-// });
+const props = defineProps({
+  message: {
+    type: Object,
+    default: () => { },
+  },
+});
 
 const isYourMessage = computed(() => false);
 const floatValue = computed(() => isYourMessage.value ? 'right' : 'left');

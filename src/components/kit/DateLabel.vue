@@ -1,18 +1,7 @@
 <template>
-  <a-tooltip
-      v-if="isRequiredTooltip"
-      :title="localedDate"
-      :mouse-enter-delay="1"
-      placement="bottom">
-    <time
-        class="date-label"
-        :datetime="date"
-    >{{ formattedDate }}</time>
-  </a-tooltip>
-
   <time
-      v-else
       class="date-label"
+      :title="isRequiredTooltip ? localedDate : ''"
       :datetime="date"
   >{{ formattedDate }}</time>
 </template>
@@ -93,7 +82,6 @@ const formattedDate = computed(() => formatDate(props.date));
 <style lang="scss" scoped>
   .date-label {
     font-size: 0.75rem;
-    letter-spacing: 24px;
 
     color: inherit;
   }
