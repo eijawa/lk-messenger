@@ -1,14 +1,16 @@
 <template>
   <li
-class="chat"
-:class="{ 'opened': isOpened }"
-@click="onClickHandler">
+    class="chat"
+    :class="{ 'opened': isOpened }"
+    @click="onClickHandler"
+  >
     <div class="chat__avatar">
       <a-avatar
-:src="chat.avatarSrc"
-shape="circle"
-:size="54"
-style="background-color:var(--volsu-yellow); font-size: 1.15rem; font-weight: bold;">{{ titleFirstLetters }}</a-avatar>
+        :src="chat.avatarSrc"
+        shape="circle"
+        :size="54"
+        style="background-color:var(--volsu-yellow); font-size: 1.15rem; font-weight: bold;"
+      >{{ titleFirstLetters }}</a-avatar>
     </div>
 
     <div class="chat__content">
@@ -23,16 +25,14 @@ style="background-color:var(--volsu-yellow); font-size: 1.15rem; font-weight: bo
 
       <div class="chat__msg">
         <attachment
-v-if="chat.lastMessage?.attachment != null"
-:attachment="chat.lastMessage?.attachment"
-is-minified />
+          v-if="chat.lastMessage?.attachment != null"
+          :attachment="chat.lastMessage?.attachment"
+          is-minified
+        />
 
         <span class="chat__text typo">{{ chat.lastMessage?.text }}</span>
 
-        <a-tag
-          v-if="chat.newMessagesCount != 0"
-          class="chat__count"
-        >{{ chat.newMessagesCount }}</a-tag>
+        <a-tag v-if="chat.newMessagesCount != 0" class="chat__count">{{ chat.newMessagesCount }}</a-tag>
       </div>
     </div>
   </li>
