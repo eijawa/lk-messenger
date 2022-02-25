@@ -11,15 +11,23 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useMessengerSettingsStore } from '../stores/messengerSettingsStore';
 
 import SidebarHeader from '@/components/SidebarHeader.vue';
 import ChatsList from '@/components/ChatsList.vue';
+import { SearchService } from '../services/SearchService';
 
 const store = useMessengerSettingsStore();
 
 const isChatOpened = computed(() => store.isChatOpened);
+
+onMounted(async () => {
+  const searchService = new SearchService();
+  const response = await searchService.globalSearch();
+  console.log(response);
+});
+
 </script>
 
 <style lang="scss" scoped>
