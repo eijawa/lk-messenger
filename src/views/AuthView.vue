@@ -12,7 +12,7 @@ const router = useRouter();
 const route = useRoute();
 
 onMounted(() => {
-  const { jwt } = route.params;
+  const { jwt } = route.query;
   if (typeof jwt === 'string') {
     localStorage.setItem('jwt', jwt);
     router.push({ path: '/' });

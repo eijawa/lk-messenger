@@ -6,10 +6,15 @@ export const useFetch = async (url, params = null) => {
     if (params === null) {
       paramsValue = {
         method: 'GET',
-        Authorization: `Bearer ${token}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       };
     } else {
       paramsValue = params;
+      paramsValue.headers = {
+        Authorization: `Bearer ${token}`,
+      };
     }
 
     const response = await fetch(url, paramsValue);
