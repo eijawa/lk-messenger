@@ -12,12 +12,12 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useMessengerLayoutStore } from "../stores/messengerLayoutStore";
+import { useMessengerSettingsStore } from "../stores/messengerSettingsStore";
 
 import SidebarHeader from '../components/SidebarHeader.vue';
 import ChatsList from '../components/ChatsList.vue';
 
-const store = useMessengerLayoutStore();
+const store = useMessengerSettingsStore();
 
 const isChatOpened = computed(() => store.isChatOpened);
 </script>

@@ -32,7 +32,7 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue';
 import { useRoute } from 'vue-router'
-import { useMessengerLayoutStore } from '../stores/messengerLayoutStore';
+import { useMessengerSettingsStore } from '../stores/messengerSettingsStore';
 import { useChatsStore } from "../stores/chatsStore";
 
 import ChatHeader from '../components/ChatHeader.vue'
@@ -40,7 +40,7 @@ import MessagesList from '../components/MessagesList.vue'
 import UploadFileBtn from '../components/UploadFileBtn.vue'
 import MessageInput from '../components/MessageInput.vue'
 
-const messengerLayoutStore = useMessengerLayoutStore();
+const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
 const route = useRoute();
 
@@ -59,12 +59,12 @@ const onClose = () => {
   visible.value = false;
 };
 
-messengerLayoutStore.$patch({
+messengerSettingsStore.$patch({
   isChatOpened: true,
 });
 
 onBeforeUnmount(() => {
-  messengerLayoutStore.$patch({
+  messengerSettingsStore.$patch({
     isChatOpened: false,
   });
 });
