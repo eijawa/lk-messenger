@@ -4,9 +4,6 @@ import { createPinia } from 'pinia';
 
 import App from './App.vue'
 
-import PerfectScrollbar from 'vue3-perfect-scrollbar'
-import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
-
 import { library as FontAwesomeLibraryCore } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -28,7 +25,6 @@ FontAwesomeLibraryCore.add([faFile, faFileImage, faFilePdf, faFileWord, faFilePo
 FontAwesomeLibraryCore.add([faArrowLeft, faMagnifyingGlass, faEllipsisVertical]);
 
 createApp(App)
-.use(PerfectScrollbar)
 .component('font-awesome-icon', FontAwesomeIcon)
 .use(router)
 .use(createPinia())

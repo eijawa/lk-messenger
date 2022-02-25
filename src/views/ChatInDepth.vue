@@ -4,11 +4,9 @@
       <chat-header :chat="chat" @open-info="openInfoDrawerHandler"></chat-header>
     </div>
 
-    <perfect-scrollbar>
-      <a-layout-content :style="layoutContentStyle">
-        <messages-list :messages="chat?.messages"></messages-list>
-      </a-layout-content>
-    </perfect-scrollbar>
+    <a-layout-content :style="layoutContentStyle">
+      <messages-list :messages="chat?.messages"></messages-list>
+    </a-layout-content>
 
     <a-layout-footer>
       <a-space>
