@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import MessengerView from '../views/MessengerView.vue'
-import ChatInDepth from '../views/ChatInDepth.vue'
+import MessengerView from '@/views/MessengerView.vue'
+import ChatInDepth from '@/views/ChatInDepth.vue'
 
 const routes = [
     {

@@ -72,16 +72,9 @@ const formatDate = (d) => {
 </script>
 
 <template>
-  <a-tooltip v-if="isRequiredTooltip" :title="localedDate" :mouse-enter-delay="1" placement="bottom">
-    <time
-      class="date-label"
-      :datetime="date"
-    >{{ formattedDate }}</time>
-  </a-tooltip>
-
   <time
-    v-else
     class="date-label"
+    :title="isRequiredTooltip ? localedDate : ''"
     :datetime="date"
   >{{ formattedDate }}</time>
 </template>

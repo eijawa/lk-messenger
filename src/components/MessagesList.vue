@@ -1,5 +1,5 @@
 <script setup>
-import MessagesListItem from './MessagesListItem.vue'
+import MessagesListItem from '@/components/MessagesListItem.vue'
 
 const props = defineProps({
   messages: {

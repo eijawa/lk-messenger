@@ -43,7 +43,7 @@
 <script setup>
 import { computed } from 'vue'
 
-import getFirstLetters from '../helpers/firstLettersHelper'
+import getFirstLetters from '@/helpers/firstLettersHelper'
 
 const props = defineProps({
   chat: {

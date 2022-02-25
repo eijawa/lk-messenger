@@ -4,9 +4,6 @@
       <template #description>Нет начатых бесед...</template>
     </a-empty>
 
-    <!-- <router-link v-for="(c, index) in chats" :key="index" :to="`/convs/${index}`">
-      <chats-list-item :chat="c"></chats-list-item>
-    </router-link> -->
     <chats-list-item v-for="(c, index) in chats" :key="index" :convid="index" :is-opened="openedConvId == index" :chat="c" @open="onOpenHandler"></chats-list-item>
   </ul>
 </template>
@@ -14,9 +11,9 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useChatsStore } from "../stores/chatsStore";
+import { useChatsStore } from "@/stores/chatsStore"
 
-import ChatsListItem from './ChatsListItem.vue'
+import ChatsListItem from '@/components/ChatsListItem.vue'
 
 const chatsStore = useChatsStore();
 const router = useRouter();

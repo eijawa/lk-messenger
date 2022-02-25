@@ -1,5 +1,5 @@
 <script setup>
-import MultiSearchInput from './MultiSearchInput.vue'
+import MultiSearchInput from '@/components/MultiSearchInput.vue'
 
 </script>
 

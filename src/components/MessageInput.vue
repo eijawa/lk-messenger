@@ -2,7 +2,6 @@
 // Решил вынести инпут в отдельный компонент, чтобы не перегружать App
 
 import { ref } from 'vue';
-import { SendOutlined } from '@ant-design/icons-vue'
 
 const inputValue = ref('');
 
@@ -21,7 +20,7 @@ const onSearch = (sVal) => {
     <template #enterButton>
       <a-button>
         <template #icon>
-          <send-outlined />
+          <font-awesome-icon :icon="['fas', 'paper-plane']" size="lg" />
         </template>
       </a-button>
     </template>

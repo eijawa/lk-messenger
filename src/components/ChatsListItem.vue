@@ -31,11 +31,11 @@
 <script setup>
 import { computed } from 'vue'
 
-import Attachment from './kit/Attachment.vue'
-import ReadedLabel from './kit/ReadedLabel.vue'
-import DateLabel from './kit/DateLabel.vue'
+import Attachment from '@/components/kit/Attachment.vue'
+import ReadedLabel from '@/components/kit/ReadedLabel.vue'
+import DateLabel from '@/components/kit/DateLabel.vue'
 
-import getFirstLetters from '../helpers/firstLettersHelper'
+import getFirstLetters from '@/helpers/firstLettersHelper'
 
 const props = defineProps({
   chat: {
