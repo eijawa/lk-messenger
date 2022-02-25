@@ -1,5 +1,6 @@
 module.exports = {
-    plugins: {
-        autoprefixer: {},
-    },
-}
+  syntax: 'postcss-scss',
+  plugins: {
+    autoprefixer: {},
+  },
+};
