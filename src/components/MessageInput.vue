@@ -1,21 +1,9 @@
-<script setup>
-// Решил вынести инпут в отдельный компонент, чтобы не перегружать App
-
-import { ref } from 'vue';
-
-const inputValue = ref('');
-
-const onSearch = (sVal) => {
-  console.log(`Send value: ${sVal}`);
-};
-</script>
-
 <template>
   <a-input-search
-    v-model:value="inputValue"
-    placeholder="Write a message..."
-    size="large"
-    @search="onSearch"
+      v-model:value="inputValue"
+      placeholder="Write a message..."
+      size="large"
+      @search="onSearch"
   >
     <template #enterButton>
       <a-button>
@@ -26,6 +14,18 @@ const onSearch = (sVal) => {
     </template>
   </a-input-search>
 </template>
+
+<script setup>
+// Решил вынести инпут в отдельный компонент, чтобы не перегружать App
+
+import { ref } from 'vue';
+
+const inputValue = ref('');
+
+const onSearch = sVal => {
+  console.log(`Send value: ${sVal}`);
+};
+</script>
 
 <style lang="scss" scoped>
 

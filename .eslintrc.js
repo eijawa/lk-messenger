@@ -18,7 +18,7 @@ module.exports = {
     rules: {
         'quotes': ['error', 'single'],
         'semi': ['error', 'always'],
-        'import/no-unresolved': 'error',
+        'import/no-unresolved': 'off',
         'comma-dangle': ['error', 'always-multiline'],
         'arrow-parens': ['error', 'as-needed'],
         'no-trailing-spaces': 'error',

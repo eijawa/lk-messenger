@@ -31,14 +31,14 @@
 
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue';
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router';
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
-import { useChatsStore } from "@/stores/chatsStore";
+import { useChatsStore } from '@/stores/chatsStore';
 
-import ChatHeader from '@/components/ChatHeader.vue'
-import MessagesList from '@/components/MessagesList.vue'
-import UploadFileBtn from '@/components/UploadFileBtn.vue'
-import MessageInput from '@/components/MessageInput.vue'
+import ChatHeader from '@/components/ChatHeader.vue';
+import MessagesList from '@/components/MessagesList.vue';
+import UploadFileBtn from '@/components/UploadFileBtn.vue';
+import MessageInput from '@/components/MessageInput.vue';
 
 const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
@@ -47,7 +47,7 @@ const route = useRoute();
 const chat = computed(() => chatsStore.chats[route.params.id]);
 
 const layoutContentStyle = {
-  'padding': '1rem 1.25rem'
+  'padding': '1rem 1.25rem',
 };
 
 const visible = ref(false);

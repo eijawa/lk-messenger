@@ -1,7 +1,14 @@
 <template>
-  <li class="chat" :class="{'opened': isOpened}" @click="onClickHandler">
+  <li
+class="chat"
+:class="{ 'opened': isOpened }"
+@click="onClickHandler">
     <div class="chat__avatar">
-      <a-avatar :src="chat.avatarSrc" shape="circle" :size="54" style="background-color:var(--volsu-yellow); font-size: 1.15rem; font-weight: bold;">{{ titleFirstLetters }}</a-avatar>
+      <a-avatar
+:src="chat.avatarSrc"
+shape="circle"
+:size="54"
+style="background-color:var(--volsu-yellow); font-size: 1.15rem; font-weight: bold;">{{ titleFirstLetters }}</a-avatar>
     </div>
 
     <div class="chat__content">
@@ -15,7 +22,10 @@
       </div>
 
       <div class="chat__msg">
-        <attachment v-if="chat.lastMessage?.attachment != null" :attachment="chat.lastMessage?.attachment" is-minified/>
+        <attachment
+v-if="chat.lastMessage?.attachment != null"
+:attachment="chat.lastMessage?.attachment"
+is-minified />
 
         <span class="chat__text typo">{{ chat.lastMessage?.text }}</span>
 
@@ -29,28 +39,28 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-import Attachment from '@/components/kit/Attachment.vue'
-import ReadedLabel from '@/components/kit/ReadedLabel.vue'
-import DateLabel from '@/components/kit/DateLabel.vue'
+import Attachment from '@/components/kit/Attachment.vue';
+import ReadedLabel from '@/components/kit/ReadedLabel.vue';
+import DateLabel from '@/components/kit/DateLabel.vue';
 
-import getFirstLetters from '@/helpers/firstLettersHelper'
+import getFirstLetters from '@/helpers/firstLettersHelper';
 
 const props = defineProps({
   chat: {
     type: Object,
     required: true,
-    default: () => { }
+    default: () => { },
   },
   convid: {
     type: Number,
-    default: 0
+    default: 0,
   },
   isOpened: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 const emits = defineEmits(['open']);

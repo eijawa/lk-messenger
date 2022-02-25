@@ -1,15 +1,15 @@
-import { createApp } from 'vue'
-import router from './routes/router'
+import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 
-import App from './App.vue'
 
-import { library as FontAwesomeLibraryCore } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library as FontAwesomeLibraryCore } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 // TODO: Dynamic import from array of dict
 
-import { faBars, faCircleCheck, faFile, faFileImage, faFilePdf, faFileWord, faFilePowerpoint, faFileExcel, faFileZipper, faFileLines, faArrowLeft, faMagnifyingGlass, faEllipsisVertical, faPaperclip, faPaperPlane} from '@fortawesome/free-solid-svg-icons'
+import { faBars, faCircleCheck, faFile, faFileImage, faFilePdf, faFileWord, faFilePowerpoint, faFileExcel, faFileZipper, faFileLines, faArrowLeft, faMagnifyingGlass, faEllipsisVertical, faPaperclip, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import App from './App.vue';
+import router from './routes/router';
 // import {  } from '@fortawesome/free-regular-svg-icons'
 
 // Used in Sidebar Header
@@ -31,4 +31,4 @@ createApp(App)
 .component('font-awesome-icon', FontAwesomeIcon)
 .use(router)
 .use(createPinia())
-.mount('#app')
+.mount('#app');
