@@ -1,3 +1,8 @@
+<script setup>
+import MultiSearchInput from '@/components/MultiSearchInput.vue'
+
+</script>
+
 <template>
   <div class="sidebar-header">
     <a-space>
@@ -11,11 +16,6 @@
     </a-space>
   </div>
 </template>
-
-<script setup>
-import MultiSearchInput from './MultiSearchInput.vue';
-
-</script>
 
 <style lang="scss" scoped>
 .sidebar-header {

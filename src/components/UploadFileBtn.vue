@@ -3,7 +3,7 @@
     <a-button size="large"
     >
       <template #icon>
-        <paper-clip-outlined />
+        <font-awesome-icon :icon="['fas', 'paperclip']" size="lg" />
       </template>
     </a-button>
   </a-upload>

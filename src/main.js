@@ -1,15 +1,15 @@
-import { createApp } from 'vue';
+import { createApp } from 'vue'
+import router from './routes/router'
 import { createPinia } from 'pinia';
 
+import App from './App.vue'
 
-import { library as FontAwesomeLibraryCore } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library as FontAwesomeLibraryCore } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // TODO: Dynamic import from array of dict
 
-import { faBars, faCircleCheck, faFile, faFileImage, faFilePdf, faFileWord, faFilePowerpoint, faFileExcel, faFileZipper, faFileLines, faArrowLeft, faMagnifyingGlass, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-import App from './App.vue';
-import router from './routes/router';
+import { faBars, faCircleCheck, faFile, faFileImage, faFilePdf, faFileWord, faFilePowerpoint, faFileExcel, faFileZipper, faFileLines, faArrowLeft, faMagnifyingGlass, faEllipsisVertical, faPaperclip, faPaperPlane} from '@fortawesome/free-solid-svg-icons'
 // import {  } from '@fortawesome/free-regular-svg-icons'
 
 // Used in Sidebar Header
@@ -24,8 +24,11 @@ FontAwesomeLibraryCore.add([faFile, faFileImage, faFilePdf, faFileWord, faFilePo
 // Used in Chat Header
 FontAwesomeLibraryCore.add([faArrowLeft, faMagnifyingGlass, faEllipsisVertical]);
 
+// Used in Chat Footer
+FontAwesomeLibraryCore.add([faPaperclip, faPaperPlane]);
+
 createApp(App)
 .component('font-awesome-icon', FontAwesomeIcon)
 .use(router)
 .use(createPinia())
-.mount('#app');
+.mount('#app')

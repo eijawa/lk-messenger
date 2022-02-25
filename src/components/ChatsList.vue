@@ -7,22 +7,16 @@
     <!-- <router-link v-for="(c, index) in chats" :key="index" :to="`/convs/${index}`">
       <chats-list-item :chat="c"></chats-list-item>
     </router-link> -->
-    <chats-list-item
-v-for="(c, index) in chats"
-:key="index"
-:convid="index"
-:is-opened="openedConvId == index"
-:chat="c"
-@open="onOpenHandler"></chats-list-item>
+    <chats-list-item v-for="(c, index) in chats" :key="index" :convid="index" :is-opened="openedConvId == index" :chat="c" @open="onOpenHandler"></chats-list-item>
   </ul>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useChatsStore } from '../stores/chatsStore';
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useChatsStore } from "@/stores/chatsStore"
 
-import ChatsListItem from './ChatsListItem.vue';
+import ChatsListItem from '@/components/ChatsListItem.vue'
 
 const chatsStore = useChatsStore();
 const router = useRouter();
@@ -30,9 +24,9 @@ const router = useRouter();
 
 
 const chats = computed(() => chatsStore.chats);
-const openedConvId = ref(-1);
+var openedConvId = ref(-1);
 
-const onOpenHandler = convId => {
+const onOpenHandler = (convId) => {
   openedConvId.value = convId;
   router.push(`/convs/${convId}`);
 };

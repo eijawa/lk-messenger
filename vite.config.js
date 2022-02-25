@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+const path = require('path')
+
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
@@ -15,5 +17,12 @@ export default defineConfig({
     Components({ 
       resolvers: [AntDesignVueResolver(),], 
     })
-  ]
+  ],
+  resolve: {
+    alias: {
+      '~': __dirname,
+      '@': path.resolve(__dirname, './src'),
+      'assets': `@/assets`,
+    }
+  }
 })

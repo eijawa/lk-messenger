@@ -1,8 +1,7 @@
-import { createWebHistory, createRouter } from 'vue-router';
-import AuthView from '../views/AuthView.vue';
+import { createWebHistory, createRouter } from 'vue-router'
 
-import MessengerView from '../views/MessengerView.vue';
-import ChatInDepth from '../views/ChatInDepth.vue';
+import MessengerView from '@/views/MessengerView.vue'
+import ChatInDepth from '@/views/ChatInDepth.vue'
 
 const routes = [
     {
@@ -13,18 +12,13 @@ const routes = [
             {
                 name: 'Chat',
                 path: 'convs/:id',
-                component: ChatInDepth,
-            },
-        ],
-    },
-    {
-        path: '/auth/:jwt',
-        name: 'auth',
-        component: AuthView,
-    },
+                component: ChatInDepth
+            }
+        ]
+    }
 ];
 
 export default createRouter({
     history: createWebHistory(),
-    routes,
+    routes
 });
