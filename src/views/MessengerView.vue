@@ -1,10 +1,10 @@
 <template>
-  <div class="messenger-main">
-    <div class="messenger-conversations-list">
-      <conversations-list-header class="messenger-conversations-list-header" />
-      <conversations-list />
+  <div class="messenger">
+    <div class="messenger-sidebar">
+      <sidebar-header />
+      <chats-list />
     </div>
-    <div class="messenger-conversations-main" :class="{'messenger-conversations-main-opened': isChatOpened}">
+    <div class="messenger-main" :class="{'messenger-main-opened': isChatOpened}">
       <router-view></router-view>
     </div>
   </div>
@@ -14,8 +14,8 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 
-import ConversationsListHeader from '../components/ConversationsListHeader.vue';
-import ConversationsList from '../components/ConversationsList.vue';
+import SidebarHeader from '../components/SidebarHeader.vue';
+import ChatsList from '../components/ChatsList.vue';
 
 const store = useStore();
 
@@ -24,30 +24,20 @@ const isChatOpened = computed(() => store.state.messengerLayoutModule.isChatOpen
 
 <style lang="scss" scoped>
 
-.messenger-main {
+.messenger {
   display: flex;
 
-  @media (min-width: 927px) {
-    .messenger-conversations-main {
-      position: relative;
-    }
-  }
-  .messenger-conversations-list {
+  .messenger-sidebar {
     display: flex;
     flex-direction: column;
     overflow: hidden;
     max-height: 100vh;
     width: 100%;
-
-    .messenger-conversations-list-header {
-      background-color: #2b3048;
-      padding: 10px 1rem;
-    }
   }
 
-  .messenger-conversations-main {
+  .messenger-main {
     display: flex;
-    height: 100%;
+    height: 100vh;
     max-width: none;
     width: 100%;
     position: fixed;
@@ -60,12 +50,12 @@ const isChatOpened = computed(() => store.state.messengerLayoutModule.isChatOpen
     background-color: #f0f2f5;
   }
 
-  .messenger-conversations-main:not(.messenger-conversations-main-opened) {
+  .messenger-main:not(.messenger-main-opened) {
     transform: translate3d(100vw, 0, 0);
   }
 
   @media (min-width: 927px) {
-    .messenger-conversations-main {
+    .messenger-main {
       position: relative;
       left: unset;
       top: unset;
@@ -74,8 +64,12 @@ const isChatOpened = computed(() => store.state.messengerLayoutModule.isChatOpen
       transform: unset;
     }
 
-    .messenger-conversations-main:not(.messenger-conversations-main-opened) {
+    .messenger-main:not(.messenger-main-opened) {
       transform: unset;
+    }
+
+    .messenger-sidebar {
+      width: 420px;
     }
   }
 }

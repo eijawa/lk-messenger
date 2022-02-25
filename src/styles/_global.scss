@@ -1,7 +1,16 @@
-@import './colors';
+@import "./colors";
 
-body, html {
+body,
+html {
     margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow: hidden;
+}
+
+ul {
     padding: 0;
 }
 
@@ -9,4 +18,17 @@ body, html {
     background: var(--volsu-black) !important;
 
     color: white;
+}
+
+.ant-btn-text:hover,
+.ant-btn-text:focus {
+    border-radius: 50% !important;
+
+    background: var(--light-gray);
+}
+
+.typo {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

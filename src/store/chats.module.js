@@ -1,14 +1,18 @@
-const conversationsModule = {
+const chatsModule = {
     namespaced: true,
     state: () => ({
         state: {
-            conversations: [
+            chats: [
                 {
-                    'coverSrc': '',
-                    'title': 'Mohammed Ali Gunnaid',
-                    'newMessagesCount': 3,
+                    'avatarSrc': '',
+                    'title': 'Mohammed Ali Gunnaid Momamed Big city life',
+                    'newMessagesCount': 0,
                     'lastMessage': {
                         'text': 'Hello there! whats up my little buddy, friend, comrad?',
+                        'attachment': {
+                            'type': 'pptx',
+                            'url': ''
+                        },
                         'from': {
                             // User-data
                         },
@@ -35,7 +39,20 @@ const conversationsModule = {
                     ]
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
+                    'title': 'Albert G',
+                    'newMessagesCount': 1,
+                    'lastMessage': {
+                        'text': 'Hello there!',
+                        'from': {
+                            // User-data
+                        },
+                        'date': new Date(Date.now()).toISOString(),
+                        'isReaded': true
+                    }
+                },
+                {
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -48,7 +65,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -61,7 +78,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -74,7 +91,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -87,7 +104,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -100,7 +117,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -113,7 +130,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -126,7 +143,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -139,7 +156,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -152,7 +169,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -165,7 +182,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -178,7 +195,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -191,7 +208,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -204,7 +221,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -217,7 +234,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -230,7 +247,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -243,7 +260,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -256,20 +273,7 @@ const conversationsModule = {
                     }
                 },
                 {
-                    'coverSrc': '',
-                    'title': 'Mohammed Ali Gunnaid',
-                    'newMessagesCount': 3,
-                    'lastMessage': {
-                        'text': 'Hello there! whats up my little buddy, friend, comrad?',
-                        'from': {
-                            // User-data
-                        },
-                        'date': new Date(Date.now()).toISOString(),
-                        'isReaded': true
-                    }
-                },
-                {
-                    'coverSrc': '',
+                    'avatarSrc': '',
                     'title': 'Mohammed Ali Gunnaid',
                     'newMessagesCount': 3,
                     'lastMessage': {
@@ -286,4 +290,4 @@ const conversationsModule = {
     }),
 }
 
-export default conversationsModule;
+export default chatsModule;

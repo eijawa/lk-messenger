@@ -91,6 +91,6 @@ const formatDate = (d) => {
     font-size: 0.75rem;
     letter-spacing: 24;
 
-    color: var(--volsu-dark-gray);
+    color: inherit;
   }
 </style>

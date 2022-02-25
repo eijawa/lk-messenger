@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
 import MessengerView from './views/MessengerView.vue'
-import ConversationInDepth from './views/ConversationInDepth.vue'
+import ChatInDepth from './views/ChatInDepth.vue'
 
 const routes = [
     {
@@ -12,7 +12,7 @@ const routes = [
             {
                 name: 'Chat',
                 path: 'convs/:id',
-                component: ConversationInDepth
+                component: ChatInDepth
             }
         ]
     }
