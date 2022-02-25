@@ -1,12 +1,10 @@
 <template>
   <a-input-search
-      v-model:value="searchValue"
-      placeholder="Search"
-      :bordered="false"
-      @search="onSearch"
-  >
-
-  </a-input-search>
+    v-model:value="searchValue"
+    placeholder="Search"
+    :bordered="false"
+    @search="onSearch"
+  ></a-input-search>
 </template>
 
 <script setup>

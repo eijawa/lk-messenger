@@ -1,8 +1,9 @@
 <template>
   <div
-v-if="isMinified"
-class="attachment minified"
-:class="colorClassName">
+    v-if="isMinified"
+    class="attachment minified"
+    :class="colorClassName"
+  >
     <font-awesome-icon :icon="['fas', iconName]" size="sm" />
     <span>{{ upperCasedType }}</span>
   </div>
@@ -63,7 +64,7 @@ $colors: (
   "ppt": #f06e4b,
   "xls": #a0c382,
   "zip": #e1e6e6,
-  "txt": #96c3d7,
+  "txt": #96c3d7
 );
 
 @each $type, $color in $colors {
