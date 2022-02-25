@@ -12,14 +12,14 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useStore } from 'vuex';
+import { useMessengerLayoutStore } from "../stores/messengerLayoutStore";
 
 import SidebarHeader from '../components/SidebarHeader.vue';
 import ChatsList from '../components/ChatsList.vue';
 
-const store = useStore();
+const store = useMessengerLayoutStore();
 
-const isChatOpened = computed(() => store.state.messengerLayoutModule.isChatOpened);
+const isChatOpened = computed(() => store.isChatOpened);
 </script>
 
 <style lang="scss" scoped>

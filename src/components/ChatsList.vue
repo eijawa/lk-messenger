@@ -13,15 +13,17 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { useChatsStore } from "../stores/chatsStore";
 
 import ChatsListItem from './ChatsListItem.vue'
 
-const store = useStore();
+const chatsStore = useChatsStore();
 const router = useRouter();
 
-const chats = computed(() => store.state.chatsModule.state.chats);
+
+
+const chats = computed(() => chatsStore.chats);
 var openedConvId = ref(-1);
 
 const onOpenHandler = (convId) => {

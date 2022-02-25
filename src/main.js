@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
-import router from './router'
-import store from './store/store'
+import router from './routes/router'
+import { createPinia } from 'pinia';
 
 import App from './App.vue'
 
@@ -31,5 +31,5 @@ createApp(App)
 .use(PerfectScrollbar)
 .component('font-awesome-icon', FontAwesomeIcon)
 .use(router)
-.use(store)
+.use(createPinia())
 .mount('#app')

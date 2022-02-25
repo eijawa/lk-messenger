@@ -33,18 +33,20 @@
 
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue';
-import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import { useMessengerLayoutStore } from '../stores/messengerLayoutStore';
+import { useChatsStore } from "../stores/chatsStore";
 
 import ChatHeader from '../components/ChatHeader.vue'
 import MessagesList from '../components/MessagesList.vue'
 import UploadFileBtn from '../components/UploadFileBtn.vue'
 import MessageInput from '../components/MessageInput.vue'
 
-const store = useStore();
+const messengerLayoutStore = useMessengerLayoutStore();
+const chatsStore = useChatsStore();
 const route = useRoute();
 
-const chat = computed(() => store.state.chatsModule.state.chats[route.params.id]);
+const chat = computed(() => chatsStore.chats[route.params.id]);
 
 const layoutContentStyle = {
   'padding': '1rem 1.25rem'
@@ -59,10 +61,14 @@ const onClose = () => {
   visible.value = false;
 };
 
-store.dispatch('openChat');
+messengerLayoutStore.$patch({
+  isChatOpened: true,
+});
 
 onBeforeUnmount(() => {
-  store.dispatch('closeChat');
+  messengerLayoutStore.$patch({
+    isChatOpened: false,
+  });
 });
 </script>
 
