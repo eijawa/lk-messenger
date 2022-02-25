@@ -1,8 +1,11 @@
 <template>
   <div class="messenger">
     <div class="messenger-sidebar">
-      <sidebar-header />
-      <chats-list />
+      <sidebar-header
+        @search-focus="searchStateChange(true)"
+        @search-focus-out="searchStateChange(false)"
+        @search="onSearch" />
+      <component :is="isSearchActive" />
     </div>
     <div class="messenger-main" :class="{ 'messenger-main-opened': isChatOpened }">
       <router-view></router-view>
@@ -11,22 +14,36 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 
 import SidebarHeader from '@/components/SidebarHeader.vue';
+import MessengerSearch from '@/components/MessangerSearch.vue';
 import ChatsList from '@/components/ChatsList.vue';
 import { SearchService } from '@/services/SearchService';
 
 const store = useMessengerSettingsStore();
+const searchActive = ref(false);
 
 const isChatOpened = computed(() => store.isChatOpened);
+const isSearchActive = computed(() => searchActive.value ? MessengerSearch : ChatsList);
 
-onMounted(async () => {
-  const searchService = new SearchService();
-  const response = await searchService.globalSearch();
-  console.log(response);
-});
+const searchStateChange = state => {
+  searchActive.value = state;
+};
+
+const searchService = new SearchService();
+const onSearch = async query => {
+  if (query) {
+    const data = await searchService.messengerSearch(query);
+    console.log(query);
+  }
+};
+
+// onMounted(async () => {
+//   const searchService = new SearchService();
+//   const response = await searchService.globalSearch();
+// });
 
 </script>
 

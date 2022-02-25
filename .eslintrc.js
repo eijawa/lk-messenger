@@ -52,6 +52,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'import/extensions': 'off',
+    'no-unused-vars': 'warn',
 
 
     'vue/component-tags-order': ['error', {

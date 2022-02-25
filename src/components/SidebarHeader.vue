@@ -1,37 +1,53 @@
 <template>
   <div class="sidebar-header">
-    <a-space>
-      <a-button type="text">
-        <template #icon>
-          <font-awesome-icon :icon="['fas', 'bars']" size="lg" />
-        </template>
-      </a-button>
+    <a-button type="text">
+      <template #icon>
+        <font-awesome-icon :icon="['fas', 'bars']" size="lg" />
+      </template>
+    </a-button>
 
-      <multi-search-input></multi-search-input>
-    </a-space>
+    <a-input
+      v-model:value="searchQuery"
+      placeholder="input search text"
+      @input="onSearch"
+      @focus="onFocus"
+      @focusout="outFocus"
+    />
   </div>
 </template>
 
 <script setup>
 import MultiSearchInput from '@/components/MultiSearchInput.vue';
+import { ref } from 'vue';
 
+const emit = defineEmits(['searchFocus', 'searchFocusOut', 'search']);
+
+const searchQuery = ref('');
+
+const onSearch = query => {
+  emit('search', searchQuery.value);
+};
+
+const onFocus = () => {
+  emit('searchFocus');
+};
+
+const outFocus = () => {
+  searchQuery.value = '';
+  emit('searchFocusOut');
+};
 </script>
 
 <style lang="scss" scoped>
 .sidebar-header {
   width: 100%;
-
   padding: 10px 1rem;
-
   background-color: #fff;
+  display: flex;
+  gap: 10px;
 }
-.ant-space {
-  width: 100%;
 
-  :deep(.ant-space-item:last-of-type) {
-    width: 100%;
-  }
-}
+
 
 .ant-input-search {
   height: min-content;

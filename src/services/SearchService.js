@@ -1,8 +1,14 @@
 import { useFetch } from '@/helpers/serviceHelper';
+import config from '@/config';
 
 export class SearchService {
-  globalSearch = async () => {
-    const response = await useFetch('https://dev.lk.fokin-team.ru:2060/user-info');
+  messengerSearch = async query => {
+    const url = new URL(`${config.baseUrl}/find`);
+    url.search = new URLSearchParams({ text: query }).toString();
+    console.log(url);
+    const response = await useFetch(url, {
+      method: 'GET',
+    });
     return response;
   };
 }
