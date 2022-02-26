@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 // TODO: Dynamic import from array of dict
 
-import { faBars, faCircleCheck, faFile, faFileImage, faFilePdf, faFileWord, faFilePowerpoint, faFileExcel, faFileZipper, faFileLines, faArrowLeft, faMagnifyingGlass, faEllipsisVertical, faPaperclip, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCircleCheck, faFile, faFileImage, faFilePdf, faFileWord, faFilePowerpoint, faFileExcel, faFileZipper, faFileLines, faArrowLeft, faMagnifyingGlass, faEllipsisVertical, faPaperclip, faPaperPlane, faPen, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
 import router from './routes/router';
 // import {  } from '@fortawesome/free-regular-svg-icons'
@@ -17,6 +17,9 @@ FontAwesomeLibraryCore.add([faBars]);
 
 // Used in Chats and Messages
 FontAwesomeLibraryCore.add([faCircleCheck]);
+
+// Used in NewChatBtn
+FontAwesomeLibraryCore.add([faPen, faUser, faUsers]);
 
 // Used in Chats and Messages for attachments
 FontAwesomeLibraryCore.add([faFile, faFileImage, faFilePdf, faFileWord, faFilePowerpoint, faFileExcel, faFileZipper, faFileLines]);

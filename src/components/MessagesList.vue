@@ -15,7 +15,7 @@
 <script setup>
 import MessagesListItem from '@/components/MessagesListItem.vue';
 
-const props = defineProps({
+defineProps({
   messages: {
     type: Array,
     default: () => [],

@@ -30,7 +30,7 @@ const openedConvId = ref(-1);
 
 const onOpenHandler = convId => {
   openedConvId.value = convId;
-  router.push(`/convs/${convId}`);
+  router.push(`/chats/${convId}`);
 };
 </script>
 

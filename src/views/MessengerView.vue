@@ -6,6 +6,8 @@
         @search-focus-out="searchStateChange(false)"
         @search="onSearch" />
       <component :is="isSearchActive" />
+
+      <new-chat-btn></new-chat-btn>
     </div>
     <div class="messenger-main" :class="{ 'messenger-main-opened': isChatOpened }">
       <router-view></router-view>
@@ -15,28 +17,39 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
+import { useChatsStore } from '@/stores/chatsStore';
 
 import SidebarHeader from '@/components/SidebarHeader.vue';
-import MessengerSearch from '@/components/MessangerSearch.vue';
+import MessengerSearch from '@/components/MessengerSearch.vue';
 import ChatsList from '@/components/ChatsList.vue';
-import { SearchService } from '@/services/SearchService';
+import NewChatBtn from '@/components/NewChatBtn.vue';
 
-const store = useMessengerSettingsStore();
+import { SearchService } from '@/services/SearchService';
+import { ChatsService } from '@/services/ChatsService';
+import { UserService } from '@/services/UserService';
+
+const messengerSettingsStore = useMessengerSettingsStore();
+const chatsStore = useChatsStore();
+
+const userService = new UserService();
+const searchService = new SearchService();
+const chatsService = new ChatsService();
+
 const searchActive = ref(false);
 
-const isChatOpened = computed(() => store.isChatOpened);
+const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
 const isSearchActive = computed(() => searchActive.value ? MessengerSearch : ChatsList);
 
 const searchStateChange = state => {
   searchActive.value = state;
 };
 
-const searchService = new SearchService();
 const onSearch = async query => {
   if (query) {
     const data = await searchService.messengerSearch(query);
-    console.log(query);
+    console.log(data);
   }
 };
 
@@ -44,6 +57,20 @@ const onSearch = async query => {
 //   const searchService = new SearchService();
 //   const response = await searchService.globalSearch();
 // });
+
+onMounted(async () => {
+  const userData = await userService.getUserInfo();
+
+  messengerSettingsStore.$patch({
+    user: userData.result,
+  });
+
+  const chatsData = await chatsService.getChats();
+
+  // chatsStore.$patch({
+  //   chats: chatsData.result,
+  // });
+});
 
 </script>
 
@@ -53,6 +80,7 @@ const onSearch = async query => {
   display: flex;
 
   .messenger-sidebar {
+    position: relative;
     display: flex;
     flex-direction: column;
     overflow: hidden;

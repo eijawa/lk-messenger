@@ -25,7 +25,7 @@ import { computed } from 'vue';
 import ReadedLabel from '@/components/kit/ReadedLabel.vue';
 import DateLabel from '@/components/kit/DateLabel.vue';
 
-const props = defineProps({
+defineProps({
   message: {
     type: Object,
     default: () => { },
