@@ -61,7 +61,7 @@ const props = defineProps({
   },
   isHovered: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   isFocused: {
     type: Boolean,

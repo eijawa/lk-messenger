@@ -8,7 +8,11 @@
       <span class="message-card__text">{{ message.text }}</span>
 
       <div class="end spacer">
-        <date-label :date="message.date" :is-required-tooltip="true" :is-only-time="true"></date-label>
+        <date-label
+          :date="message.date"
+          :is-required-tooltip="true"
+          :is-only-time="true"
+        ></date-label>
         <readed-label v-if="isYourMessage && message.isReaded"></readed-label>
       </div>
     </div>

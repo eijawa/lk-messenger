@@ -8,19 +8,16 @@
       </a-button>
     </router-link>
 
-    <div class="chat-info" @click="onChatInfoClick">
-      <a-avatar
-        :src="chat.avatarSrc"
-        shape="circle"
-        :size="42"
-        style="background-color:var(--volsu-yellow); font-size: 1.15rem; font-weight: bold;"
-      >{{ titleFirstLetters }}</a-avatar>
-
-      <div class="chat-content">
-        <span class="chat__title typo" :title="chat.title">{{ chat.title }}</span>
-        <span class="chat__text typo">Тут будет либо количество участников, либо последний статус человека</span>
-      </div>
-    </div>
+    <base-chat-item
+      :avatar-src="chat.avatarSrc"
+      :avatar-size="42"
+      :title="chat.title"
+      @click="onChatInfoClick"
+    >
+      <template #text>
+        Тут будет либо количество участников, либо последний статус человека
+      </template>
+    </base-chat-item>
 
     <div class="chat-utils">
       <a-space>
@@ -43,7 +40,7 @@
 <script setup>
 import { computed } from 'vue';
 
-import getFirstLetters from '@/helpers/firstLettersHelper';
+import BaseChatItem from '@/components/base/BaseChatItem.vue';
 
 const props = defineProps({
   chat: {
@@ -58,16 +55,13 @@ const emits = defineEmits(['open-info']);
 const onChatInfoClick = () => {
   emits('open-info');
 };
-
-// Avatar functions
-const titleFirstLetters = computed(() => getFirstLetters(props.chat.title));
 </script>
 
 <style lang="scss" scoped>
 .chat-header {
   width: 100%;
 
-  padding: 10px 1rem;
+  padding: 0 1rem;
 
   display: flex;
   place-items: center;
