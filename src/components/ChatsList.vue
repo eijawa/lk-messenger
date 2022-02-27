@@ -8,7 +8,7 @@
       v-for="(c, index) in chats"
       :key="index"
       :convid="index"
-      :is-opened="openedConvId == index"
+      :is-opened="openedChatId == index"
       :chat="c"
       @open="onOpenHandler"
     ></chats-list-item>
@@ -26,11 +26,11 @@ const chatsStore = useChatsStore();
 const router = useRouter();
 
 const chats = computed(() => chatsStore.chats);
-const openedConvId = ref(-1);
+const openedChatId = ref(-1);
 
-const onOpenHandler = convId => {
-  openedConvId.value = convId;
-  router.push(`/chats/${convId}`);
+const onOpenHandler = chatId => {
+  openedChatId.value = chatId;
+  router.push(`/chats/${chatId}`);
 };
 </script>
 

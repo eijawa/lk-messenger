@@ -5,7 +5,7 @@ export class SearchService {
   messengerSearch = async query => {
     const url = new URL(`${config.baseUrl}/find`);
     url.search = new URLSearchParams({ text: query }).toString();
-    console.log(url);
+
     const response = await useFetch(url, {
       method: 'GET',
     });
