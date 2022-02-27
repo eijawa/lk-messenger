@@ -3,7 +3,6 @@
     <div class="messenger-sidebar">
       <sidebar-header
         @search-focus="searchStateChange(true)"
-        @search-focus-out="searchStateChange(false)"
         @search="onSearch" />
       <component :is="isSearchActive" />
 
