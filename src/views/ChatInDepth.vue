@@ -44,7 +44,7 @@ const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
 const route = useRoute();
 
-const chat = computed(() => chatsStore.chats[route.params.id]);
+const chat = computed(() => chatsStore.getChatById(route.params.id));
 
 const layoutContentStyle = {
   'padding': '1rem 1.25rem',

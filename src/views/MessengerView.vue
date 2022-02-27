@@ -3,7 +3,6 @@
     <div class="messenger-sidebar">
       <sidebar-header
         @search-focus="searchStateChange(true)"
-        @search-focus-out="searchStateChange(false)"
         @search="onSearch" />
       <component :is="isSearchActive" />
 
@@ -28,12 +27,12 @@ import NewChatBtn from '@/components/NewChatBtn.vue';
 
 import { SearchService } from '@/services/SearchService';
 import { ChatsService } from '@/services/ChatsService';
-import { UserService } from '@/services/UserService';
+// import { UserService } from '@/services/UserService';
 
 const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
 
-const userService = new UserService();
+// const userService = new UserService();
 const searchService = new SearchService();
 const chatsService = new ChatsService();
 
@@ -49,7 +48,12 @@ const searchStateChange = state => {
 const onSearch = async query => {
   if (query) {
     const data = await searchService.messengerSearch(query);
-    console.log(data);
+
+    chatsStore.$patch({
+      searchedUsers: data.result.users,
+      searchedChats: data.result.chats,
+      searchedMessages: data.result.messages,
+    });
   }
 };
 
@@ -59,17 +63,13 @@ const onSearch = async query => {
 // });
 
 onMounted(async () => {
-  const userData = await userService.getUserInfo();
-
-  messengerSettingsStore.$patch({
-    user: userData.result,
-  });
+  messengerSettingsStore.fetchUserInfo();
 
   const chatsData = await chatsService.getChats();
 
-  // chatsStore.$patch({
-  //   chats: chatsData.result,
-  // });
+  chatsStore.$patch({
+    chats: chatsData.result,
+  });
 });
 
 </script>
