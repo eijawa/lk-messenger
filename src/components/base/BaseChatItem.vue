@@ -9,7 +9,7 @@
         :src="avatarSrc"
         shape="circle"
         :size="avatarSize"
-        style="background-color:var(--volsu-yellow); font-size: 1.15rem; font-weight: bold;"
+        style="background:var(--volsu-u-eaf-gr); font-size: 1.15rem; font-weight: bold;"
       >
         {{ titleFirstLetters }}
       </a-avatar>

@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $volsu-black: #2b3048;
 $volsu-deep-blue: #143a68;
 $volsu-yellow: #edb81a;
@@ -5,6 +7,19 @@ $volsu-gray: #dbdcdb;
 $volsu-dark-gray: #4c4a49;
 
 $light-gray: #f4f4f4;
+
+$volsu-universities-colors: (
+    "eaf": #BF222E, // Economic and Finances
+    "pt": #481C59, // Priority Technologies
+    "pht": #2993AC, // Physics Technologies
+    "ns": #3C833E, // Nature Science
+    "pac": #DE8426, // Phylology and WorldWide Communication
+    "wwe": #822574, // WorldWide Education
+    "care": #253F88, // Control and Region Economics
+    "hwwcast": #19AFA1, // History, WorldWide Communication and Social Technologies
+    "mait": #F0CC11, // Mathematics and Information Technologies
+    "r": #212026, // Rights
+);
 
 :root {
     --volsu-black: #{$volsu-black};
@@ -14,4 +29,11 @@ $light-gray: #f4f4f4;
     --volsu-dark-gray: #{$volsu-dark-gray};
 
     --light-gray: #{$light-gray};
+
+    @each $university, $color in $volsu-universities-colors {
+        --volsu-u-#{$university}: #{$color};
+
+        $l_tmp: color.adjust($color, $lightness: +36%);
+        --volsu-u-#{$university}-gr: linear-gradient(#{$l_tmp}, #{$color});
+    }
 }
