@@ -1,13 +1,27 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export const useMessengerSettingsStore = defineStore('messengerSettingsStore', () => {
-  const isChatOpened = ref(false);
+import { UserService } from '@/services/UserService';
 
-  const user = {};
+const userService = new UserService();
 
-  return {
-    isChatOpened,
-    user,
-  };
+export const useMessengerSettingsStore = defineStore('messengerSettingsStore', {
+  state: () => {
+    const isChatOpened = ref(false);
+
+    const user = ref({});
+
+    return {
+      isChatOpened,
+      user,
+    };
+  },
+  actions: {
+    async fetchUserInfo() {
+      if (this.user === null || this.user === undefined) {
+        const userData = await userService.getUserInfo();
+        this.user = userData.result;
+      }
+    },
+  },
 });

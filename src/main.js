@@ -7,13 +7,19 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 // TODO: Dynamic import from array of dict
 
-import { faBars, faCircleCheck, faFile, faFileImage, faFilePdf, faFileWord, faFilePowerpoint, faFileExcel, faFileZipper, faFileLines, faArrowLeft, faMagnifyingGlass, faEllipsisVertical, faPaperclip, faPaperPlane, faPen, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCircleCheck, faFile, faFileImage, faFilePdf,
+  faFileWord, faFilePowerpoint, faFileExcel, faFileZipper, faFileLines,
+  faArrowLeft, faMagnifyingGlass, faEllipsisVertical, faPaperclip,
+  faPaperPlane, faPen, faUser, faUsers, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+
+// import {  } from '@fortawesome/free-regular-svg-icons';
+
 import App from './App.vue';
 import router from './routes/router';
-// import {  } from '@fortawesome/free-regular-svg-icons'
+
 
 // Used in Sidebar Header
-FontAwesomeLibraryCore.add([faBars]);
+FontAwesomeLibraryCore.add([faBars, faChevronLeft]);
 
 // Used in Chats and Messages
 FontAwesomeLibraryCore.add([faCircleCheck]);

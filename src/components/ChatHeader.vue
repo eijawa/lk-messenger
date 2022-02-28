@@ -9,7 +9,7 @@
     </router-link>
 
     <base-chat-item
-      :avatar-src="chat.avatarSrc"
+      :avatar-src="chat?.avatarSrc"
       :avatar-size="42"
       :title="chat.title"
       @click="onChatInfoClick"

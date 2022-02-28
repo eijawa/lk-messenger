@@ -1,8 +1,8 @@
 <template>
   <div class="sidebar-header">
-    <a-button type="text">
+    <a-button type="text" @click="headerHandler">
       <template #icon>
-        <font-awesome-icon :icon="['fas', 'bars']" size="lg" />
+        <font-awesome-icon :icon="headerIcon" size="lg" />
       </template>
     </a-button>
 
@@ -11,31 +11,41 @@
       placeholder="input search text"
       @input="onSearch"
       @focus="onFocus"
-      @focusout="outFocus"
     />
   </div>
 </template>
 
 <script setup>
-import MultiSearchInput from '@/components/MultiSearchInput.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
-const emit = defineEmits(['searchFocus', 'searchFocusOut', 'search']);
+const emit = defineEmits(['searchFocus', 'backClick', 'search']);
+
+const isSearchActive = ref(false);
 
 const searchQuery = ref('');
 
-const onSearch = query => {
+const headerIcon = computed(() => (isSearchActive.value ? ['fa', 'chevron-left'] : ['fas', 'bars']));
+
+const onSearch = () => {
   emit('search', searchQuery.value);
 };
 
 const onFocus = () => {
+  isSearchActive.value = true;
   emit('searchFocus');
 };
 
-const outFocus = () => {
-  searchQuery.value = '';
-  emit('searchFocusOut');
+const menuClickHandler = () => {
+  //
 };
+
+const backClickHandler = () => {
+  searchQuery.value = '';
+  isSearchActive.value = false;
+  emit('backClick');
+};
+
+const headerHandler = computed(() => (isSearchActive.value ? backClickHandler : menuClickHandler));
 </script>
 
 <style lang="scss" scoped>
@@ -46,8 +56,6 @@ const outFocus = () => {
   display: flex;
   gap: 10px;
 }
-
-
 
 .ant-input-search {
   height: min-content;

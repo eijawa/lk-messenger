@@ -1,5 +1,5 @@
 module.exports = {
-  plugins: ['vue'],
+  plugins: ['vue', 'import'],
 
   extends: [
     'airbnb-base',
@@ -29,9 +29,9 @@ module.exports = {
     },
   },
   rules: {
-    'quotes': ['error', 'single'],
-    'semi': ['error', 'always'],
-    'indent': ['error', 2],
+    quotes: ['error', 'single'],
+    semi: ['error', 'always'],
+    indent: ['error', 2],
     'import/no-unresolved': 'off',
     'comma-dangle': ['error', 'always-multiline'],
     'arrow-parens': ['error', 'as-needed'],
@@ -53,7 +53,6 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'import/extensions': 'off',
     'no-unused-vars': 'warn',
-
 
     'vue/component-tags-order': ['error', {
       order: ['template', 'script', 'style'],
@@ -79,6 +78,5 @@ module.exports = {
     'vue/object-curly-spacing': ['error', 'always'],
     'vue/space-infix-ops': ['error', { int32Hint: true }],
     'vue/arrow-spacing': 'error',
-
   },
 };

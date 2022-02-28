@@ -11,4 +11,8 @@ export class ChatsService {
 
     return response;
   };
+
+  // getMessages = async (chatId) => {
+
+  // };
 }
