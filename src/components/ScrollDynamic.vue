@@ -1,0 +1,67 @@
+<template>
+  <div class="scroll-dynamic" @scroll="onScroll">
+    <slot />
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue';
+
+const props = defineProps({
+  isLoadingTopDate: {
+    type: Boolean,
+    required: true,
+  },
+  isLoadingBottomDate: {
+    type: Boolean,
+    required: true,
+  },
+  isLoadingCondition: {
+    type: Boolean,
+    required: true,
+  },
+  offsetBeforeLoading: {
+    type: Number,
+    default: 200,
+  },
+});
+
+const isLoadingTopDateValue = computed(() => props.isLoadingTopDate);
+const isLoadingBottomDateValue = computed(() => props.isLoadingBottomDate);
+const isLoadingConditionValue = computed(() => props.isLoadingCondition);
+
+const emit = defineEmits(['endAddTrigger', 'startDeleteTrigger', 'startAddTrigger', 'endDeleteTrigger']);
+
+const onScroll = async e => {
+  const { target } = e;
+
+  if (Math.ceil(target.scrollTop) + props.offsetBeforeLoading >= target.scrollHeight - target.offsetHeight && isLoadingBottomDateValue.value) {
+    if (isLoadingConditionValue.value) {
+      await emit('endAddTrigger');
+    } else {
+      await emit('endAddTrigger');
+      const scrollOffset = target.scrollHeight - (target.scrollTop + target.offsetHeight);
+      await emit('startDeleteTrigger');
+      target.scrollTop = target.scrollHeight - scrollOffset - target.offsetHeight;
+    }
+  }
+
+  if (Math.ceil(target.scrollTop) <= props.offsetBeforeLoading && isLoadingTopDateValue.value) {
+    if (isLoadingConditionValue.value) {
+      await emit('startAddTrigger');
+    } else {
+      await emit('startAddTrigger');
+      await emit('endDeleteTrigger');
+    }
+  }
+};
+</script>
+
+<style scoped>
+.scroll-dynamic {
+  overflow: hidden;
+  height: 100%;
+  overflow-y: auto;
+  pointer-events: auto;
+}
+</style>

@@ -3,17 +3,13 @@
     <div class="messenger-sidebar">
       <sidebar-header
         @search-focus="searchStateChange(true)"
-        @back-click="searchStateChange(false)"
-        @search="onSearch"
-      />
+        @search="onSearch" />
+      <component :is="isSearchActive" />
 
-      <chats-list v-if="!isSearchActive" />
-      <messenger-search v-else :date="searchDate" />
-
-      <new-chat-btn />
+      <new-chat-btn></new-chat-btn>
     </div>
     <div class="messenger-main" :class="{ 'messenger-main-opened': isChatOpened }">
-      <router-view />
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -31,47 +27,48 @@ import NewChatBtn from '@/components/NewChatBtn.vue';
 
 import { SearchService } from '@/services/SearchService';
 import { ChatsService } from '@/services/ChatsService';
+import { UserService } from '@/services/UserService';
 
 const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
 
+const userService = new UserService();
 const searchService = new SearchService();
 const chatsService = new ChatsService();
 
-const searchDate = ref({
-  users: [],
-  chats: [],
-  messages: [],
-});
-
-const isSearchActive = ref(false);
+const searchActive = ref(false);
 
 const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
+const isSearchActive = computed(() => searchActive.value ? MessengerSearch : ChatsList);
 
 const searchStateChange = state => {
-  isSearchActive.value = state;
-  searchDate.value = {
-    users: [],
-    chats: [],
-    messages: [],
-  };
+  searchActive.value = state;
 };
 
 const onSearch = async query => {
   if (query) {
     const data = await searchService.messengerSearch(query);
-    searchDate.value = data.result;
+    console.log(data);
   }
 };
 
+// onMounted(async () => {
+//   const searchService = new SearchService();
+//   const response = await searchService.globalSearch();
+// });
+
 onMounted(async () => {
-  await messengerSettingsStore.fetchUserInfo();
+  const userData = await userService.getUserInfo();
+
+  messengerSettingsStore.$patch({
+    user: userData.result,
+  });
 
   const chatsData = await chatsService.getChats();
 
-  chatsStore.$patch({
-    chats: chatsData.result,
-  });
+  // chatsStore.$patch({
+  //   chats: chatsData.result,
+  // });
 });
 
 </script>
@@ -128,4 +125,6 @@ onMounted(async () => {
     }
   }
 }
+
+
 </style>
