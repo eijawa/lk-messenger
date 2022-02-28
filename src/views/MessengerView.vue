@@ -3,13 +3,17 @@
     <div class="messenger-sidebar">
       <sidebar-header
         @search-focus="searchStateChange(true)"
-        @search="onSearch" />
-      <component :is="isSearchActive" />
+        @back-click="searchStateChange(false)"
+        @search="onSearch"
+      />
 
-      <new-chat-btn></new-chat-btn>
+      <chats-list v-if="!isSearchActive" />
+      <messenger-search v-else :date="searchDate" />
+
+      <new-chat-btn />
     </div>
     <div class="messenger-main" :class="{ 'messenger-main-opened': isChatOpened }">
-      <router-view></router-view>
+      <router-view />
     </div>
   </div>
 </template>
@@ -27,43 +31,41 @@ import NewChatBtn from '@/components/NewChatBtn.vue';
 
 import { SearchService } from '@/services/SearchService';
 import { ChatsService } from '@/services/ChatsService';
-// import { UserService } from '@/services/UserService';
 
 const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
 
-// const userService = new UserService();
 const searchService = new SearchService();
 const chatsService = new ChatsService();
 
-const searchActive = ref(false);
+const searchDate = ref({
+  users: [],
+  chats: [],
+  messages: [],
+});
+
+const isSearchActive = ref(false);
 
 const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
-const isSearchActive = computed(() => searchActive.value ? MessengerSearch : ChatsList);
 
 const searchStateChange = state => {
-  searchActive.value = state;
+  isSearchActive.value = state;
+  searchDate.value = {
+    users: [],
+    chats: [],
+    messages: [],
+  };
 };
 
 const onSearch = async query => {
   if (query) {
     const data = await searchService.messengerSearch(query);
-
-    chatsStore.$patch({
-      searchedUsers: data.result.users,
-      searchedChats: data.result.chats,
-      searchedMessages: data.result.messages,
-    });
+    searchDate.value = data.result;
   }
 };
 
-// onMounted(async () => {
-//   const searchService = new SearchService();
-//   const response = await searchService.globalSearch();
-// });
-
 onMounted(async () => {
-  messengerSettingsStore.fetchUserInfo();
+  await messengerSettingsStore.fetchUserInfo();
 
   const chatsData = await chatsService.getChats();
 
@@ -126,6 +128,4 @@ onMounted(async () => {
     }
   }
 }
-
-
 </style>
