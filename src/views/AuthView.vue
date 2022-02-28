@@ -12,7 +12,6 @@ const router = useRouter();
 const route = useRoute();
 
 onMounted(() => {
-  console.log('auth');
   const { jwt } = route.query;
   if (typeof jwt === 'string') {
     localStorage.setItem('jwt', jwt);
