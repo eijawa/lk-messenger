@@ -10,7 +10,9 @@
         shape="circle"
         :size="avatarSize"
         style="background-color:var(--volsu-yellow); font-size: 1.15rem; font-weight: bold;"
-      >{{ titleFirstLetters }}</a-avatar>
+      >
+        {{ titleFirstLetters }}
+      </a-avatar>
     </div>
 
     <div class="chat__content">

@@ -28,18 +28,24 @@ import ChatsList from '@/components/ChatsList.vue';
 import NewChatBtn from '@/components/NewChatBtn.vue';
 import { SearchService } from '@/services/SearchService';
 import { ChatsService } from '@/services/ChatsService';
+
 const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
 const searchService = new SearchService();
 const chatsService = new ChatsService();
+
+
 const searchDate = ref({
   users: [],
   chats: [],
   messages: [],
 });
+
 const isSearchActive = ref(false);
+
 const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
-const searchStateChange = state => {
+
+const searchStateChange = async state => {
   isSearchActive.value = state;
   searchDate.value = {
     users: [],
@@ -47,12 +53,24 @@ const searchStateChange = state => {
     messages: [],
   };
 };
+
 const onSearch = async query => {
   if (query) {
     const data = await searchService.messengerSearch(query);
-    searchDate.value = data.result;
+    if (data?.status) {
+      searchDate.value.users = data.result.users;
+    }
+
+  } else {
+    searchDate.value = {
+      users: [],
+      chats: [],
+      messages: [],
+    };
   }
 };
+
+
 onMounted(async () => {
   await messengerSettingsStore.fetchUserInfo();
   const chatsData = await chatsService.getChats();
@@ -65,6 +83,7 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .messenger {
   display: flex;
+
   .messenger-sidebar {
     position: relative;
     display: flex;
@@ -73,6 +92,7 @@ onMounted(async () => {
     max-height: 100vh;
     width: 100%;
   }
+
   .messenger-main {
     display: flex;
     height: 100vh;
@@ -87,9 +107,11 @@ onMounted(async () => {
     transition: 300ms cubic-bezier(0.8, 1, 0.68, 1);
     background-color: #f0f2f5;
   }
+
   .messenger-main:not(.messenger-main-opened) {
     transform: translate3d(100vw, 0, 0);
   }
+
   @media (min-width: 927px) {
     .messenger-main {
       position: relative;
