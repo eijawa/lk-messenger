@@ -30,7 +30,7 @@ export const useMessengerSettingsStore = defineStore('messengerSettingsStore', {
         this.user = userData.result;
 
         // REMOVE
-        this.user.university = 'r';
+        this.user.university = 'pht';
 
         this.userUColor = getCSSVariable(`--volsu-u-${this.user.university}`);
         this.userUColorLight = getCSSVariable(`--volsu-u-${this.user.university}-light`);

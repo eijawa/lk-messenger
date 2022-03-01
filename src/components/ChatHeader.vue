@@ -13,6 +13,8 @@
       :avatar-size="42"
       :title="chat.title"
       :university-pallete="chat.type === 'tat' ? chat.members[0].university : ''"
+      :chat-type="chat.type"
+      :is-teacher="chat.type === 'tat' && chat.members[0].type === 'teacher'"
       @click="onChatInfoClick"
     >
       <template #text>

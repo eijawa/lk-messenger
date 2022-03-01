@@ -10,11 +10,13 @@
 </template>
 
 <script setup>
+import { getAttachmentInfo } from '@/helpers/attachmentHelper';
+
 const props = defineProps({
-  attachment: {
-    type: Object,
+  attachmentSrc: {
+    type: String,
     required: true,
-    default: () => { },
+    default: '',
   },
   isMinified: {
     type: Boolean,
@@ -23,16 +25,19 @@ const props = defineProps({
 });
 
 const mapAttachmentFileTypeToLocale = {
+  '/png|jpg|jpeg|webp|gif|bmp|ico|tiff': 'img',
   '/doc|docx/': 'doc',
   '/ppt|pptx|odp|ppt|pps/': 'ppt',
   '/xls|xlsx/': 'xls',
   '/zip|rar|7z|tar|gz/': 'zip',
 };
 
-let localedType = props.attachment.type.slice(0);
+const attachment = getAttachmentInfo(props.attachmentSrc);
+
+let localedType = attachment.fileType;
 // eslint-disable-next-line no-restricted-syntax
 for (const [key, value] of Object.entries(mapAttachmentFileTypeToLocale)) {
-  if (key.indexOf(props.attachment.type) !== -1) {
+  if (key.indexOf(attachment.fileType) !== -1) {
     localedType = value;
     break;
   }
@@ -51,7 +56,7 @@ const mapAttachmentTypeToIcon = {
 const iconName = mapAttachmentTypeToIcon[localedType] ?? 'file';
 
 const colorClassName = `atta-color-${localedType}`;
-const upperCasedType = props.attachment.type.toUpperCase();
+const upperCasedType = attachment.fileType.toUpperCase();
 </script>
 
 <style lang="scss" scoped>

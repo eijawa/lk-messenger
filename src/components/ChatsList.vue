@@ -35,6 +35,7 @@ const onOpenHandler = chatId => {
 <style lang="scss" scoped>
 .chats-list {
   margin-bottom: 0;
+  padding: 0 0.5rem;
 
   overflow-y: auto;
 }

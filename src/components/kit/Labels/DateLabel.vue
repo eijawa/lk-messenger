@@ -46,37 +46,38 @@ const localedDateOptions = {
   second: 'numeric',
 };
 
+const convertedDate = new Date(props.date);
+
+// eslint-disable-next-line arrow-body-style
 const localedDate = computed(() => {
-  const d = new Date(props.date);
-  return d.toLocaleDateString(props.locale, localedDateOptions);
+  return convertedDate.toLocaleDateString(props.locale, localedDateOptions);
 });
 
 const formatDate = d => {
-  const date = new Date(d);
   let result;
 
   const today = new Date(Date.now());
 
-  const diffTime = today.getTime() - date.getTime();
+  const diffTime = today.getTime() - d.getTime();
   const diffHours = diffTime / (1000 * 3600);
 
   // Если с момента сообщения прошло меньше 24 часов,
   // либо если всегда нужно только время,
   // то выводим только время
   if (diffHours <= 24 || props.isOnlyTime) {
-    result = date.toLocaleTimeString(props.locale, localedTimeOptions);
+    result = d.toLocaleTimeString(props.locale, localedTimeOptions);
   }
-  else if (diffHours > 24 || diffHours < 48) {
-    result = 'Yesterday';
+  else if (diffHours > 24 && diffHours < 48) {
+    result = 'Вчера';
   }
   else {
-    result = date.toLocaleDateString();
+    result = d.toLocaleDateString();
   }
 
   return result;
 };
 
-const formattedDate = computed(() => formatDate(props.date));
+const formattedDate = computed(() => formatDate(convertedDate));
 </script>
 
 <style lang="scss" scoped>
