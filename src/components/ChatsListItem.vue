@@ -10,8 +10,10 @@
   >
 
     <template #info>
-      <readed-label v-if="isYourMessage" :is-readed="chat.lastMessage?.isReaded"></readed-label>
-      <date-label :date="chat.lastMessage?.date"></date-label>
+      <labels-group>
+        <readed-label v-if="isYourMessage" :is-readed="chat.lastMessage?.isReaded"></readed-label>
+        <date-label :date="chat.lastMessage?.date"></date-label>
+      </labels-group>
     </template>
 
     <template #prefix>
@@ -32,6 +34,7 @@
 <script setup>
 import { computed } from 'vue';
 
+import LabelsGroup from '@/components/kit/Labels/LabelsGroup.vue';
 import Attachment from '@/components/kit/Labels/Attachment.vue';
 import ReadedLabel from '@/components/kit/Labels/ReadedLabel.vue';
 import DateLabel from '@/components/kit/Labels/DateLabel.vue';
