@@ -20,6 +20,6 @@ export const useFetch = async (url, params = null) => {
     const response = await fetch(url, paramsValue);
     return response.json();
   }
-  window.location.href = 'https://lk.volsu.ru';
+  // window.location.href = 'https://lk.volsu.ru';
   return {};
 };

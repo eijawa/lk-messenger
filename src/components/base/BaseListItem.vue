@@ -71,7 +71,7 @@ const props = defineProps({
   },
   renderTag: {
     type: String,
-    default: 'div',
+    default: 'li',
   },
 });
 

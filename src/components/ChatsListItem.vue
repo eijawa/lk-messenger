@@ -1,5 +1,5 @@
 <template>
-  <base-chat-item
+  <base-list-item
     render-tag="li"
     :avatar-src="chat.avatarSrc"
     :title="chat.title"
@@ -26,7 +26,7 @@
       <a-tag v-if="chat.newMessagesCount != 0" class="chat__count">{{ chat.newMessagesCount }}</a-tag>
     </template>
 
-  </base-chat-item>
+  </base-list-item>
 </template>
 
 <script setup>
@@ -35,7 +35,7 @@ import { computed } from 'vue';
 import Attachment from '@/components/kit/Attachment.vue';
 import ReadedLabel from '@/components/kit/ReadedLabel.vue';
 import DateLabel from '@/components/kit/DateLabel.vue';
-import BaseChatItem from '@/components/base/BaseChatItem.vue';
+import BaseListItem from '@/components/base/BaseListItem.vue';
 
 const props = defineProps({
   chat: {

@@ -6,7 +6,7 @@
     </div>
 
     <div class="search-list">
-      <base-chat-item
+      <base-list-item
         v-for="userOrChat in usersAndChats"
         :key="userOrChat.id"
         :title="userOrChat.username"
@@ -22,7 +22,7 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useChatsStore } from '@/stores/chatsStore';
-import BaseChatItem from './base/BaseChatItem.vue';
+import BaseListItem from './base/BaseListItem.vue';
 
 const router = useRouter();
 const chatsStore = useChatsStore();

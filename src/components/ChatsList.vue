@@ -1,9 +1,8 @@
 <template>
-  <ul class="chats-list">
-    <a-empty v-if="chats.length === 0">
-      <template #description>Нет начатых бесед...</template>
-    </a-empty>
-
+  <a-empty v-if="chats.length === 0">
+    <template #description>Нет начатых бесед...</template>
+  </a-empty>
+  <ul v-else class="chats-list">
     <chats-list-item
       v-for="(c, index) in chats"
       :key="index"
@@ -25,7 +24,7 @@ import ChatsListItem from '@/components/ChatsListItem.vue';
 const chatsStore = useChatsStore();
 const router = useRouter();
 
-const chats = computed(() => chatsStore.chats);
+const chats = computed(() => chatsStore.chats ?? []);
 const openedChatId = ref(-1);
 
 const onOpenHandler = chatId => {

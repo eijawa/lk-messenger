@@ -8,7 +8,7 @@
       </a-button>
     </router-link>
 
-    <base-chat-item
+    <base-list-item
       :avatar-src="chat?.avatarSrc"
       :avatar-size="42"
       :title="chat.title"
@@ -17,7 +17,7 @@
       <template #text>
         Тут будет либо количество участников, либо последний статус человека
       </template>
-    </base-chat-item>
+    </base-list-item>
 
     <div class="chat-utils">
       <a-space>
@@ -40,7 +40,7 @@
 <script setup>
 import { computed } from 'vue';
 
-import BaseChatItem from '@/components/base/BaseChatItem.vue';
+import BaseListItem from '@/components/base/BaseListItem.vue';
 
 const props = defineProps({
   chat: {
