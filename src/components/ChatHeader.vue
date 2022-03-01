@@ -12,10 +12,12 @@
       :avatar-src="chat?.avatarSrc"
       :avatar-size="42"
       :title="chat.title"
+      :university-pallete="chat.type === 'tat' ? chat.members[0].university : ''"
       @click="onChatInfoClick"
     >
       <template #text>
-        Тут будет либо количество участников, либо последний статус человека
+        <span v-if="chat.type === 'tat'">Тут будет либо количество участников, либо последний статус человека</span>
+        <span v-else>{{ chat.members.length }}</span>
       </template>
     </base-list-item>
 

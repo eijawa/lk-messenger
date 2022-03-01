@@ -4,10 +4,9 @@
   </a-empty>
   <ul v-else class="chats-list">
     <chats-list-item
-      v-for="(c, index) in chats"
-      :key="index"
-      :convid="index"
-      :is-opened="openedChatId == index"
+      v-for="c in chats"
+      :key="c.id"
+      :is-opened="openedChatId == c.id"
       :chat="c"
       @open="onOpenHandler"
     ></chats-list-item>

@@ -27,12 +27,10 @@ import MessengerSearch from '@/components/MessengerSearch.vue';
 import ChatsList from '@/components/ChatsList.vue';
 import NewChatBtn from '@/components/NewChatBtn.vue';
 import { SearchService } from '@/services/SearchService';
-import { ChatsService } from '@/services/ChatsService';
 
 const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
 const searchService = new SearchService();
-const chatsService = new ChatsService();
 
 
 const searchDate = ref({
@@ -73,10 +71,7 @@ const onSearch = async query => {
 
 onMounted(async () => {
   await messengerSettingsStore.fetchUserInfo();
-  const chatsData = await chatsService.getChats();
-  chatsStore.$patch({
-    chats: chatsData.result,
-  });
+  await chatsStore.fetchUserChats();
 });
 </script>
 

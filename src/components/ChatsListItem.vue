@@ -4,6 +4,7 @@
     :avatar-src="chat.avatarSrc"
     :title="chat.title"
     :text="chat.lastMessage?.text"
+    :university-pallete="chat.type === 'tat' ? chat.members[0].university : ''"
     is-hovered
     :is-focused="isOpened"
     @click="onClickHandler"
@@ -46,10 +47,6 @@ const props = defineProps({
     required: true,
     default: () => { },
   },
-  convid: {
-    type: Number,
-    default: 0,
-  },
   isOpened: {
     type: Boolean,
     default: false,
@@ -61,7 +58,7 @@ const emits = defineEmits(['open']);
 const isYourMessage = computed(() => true);
 
 const onClickHandler = () => {
-  emits('open', props.convid);
+  emits('open', props.chat.id);
 };
 </script>
 

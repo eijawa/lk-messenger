@@ -58,7 +58,7 @@ const props = defineProps({
     type: Number,
     default: 54,
   },
-  userUniversity: {
+  universityPallete: {
     type: String,
     default: '',
   },
@@ -80,7 +80,7 @@ const props = defineProps({
   },
 });
 
-const avatarBackgroundColor = computed(() => props.userUniversity !== '' ? `var(--volsu-u-${props.userUniversity}-gr)` : 'var(--color-gray)');
+const avatarBackgroundColor = computed(() => props.universityPallete !== '' ? `var(--volsu-u-${props.universityPallete}-gr)` : 'var(--color-gray)');
 
 // Avatar functions
 const titleFirstLetters = computed(() => getFirstLetters(props.title));
