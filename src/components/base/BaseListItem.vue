@@ -4,12 +4,12 @@
     class="chat"
     :class="{ 'hovered': isHovered, 'focused': isFocused }"
   >
-    <div class="chat__avatar">
+    <div>
       <a-avatar
+        class="chat__avatar"
         :src="avatarSrc"
         shape="circle"
         :size="avatarSize"
-        style="background:var(--volsu-u-eaf-gr); font-size: 1.15rem; font-weight: bold;"
       >
         {{ titleFirstLetters }}
       </a-avatar>
@@ -81,7 +81,6 @@ const titleFirstLetters = computed(() => getFirstLetters(props.title));
 
 <style lang="scss" scoped>
 .chat {
-  --avatar-size: 54px;
   --column-gap: 0.5rem;
 
   padding: 0.5rem;
@@ -89,6 +88,15 @@ const titleFirstLetters = computed(() => getFirstLetters(props.title));
   display: flex;
   place-items: center;
   column-gap: var(--column-gap);
+
+  border-radius: 0.75rem;
+
+  &__avatar {
+    background: var(--color-gray);
+
+    font-size: 1.15rem;
+    font-weight: bold;
+  }
 
   &__content {
     flex: 1 1 auto;
@@ -103,7 +111,7 @@ const titleFirstLetters = computed(() => getFirstLetters(props.title));
   }
 
   &__footer {
-    color: var(--volsu-dark-gray);
+    color: var(--color-gray);
   }
 
   &__title,
@@ -113,7 +121,7 @@ const titleFirstLetters = computed(() => getFirstLetters(props.title));
 
   &__title {
     font-weight: bold;
-    color: var(--volsu-black);
+    color: var(--color-black);
   }
 
   &__info {
@@ -121,26 +129,26 @@ const titleFirstLetters = computed(() => getFirstLetters(props.title));
     place-items: center;
     column-gap: 0.25rem;
 
-    color: var(--volsu-dark-gray);
+    color: var(--color-gray);
   }
 }
 
 .hovered {
   &:not(.focused):hover {
-    background-color: var(--light-gray);
+    background-color: var(--color-hover);
 
     cursor: pointer;
   }
 }
 
 .focused {
-  background-color: var(--volsu-black);
+  background-color: var(--color-focus);
 
   .chat {
     &__title,
     &__footer,
     &__info {
-      color: white;
+      color: var(--color-text-focus);
     }
   }
 }

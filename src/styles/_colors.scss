@@ -1,14 +1,5 @@
 @use "sass:color";
 
-$volsu-black: #2b3048;
-$volsu-deep-blue: #143a68;
-$volsu-yellow: #edb81a;
-$volsu-gray: #dbdcdb;
-$volsu-dark-gray: #4c4a49;
-
-$light-gray: #f4f4f4;
-$light-green: #C8F146;
-
 $volsu-universities-colors: (
     "eaf": #BF222E, // Economic and Finances
     "pt": #481C59, // Priority Technologies
@@ -25,26 +16,25 @@ $volsu-universities-colors: (
 $default-colors: (
     "hover": #f4f4f5,
     "focus": #f4f4f5,
+    "text-focus": #fff,
+    "message": #f4f4f5,
     "ripple": rgba(0, 0, 0, 0.08),
     "green": #4dcd5e,
     "light-gray": #c6c8ca,
     "gray": #707579, // 0.8 opacity somethere
+    "black": #000,
+    "white": #fff,
 );
 
 :root {
-    --volsu-black: #{$volsu-black};
-    --volsu-deep-blue: #{$volsu-deep-blue};
-    --volsu-yellow: #{$volsu-yellow};
-    --volsu-gray: #{$volsu-gray};
-    --volsu-dark-gray: #{$volsu-dark-gray};
-
-    --light-gray: #{$light-gray};
-    --light-green: #{$light-green};
+    @each $name, $color in $default-colors {
+        --color-#{$name}: #{$color};
+    }
 
     @each $university, $color in $volsu-universities-colors {
         --volsu-u-#{$university}: #{$color};
 
-        $l_tmp: color.adjust($color, $lightness: +36%);
-        --volsu-u-#{$university}-gr: linear-gradient(#{$l_tmp}, #{$color});
+        --volsu-u-#{$university}-light: #{color.adjust($color, $lightness: +36%)};
+        --volsu-u-#{$university}-gr: linear-gradient(var(--volsu-u-#{$university}-light), #{$color});
     }
 }
