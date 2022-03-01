@@ -8,7 +8,7 @@
       />
 
       <chats-list v-if="!isSearchActive" />
-      <messenger-search v-else :date="searchDate" />
+      <messenger-search v-else :date="searchData" />
 
       <new-chat-btn />
     </div>
@@ -33,7 +33,7 @@ const chatsStore = useChatsStore();
 const searchService = new SearchService();
 
 
-const searchDate = ref({
+const searchData = ref({
   users: [],
   chats: [],
   messages: [],
@@ -45,7 +45,7 @@ const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
 
 const searchStateChange = async state => {
   isSearchActive.value = state;
-  searchDate.value = {
+  searchData.value = {
     users: [],
     chats: [],
     messages: [],
@@ -56,11 +56,11 @@ const onSearch = async query => {
   if (query) {
     const data = await searchService.messengerSearch(query);
     if (data?.status) {
-      searchDate.value.users = data.result.users;
+      searchData.value.users = data.result.users;
     }
 
   } else {
-    searchDate.value = {
+    searchData.value = {
       users: [],
       chats: [],
       messages: [],
