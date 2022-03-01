@@ -32,9 +32,9 @@
 <script setup>
 import { computed } from 'vue';
 
-import Attachment from '@/components/kit/Attachment.vue';
-import ReadedLabel from '@/components/kit/ReadedLabel.vue';
-import DateLabel from '@/components/kit/DateLabel.vue';
+import Attachment from '@/components/kit/Labels/Attachment.vue';
+import ReadedLabel from '@/components/kit/Labels/ReadedLabel.vue';
+import DateLabel from '@/components/kit/Labels/DateLabel.vue';
 import BaseListItem from '@/components/base/BaseListItem.vue';
 
 const props = defineProps({
