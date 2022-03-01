@@ -7,6 +7,7 @@ $volsu-gray: #dbdcdb;
 $volsu-dark-gray: #4c4a49;
 
 $light-gray: #f4f4f4;
+$light-green: #C8F146;
 
 $volsu-universities-colors: (
     "eaf": #BF222E, // Economic and Finances
@@ -38,6 +39,7 @@ $default-colors: (
     --volsu-dark-gray: #{$volsu-dark-gray};
 
     --light-gray: #{$light-gray};
+    --light-green: #{$light-green};
 
     @each $university, $color in $volsu-universities-colors {
         --volsu-u-#{$university}: #{$color};
