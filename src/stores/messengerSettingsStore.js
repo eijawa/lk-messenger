@@ -7,33 +7,20 @@ import { setCSSVariable, getCSSVariable } from '../helpers/cssVariablesHelper';
 
 const userService = new UserService();
 
-const setUniversityMessageStyle = university => {
-  const uMessageColor = getCSSVariable(`--volsu-u-${university}`);
-
-  setCSSVariable('--color-message', uMessageColor);
-};
-
-const setUniversityMessengerStyle = university => {
-  const uColorLight = getCSSVariable(`--volsu-u-${university}-light`);
-
-  setCSSVariable('--color-focus', uColorLight);
-
-  if (university === 'mait') {
-    const uColorBlack = getCSSVariable('--color-black');
-
-    setCSSVariable('--color-text-focus', uColorBlack);
-  }
-};
-
 export const useMessengerSettingsStore = defineStore('messengerSettingsStore', {
   state: () => {
     const isChatOpened = ref(false);
 
     const user = ref({});
 
+    const userUColor = ref(null);
+    const userUColorLight = ref(null);
+
     return {
       isChatOpened,
       user,
+      userUColor,
+      userUColorLight,
     };
   },
   actions: {
@@ -45,12 +32,27 @@ export const useMessengerSettingsStore = defineStore('messengerSettingsStore', {
         // REMOVE
         this.user.university = 'mait';
 
+        this.userUColor = getCSSVariable(`--volsu-u-${this.user.university}`);
+        this.userUColorLight = getCSSVariable(`--volsu-u-${this.user.university}-light`);
+
         if (!localStorage.getItem('isDefaultMessageStyle')) {
-          setUniversityMessageStyle(this.user.university);
+          this.setUniversityMessageStyle();
         }
 
-        setUniversityMessengerStyle(this.user.university);
+        this.setUniversityMessengerStyle(this.user.university);
       }
+    },
+    setUniversityMessengerStyle(university) {
+      setCSSVariable('--color-focus', this.userUColorLight);
+
+      if (university === 'mait') {
+        const uColorBlack = getCSSVariable('--color-black');
+
+        setCSSVariable('--color-text-focus', uColorBlack);
+      }
+    },
+    setUniversityMessageStyle() {
+      setCSSVariable('--color-message', this.userUColor);
     },
   },
 });

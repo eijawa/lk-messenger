@@ -7,6 +7,7 @@
     <div>
       <a-avatar
         class="chat__avatar"
+        :style="{ background: avatarBackgroundColor }"
         :src="avatarSrc"
         shape="circle"
         :size="avatarSize"
@@ -57,6 +58,10 @@ const props = defineProps({
     type: Number,
     default: 54,
   },
+  userUniversity: {
+    type: String,
+    default: '',
+  },
   text: {
     type: String,
     default: '',
@@ -75,6 +80,8 @@ const props = defineProps({
   },
 });
 
+const avatarBackgroundColor = computed(() => props.userUniversity !== '' ? `var(--volsu-u-${props.userUniversity}-gr)` : 'var(--color-gray)');
+
 // Avatar functions
 const titleFirstLetters = computed(() => getFirstLetters(props.title));
 </script>
@@ -92,8 +99,6 @@ const titleFirstLetters = computed(() => getFirstLetters(props.title));
   border-radius: 0.75rem;
 
   &__avatar {
-    background: var(--color-gray);
-
     font-size: 1.15rem;
     font-weight: bold;
   }
