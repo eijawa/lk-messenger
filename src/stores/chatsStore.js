@@ -9,6 +9,9 @@ import { ChatsService } from '@/services/ChatsService';
 
 const chatsService = new ChatsService();
 
+const { useMessengerSettingsStore } = await import('@/stores/messengerSettingsStore');
+const messengerSettingsStore = useMessengerSettingsStore();
+
 // eslint-disable-next-line arrow-body-style
 const generateAvatar = () => {
   return faker.random.arrayElement([faker.image.avatar(), '']);
@@ -63,6 +66,45 @@ const generateMessage = (ownerId, potentialReaders) => {
   };
 };
 
+const generateChat = index => {
+  const chatType = faker.random.arrayElement(['tat', 'group']);
+  let chatAvatar;
+
+  let chatMembers = [];
+  if (chatType === 'tat') {
+    chatAvatar = generateAvatar();
+
+    chatMembers.push(generateUser(chatAvatar));
+  } else {
+    chatAvatar = '';
+
+    const chatMembersCount = faker.datatype.number({ min: 1, max: 8 });
+
+    // eslint-disable-next-line arrow-body-style
+    chatMembers = Array.from({ length: chatMembersCount }, () => generateUser(generateAvatar()));
+  }
+
+  const chatTitle = chatType === 'tat' ? chatMembers[0].username : faker.name.title();
+
+  let chatLastMessageOwner;
+  if (chatType === 'tat') {
+    chatLastMessageOwner = faker.random.arrayElement([messengerSettingsStore.user, chatMembers[0]]);
+  } else {
+    chatLastMessageOwner = faker.random.arrayElement([messengerSettingsStore.user, ...chatMembers]);
+  }
+  const chatLastMessage = generateMessage(chatLastMessageOwner.id, chatMembers);
+
+  return {
+    id: String(index),
+    avatarSrc: chatAvatar,
+    title: chatTitle,
+    type: chatType,
+    members: chatMembers,
+    lastMessage: chatLastMessage,
+    newMessagesCount: faker.datatype.number(24),
+  };
+};
+
 export const useChatsStore = defineStore('chatsStore', {
   state: () => {
     const chats = ref([]);
@@ -77,48 +119,8 @@ export const useChatsStore = defineStore('chatsStore', {
         const chatsData = await chatsService.getChats();
         this.chats = chatsData.result;
       } else {
-        const { useMessengerSettingsStore } = await import('@/stores/messengerSettingsStore');
-        const messengerSettingsStore = useMessengerSettingsStore();
-
         // eslint-disable-next-line arrow-body-style
-        this.chats = Array.from({ length: 12 }, (el, idx) => {
-          const chatType = faker.random.arrayElement(['tat', 'group']);
-          let chatAvatar;
-
-          let chatMembers = [];
-          if (chatType === 'tat') {
-            chatAvatar = generateAvatar();
-
-            chatMembers.push(generateUser(idx, chatAvatar));
-          } else {
-            chatAvatar = '';
-
-            const chatMembersCount = faker.datatype.number({ min: 1, max: 8 });
-
-            // eslint-disable-next-line arrow-body-style
-            chatMembers = Array.from({ length: chatMembersCount }, () => generateUser(generateAvatar()));
-          }
-
-          const chatTitle = chatType === 'tat' ? chatMembers[0].username : faker.name.title();
-
-          let chatLastMessageOwner;
-          if (chatType === 'tat') {
-            chatLastMessageOwner = faker.random.arrayElement([messengerSettingsStore.user, chatMembers[0]]);
-          } else {
-            chatLastMessageOwner = faker.random.arrayElement([messengerSettingsStore.user, ...chatMembers]);
-          }
-          const chatLastMessage = generateMessage(chatLastMessageOwner.id, chatMembers);
-
-          return {
-            id: String(idx),
-            avatarSrc: chatAvatar,
-            title: chatTitle,
-            type: chatType,
-            members: chatMembers,
-            lastMessage: chatLastMessage,
-            newMessagesCount: faker.datatype.number(24),
-          };
-        });
+        this.chats = Array.from({ length: 12 }, (_, idx) => generateChat(idx));
       }
     },
   },
