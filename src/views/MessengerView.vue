@@ -10,7 +10,8 @@
       <chats-list v-if="!isSearchActive" />
       <messenger-search v-else :date="searchData" />
 
-      <new-chat-btn />
+      <new-chat-button />
+      <div class="new-chat-popover"></div>
     </div>
     <div class="messenger-main" :class="{ 'messenger-main-opened': isChatOpened }">
       <router-view />
@@ -26,7 +27,7 @@ import { useChatsStore } from '@/stores/chatsStore';
 import SidebarHeader from '@/components/SidebarHeader.vue';
 import MessengerSearch from '@/components/MessengerSearch.vue';
 import ChatsList from '@/components/ChatsList.vue';
-import NewChatBtn from '@/components/NewChatBtn.vue';
+import NewChatButton from '@/components/NewChatButton.vue';
 import { SearchService } from '@/services/SearchService';
 
 const messengerSettingsStore = useMessengerSettingsStore();
