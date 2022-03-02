@@ -26,6 +26,8 @@ $default-colors: (
     "white": #fff,
 );
 
+
+
 :root {
     @each $name, $color in $default-colors {
         --color-#{$name}: #{$color};

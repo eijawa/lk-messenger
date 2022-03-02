@@ -13,7 +13,10 @@
     <div class="chat-card__content">
       <div class="chat-card__header">
         <div class="chat-card__title typo">
-          <font-awesome-icon v-if="isTeacher" :icon="['fas', 'graduation-cap']" title="Преподаватель" />
+          <font-awesome-icon
+            v-if="isTeacher"
+            :icon="['fas', 'graduation-cap']"
+            title="Преподаватель"/>
           <span :style="{ marginLeft: isTeacher ? '0.25rem' : '0' }" :title="title">{{ title }}</span>
         </div>
 

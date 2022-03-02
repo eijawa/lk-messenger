@@ -12,7 +12,7 @@ import { faBars, faUserGroup, faGraduationCap, faFile, faFileImage, faFilePdf,
   faArrowLeft, faMagnifyingGlass, faEllipsisVertical, faPaperclip,
   faPaperPlane, faPen, faUser, faUsers, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
-// import {  } from '@fortawesome/free-regular-svg-icons';
+
 
 import App from './App.vue';
 import router from './routes/router';

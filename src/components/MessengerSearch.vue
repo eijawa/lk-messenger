@@ -2,22 +2,25 @@
   <div class="messenger-search">
     <div class="search-header">
       <div class="search-header-title">Chats and Contacts</div>
-      <a-button type="text">Show more</a-button>
+      <div>Show more</div>
     </div>
 
     <div class="search-list">
       <base-list-item
         v-for="userOrChat in usersAndChats"
         :key="userOrChat.id"
-        :title="userOrChat.username"
-        is-hovered
+        render-tag="div"
+        is-rounded
         @click="onOpenHandler(userOrChat)"
-      />
+      >
+        <chat-card :title="userOrChat.username" />
+      </base-list-item>
     </div>
   </div>
 </template>
 
 <script setup>
+import ChatCard from '@/components/kit/Cards/ChatCard.vue';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -34,8 +37,10 @@ const props = defineProps({
   },
 });
 
+// Чаты и беседы
 const usersAndChats = computed(() => props.date.users);
 
+// Поиск по сообщениям
 const messages = computed(() => props.date.messages);
 
 const onOpenHandler = userOrChat => {
@@ -53,14 +58,21 @@ const onOpenHandler = userOrChat => {
   overflow: hidden;
   height: 100%;
 
+  .search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--default-horz-padding);
+  }
+
   .search-scroll-container {
-    padding: 0.5rem;
+    padding: var(--default-horz-padding);
   }
 
   .search-section {
     display: flex;
     flex-direction: column;
-    padding: 0 0.5rem;
+    padding: 0 var(--default-horz-padding);
     border-top: 1px solid #DADCE0FF;
     overflow: hidden;
     height: 100%;

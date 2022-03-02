@@ -30,18 +30,18 @@ const generateMessage = (ownerId, potentialReaders) => {
   const messageContentType = faker.random.arrayElement(['file', 'image', 'text']);
   let messageContentValue;
   switch (messageContentType) {
-    case 'file':
-      // eslint-disable-next-line prefer-template
-      messageContentValue = faker.system.filePath() + '.' + faker.random.arrayElement(['doc', 'ppt', 'xls', 'zip', 'ext']);
-      break;
-    case 'image':
-      // eslint-disable-next-line prefer-template
-      messageContentValue = faker.image.abstract() + '.' + faker.random.arrayElement(['png', 'jpeg', 'jpg', 'webp', 'tiff', 'ico', 'gif', 'bmp']);
-      break;
-    case 'text':
-      messageContentValue = faker.lorem.lines();
-      break;
-    default: break;
+  case 'file':
+    // eslint-disable-next-line prefer-template
+    messageContentValue = faker.system.filePath() + '.' + faker.random.arrayElement(['doc', 'ppt', 'xls', 'zip', 'ext']);
+    break;
+  case 'image':
+    // eslint-disable-next-line prefer-template
+    messageContentValue = faker.image.abstract() + '.' + faker.random.arrayElement(['png', 'jpeg', 'jpg', 'webp', 'tiff', 'ico', 'gif', 'bmp']);
+    break;
+  case 'text':
+    messageContentValue = faker.lorem.lines();
+    break;
+  default: break;
   };
 
   const potentialReadersId = [...potentialReaders].map(r => r.id);

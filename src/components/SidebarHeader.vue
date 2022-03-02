@@ -6,9 +6,10 @@
       </template>
     </a-button>
 
-    <a-input
+    <v-input
       v-model:value="searchQuery"
-      placeholder="input search text"
+      placeholder="Поиск"
+      style-type="form"
       @input="onSearch"
       @focus="onFocus"
     />
@@ -17,6 +18,8 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+import VInput from '@/components/kit/VInput.vue';
+import { Input } from 'ant-design-vue';
 
 const emit = defineEmits(['searchFocus', 'backClick', 'search']);
 
@@ -31,6 +34,7 @@ const onSearch = () => {
 };
 
 const onFocus = () => {
+  console.log('onFocus');
   isSearchActive.value = true;
   emit('searchFocus');
 };
