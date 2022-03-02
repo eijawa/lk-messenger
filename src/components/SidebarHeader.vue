@@ -2,7 +2,7 @@
   <div class="sidebar-header">
     <a-button type="text" @click="headerHandler">
       <template #icon>
-        <font-awesome-icon :icon="headerIcon" size="lg" />
+        <v-icon :src="BurgerIcon" name="burger" />
       </template>
     </a-button>
 
@@ -19,7 +19,8 @@
 <script setup>
 import { computed, ref } from 'vue';
 import VInput from '@/components/kit/VInput.vue';
-import { Input } from 'ant-design-vue';
+import VIcon from '@/components/kit/VIcon.vue';
+import BurgerIcon from '@/assets/icons/burger.svg?url';
 
 const emit = defineEmits(['searchFocus', 'backClick', 'search']);
 
