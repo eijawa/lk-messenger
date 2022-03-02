@@ -20,6 +20,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { useChatsStore } from '@/stores/chatsStore';
 import SidebarHeader from '@/components/SidebarHeader.vue';
@@ -31,7 +32,6 @@ import { SearchService } from '@/services/SearchService';
 const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
 const searchService = new SearchService();
-
 
 const searchData = ref({
   users: [],
