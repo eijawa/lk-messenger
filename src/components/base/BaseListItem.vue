@@ -9,7 +9,11 @@
     </div>
 
     <div class="list-item__content">
-      <slot></slot>
+      <slot name="content"></slot>
+    </div>
+
+    <div class="list-item__suffix">
+      <slot name="suffix"></slot>
     </div>
   </component>
 </template>
