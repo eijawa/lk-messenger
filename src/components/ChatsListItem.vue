@@ -1,41 +1,41 @@
 <template>
-  <base-list-item
-    render-tag="li"
-    :avatar-src="chat.avatarSrc"
-    :title="chat.title"
-    :university-pallete="chat.type === 'tat' ? chat.members[0].university : ''"
-    :chat-type="chat.type"
-    is-hovered
-    :is-teacher="chat.type === 'tat' && chat.members[0].type === 'teacher'"
-    :is-focused="isOpened"
-    @click="onClickHandler"
-  >
+  <base-list-item is-rounded>
+    <chat-card
+      :avatar-src="chat.avatarSrc"
+      :title="chat.title"
+      :university-pallete="chat.type === 'tat' ? chat.members[0].university : ''"
+      :chat-type="chat.type"
+      :is-teacher="chat.type === 'tat' && chat.members[0].type === 'teacher'"
+      :is-active="isOpened"
+      @click="onClickHandler"
+    >
 
-    <template #info>
-      <labels-group>
-        <readed-label v-if="isYourMessageReaded"></readed-label>
-        <date-label :date="chat.lastMessage?.date"></date-label>
-      </labels-group>
-    </template>
+      <template #meta>
+        <labels-group>
+          <readed-label v-if="isYourMessageReaded"></readed-label>
+          <date-label :date="chat.lastMessage?.date"></date-label>
+        </labels-group>
+      </template>
 
-    <template #prefix>
-      <attachment
-        v-if="chat.lastMessage?.content.type != 'text'"
-        :attachment-src="chat.lastMessage?.content.value"
-        is-minified
-      />
-    </template>
+      <template #prefix>
+        <attachment
+          v-if="chat.lastMessage?.content.type != 'text'"
+          :attachment-src="chat.lastMessage?.content.value"
+          is-minified
+        />
+      </template>
 
-    <template #text>
-      <span v-if="chat.lastMessage?.content.type === 'text'">{{ chat.lastMessage?.content.value }}</span>
-      <span v-else-if="chat.lastMessage?.content.type === 'image'">Изображение</span>
-      <span v-else>{{ atta.fileName }}</span>
-    </template>
+      <template #text>
+        <span v-if="chat.lastMessage?.content.type === 'text'">{{ chat.lastMessage?.content.value }}</span>
+        <span v-else-if="chat.lastMessage?.content.type === 'image'">Изображение</span>
+        <span v-else>{{ atta.fileName }}</span>
+      </template>
 
-    <template #suffix>
-      <a-tag v-if="chat.newMessagesCount != 0" class="chat__count">{{ chat.newMessagesCount }}</a-tag>
-    </template>
+      <template #suffix>
+        <a-tag v-if="chat.newMessagesCount != 0" class="chat__count">{{ chat.newMessagesCount }}</a-tag>
+      </template>
 
+    </chat-card>
   </base-list-item>
 </template>
 
@@ -47,10 +47,11 @@ import Attachment from '@/components/kit/Labels/Attachment.vue';
 import ReadedLabel from '@/components/kit/Labels/ReadedLabel.vue';
 import DateLabel from '@/components/kit/Labels/DateLabel.vue';
 import BaseListItem from '@/components/base/BaseListItem.vue';
+import ChatCard from '@/components/kit/Cards/ChatCard.vue';
 
 import { getAttachmentInfo } from '@/helpers/attachmentHelper';
 
-import { useMessengerSettingsStore } from '../stores/messengerSettingsStore';
+import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 
 const props = defineProps({
   chat: {

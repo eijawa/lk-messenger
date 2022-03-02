@@ -9,9 +9,6 @@ import { ChatsService } from '@/services/ChatsService';
 
 const chatsService = new ChatsService();
 
-const { useMessengerSettingsStore } = await import('@/stores/messengerSettingsStore');
-const messengerSettingsStore = useMessengerSettingsStore();
-
 // eslint-disable-next-line arrow-body-style
 const generateAvatar = () => {
   return faker.random.arrayElement([faker.image.avatar(), '']);
@@ -66,7 +63,7 @@ const generateMessage = (ownerId, potentialReaders) => {
   };
 };
 
-const generateChat = index => {
+const generateChat = (index, messengerSettingsStore) => {
   const chatType = faker.random.arrayElement(['tat', 'group']);
   let chatAvatar;
 
@@ -119,8 +116,10 @@ export const useChatsStore = defineStore('chatsStore', {
         const chatsData = await chatsService.getChats();
         this.chats = chatsData.result;
       } else {
+        const { useMessengerSettingsStore } = await import('@/stores/messengerSettingsStore');
+        const messengerSettingsStore = useMessengerSettingsStore();
         // eslint-disable-next-line arrow-body-style
-        this.chats = Array.from({ length: 12 }, (_, idx) => generateChat(idx));
+        this.chats = Array.from({ length: 12 }, (_, idx) => generateChat(idx, messengerSettingsStore));
       }
     },
   },

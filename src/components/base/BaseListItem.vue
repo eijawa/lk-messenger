@@ -2,24 +2,14 @@
   <component
     :is="renderTag"
     class="list-item"
-    :class="{ `size-${size}`, "vertical": isVertical, "rounded": isRounded }"
+    :class="[sizeClass, { 'vertical': isVertical, 'rounded': isRounded }]"
   >
-    <div class="list-item__prefix">
-      <slot name="prefix"></slot>
-    </div>
-
-    <div class="list-item__content">
-      <slot name="content"></slot>
-    </div>
-
-    <div class="list-item__suffix">
-      <slot name="suffix"></slot>
-    </div>
+    <slot></slot>
   </component>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   renderTag: {
     type: String,
     default: 'li',
@@ -37,6 +27,8 @@ defineProps({
     default: false,
   },
 });
+
+const sizeClass = `size-${props.size}`;
 </script>
 
 <style lang="scss" scoped>
