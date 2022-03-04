@@ -1,6 +1,9 @@
 <template>
   <div class="v-input-container-base" :class="[inputTypeValue]">
-    <div class="v-input-field" :class="{ 'touched': isInputTouched }">
+    <div
+      class="v-input-field"
+      :class="{ 'touched': isInputTouched }"
+      style="">
       <input
         class="v-input"
         type="text"
@@ -17,7 +20,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
   value: {
@@ -33,8 +36,8 @@ const props = defineProps({
     default: 'default',
   },
   size: {
-    type: String,
-    default: 'medium',
+    type: [String, Number],
+    default: 'large',
   },
 });
 
@@ -46,14 +49,23 @@ const inputTypeValue = computed(() => `v-input-container-${props.styleType}`);
 
 const isInputTouched = computed(() => props.value);
 
+const sizeCalculate = size => {
+  if (size === 'medium') {
+    return 2.75;
+  }
+
+  if (size === 'small') {
+    return 2;
+  }
+
+  return 3.5;
+};
+
 const sizeValue = computed(() => {
-  if (props.size === 'medium') {
-    return 3.375;
+  if (typeof props.size === 'number') {
+    return props.size;
   }
-  if (props.size === 'large') {
-    return 4;
-  }
-  return 2;
+  return sizeCalculate(props.size);
 });
 
 const inputStyle = computed(() => ({
@@ -61,7 +73,8 @@ const inputStyle = computed(() => ({
 }));
 
 const labelStyle = computed(() => ({
-  bottom: inputStyle.value.height / 2 - 1 + 0.25,
+  bottom: sizeValue.value / 2 - 0.75,
+  transform: `scale(0.7) translate(0, -${(sizeValue.value / 2) + (0.3 * 1.5)}rem)`,
 }));
 
 const onInput = event => {
@@ -77,6 +90,7 @@ const onFocus = () => {
 
 .v-input-container-base {
   width: 100%;
+  --border-width: 1px;
 
   .v-input-field {
     position: relative;
@@ -86,13 +100,13 @@ const onFocus = () => {
       display: block;
       width: 100%;
       font-size: 1rem;
-      line-height: 1.25rem;
       word-break: break-word;
       -webkit-appearance: none;
       outline: none;
       -webkit-appearance: none;
-      padding: calc(0.75rem - var(--border-width)) calc(0.9rem - var(--border-width));
-      border: var(--border-width) solid #4dcd5e;
+      border: var(--border-width) solid var(--color-borders-input);
+      padding: 0 calc(0.9rem - var(--border-width));
+      line-height: 1.5;
     }
 
     .v-input-label {
@@ -101,13 +115,13 @@ const onFocus = () => {
       left: 0.75rem;
       padding: 0 0.25rem;
       font-size: 1rem;
-      line-height: 1.5rem;
       font-weight: 400;
       transition: transform .15s ease-out, color .15s ease-out;
       cursor: text;
       pointer-events: none;
       transform-origin: left center;
       white-space: nowrap;
+      line-height: 1.5;
     }
   }
 }
@@ -137,7 +151,7 @@ const onFocus = () => {
     &.touched label,
     .v-input:focus + label,
     .v-input.touched + label {
-      transform: scale(0.75) translate(0, -2.25rem);
+      transform: v-bind('labelStyle.transform');
     }
 
     .v-input-label {
