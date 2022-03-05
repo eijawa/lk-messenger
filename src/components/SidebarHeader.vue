@@ -9,10 +9,14 @@
     <v-input
       v-model:value="searchQuery"
       placeholder="Поиск"
-      style-type="default"
+      style-type="form"
       @input="onSearch"
       @focus="onFocus"
-    />
+    >
+      <template #suffix>
+        <v-icon :src="BurgerIcon" name="test2" />
+      </template>
+    </v-input>
   </div>
 </template>
 
