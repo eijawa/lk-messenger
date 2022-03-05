@@ -1,12 +1,17 @@
 <template>
   <div class="v-input-container-base" :class="[inputTypeValue]">
     <div
+      ref="inputFieldRef"
       class="v-input-field"
-      :class="{ 'touched': isInputTouched }"
-      style="">
-      <span v-if="isLabelShowValue">{{ placeHolderValue }}</span>
+      :class="{ 'touched': isInputTouched, 'focus': isInputFocus }"
+      @click="onClick"
+    >
+      <div class="prefix">
+        <slot name="prefix" />
+      </div>
       <div class="v-input-content">
         <input
+          ref="inputRef"
           class="v-input"
           type="text"
           :class="{ 'touched': isInputTouched }"
@@ -14,8 +19,23 @@
           :value="value"
           @input="onInput"
           @focus="onFocus"
+          @focusout="onFocusOut"
         />
         <label class="v-input-label">{{ placeHolderValue }}</label>
+      </div>
+      <div class="v-input-actions">
+        <div class="clearable">
+          <v-button>
+            <v-icon
+              :src="ClearableIcon"
+              name="clear"
+              :size="18"
+            />
+          </v-button>
+        </div>
+      </div>
+      <div class="suffix">
+        <slot name="suffix" />
       </div>
     </div>
     <div class="v-input-messages"></div>
@@ -23,7 +43,10 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import VIcon from '@/components/kit/VIcon.vue';
+import ClearableIcon from '@/assets/icons/x.svg';
+import VButton from '@/components/kit/VButton.vue';
 
 const props = defineProps({
   value: {
@@ -38,10 +61,6 @@ const props = defineProps({
     type: String,
     default: 'default',
   },
-  isLabelShow: {
-    type: Boolean,
-    default: true,
-  },
   size: {
     type: [String, Number],
     default: 'medium',
@@ -51,12 +70,10 @@ const props = defineProps({
 const emit = defineEmits(['update:value', 'focus']);
 
 const placeHolderValue = computed(() => props.placeholder);
-
-const isLabelShowValue = computed(() => props.isLabelShow && props.styleType !== 'form');
-
 const inputTypeValue = computed(() => `v-input-container-${props.styleType}`);
-
 const isInputTouched = computed(() => props.value);
+const isInputFocus = ref(false);
+const inputRef = ref(null);
 
 const sizeCalculate = size => {
   if (size === 'medium') {
@@ -87,6 +104,15 @@ const labelStyle = computed(() => ({
   transform: `scale(0.7) translate(0, -${(sizeValue.value / 2)}rem)`,
 }));
 
+const onClick = () => {
+  inputRef.value.focus();
+  isInputFocus.value = true;
+};
+
+const onFocusOut = () => {
+  isInputFocus.value = false;
+};
+
 const onInput = event => {
   emit('update:value', event.target.value);
 };
@@ -104,6 +130,14 @@ const onFocus = () => {
 
   .v-input-field {
     width: 100%;
+    display: flex;
+    align-items: center;
+    cursor: text;
+    padding: 0 calc(0.6rem - var(--border-width));
+
+    &.focus {
+      caret-color: var(--color-primary);
+    }
 
     .v-input-content {
       position: relative;
@@ -116,16 +150,19 @@ const onFocus = () => {
         word-break: break-word;
         -webkit-appearance: none;
         outline: none;
-        -webkit-appearance: none;
         line-height: 1.5;
+        padding: 0 0.4rem;
+        border: none;
+        border-radius: 0;
+        background-color: transparent;
       }
 
       .v-input-label {
         display: block;
         position: absolute;
-        left: 0.75rem;
+        left: 0.2rem;
         top: v-bind('labelStyle.top');
-        padding: 0 0.25rem;
+        padding: 0 0.2rem;
         font-size: 1rem;
         font-weight: 400;
         cursor: text;
@@ -135,21 +172,25 @@ const onFocus = () => {
         line-height: 1.5;
       }
     }
+
+    .suffix,
+    .prefix,
+    .clearable {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 
 .v-input-container-default {
   .v-input-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    border-radius: var(--border-radius-default);
+    background-color: var(--color-chat-hover);
 
     .v-input-content {
       .v-input {
-        border-radius: var(--border-radius-default);
-        padding: 0 calc(0.9rem - var(--border-width));
-        border: none;
-        background-color: var(--color-chat-hover);
+
       }
 
       &.touched label,
@@ -161,42 +202,45 @@ const onFocus = () => {
 }
 
 .v-input-container-form {
-  .v-input-content {
-    .v-input {
-      border-radius: var(--border-radius-default);
-      border: var(--border-width) solid var(--color-borders-input);
-      padding: 0 calc(0.9rem - var(--border-width));
-      background-color: var(--color-background);
-      color: var(--color-text);
-      transition: border-color .15s ease;
+  .v-input-field {
+    border-radius: var(--border-radius-default);
+    border: var(--border-width) solid var(--color-borders-input);
+    background-color: var(--color-background);
+    transition: border-color .15s ease, box-shadow .1s ease;
+
+    &:hover {
+      border-color: var(--color-primary);
     }
 
-    .v-input:focus {
+    &.focus {
       border-color: var(--color-primary);
       box-shadow: inset 0 0 0 1px var(--color-primary);
-      caret-color: var(--color-primary);
     }
 
-    .v-input-label {
-      background-color: var(--color-background);
-      border: none;
-      color: var(--color-placeholders);
-      transition: top .15s ease-out, transform .15s ease-out, color .15s ease-out;
-    }
+    .v-input-content {
+      .v-input {
+        color: var(--color-text);
+      }
 
-    &.touched label,
-    .v-input:focus + label,
-    .v-input.touched + label {
-      top: v-bind('labelStyle.topAfterFocus');
-      transform: scale(0.8);
-      color: var(--color-text-secondary);
-    }
+      .v-input-label {
+        background-color: var(--color-background);
+        border: none;
+        color: var(--color-placeholders);
+        transition: top .15s ease-out, transform .15s ease-out, color .15s ease-out;
+      }
 
-    .v-input:focus + label {
-      color: var(--color-primary);
+      &.touched label,
+      .v-input:focus + label,
+      .v-input.touched + label {
+        top: v-bind('labelStyle.topAfterFocus');
+        transform: scale(0.8);
+        color: var(--color-text-secondary);
+      }
+
+      .v-input:focus + label {
+        color: var(--color-primary);
+      }
     }
   }
 }
-
-
 </style>
