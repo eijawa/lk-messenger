@@ -13,7 +13,7 @@
         @input="onInput"
         @focus="onFocus"
       />
-      <label class="v-input-label" :style="{ top: labelStyle.bottom + 'rem' }">{{ placeHolderValue }}</label>
+      <label class="v-input-label">{{ placeHolderValue }}</label>
     </div>
     <div class="v-input-messages"></div>
   </div>
@@ -37,7 +37,7 @@ const props = defineProps({
   },
   size: {
     type: [String, Number],
-    default: 'large',
+    default: 'medium',
   },
 });
 
@@ -73,8 +73,9 @@ const inputStyle = computed(() => ({
 }));
 
 const labelStyle = computed(() => ({
-  bottom: sizeValue.value / 2 - 0.75,
-  transform: `scale(0.7) translate(0, -${(sizeValue.value / 2) + (0.3 * 1.5)}rem)`,
+  top: `${sizeValue.value / 2 - 0.75}rem`,
+  topAfterFocus: `-${0.8}rem`,
+  transform: `scale(0.7) translate(0, -${(sizeValue.value / 2)}rem)`,
 }));
 
 const onInput = event => {
@@ -104,8 +105,6 @@ const onFocus = () => {
       -webkit-appearance: none;
       outline: none;
       -webkit-appearance: none;
-      border: var(--border-width) solid var(--color-borders-input);
-      padding: 0 calc(0.9rem - var(--border-width));
       line-height: 1.5;
     }
 
@@ -113,10 +112,10 @@ const onFocus = () => {
       display: block;
       position: absolute;
       left: 0.75rem;
+      top: v-bind('labelStyle.top');
       padding: 0 0.25rem;
       font-size: 1rem;
       font-weight: 400;
-      transition: transform .15s ease-out, color .15s ease-out;
       cursor: text;
       pointer-events: none;
       transform-origin: left center;
@@ -146,16 +145,20 @@ const onFocus = () => {
   .v-input-field {
     .v-input {
       border-radius: var(--border-radius-default);
+      border: var(--border-width) solid var(--color-borders-input);
+      padding: 0 calc(0.9rem - var(--border-width));
     }
 
     &.touched label,
     .v-input:focus + label,
     .v-input.touched + label {
-      transform: v-bind('labelStyle.transform');
+      top: v-bind('labelStyle.topAfterFocus');
+      transform: scale(0.7);
     }
 
     .v-input-label {
       background-color: #fff;
+      transition: top .15s ease-out, transform .15s ease-out, color .15s ease-out;
     }
   }
 }
