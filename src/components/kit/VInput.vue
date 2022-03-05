@@ -4,16 +4,19 @@
       class="v-input-field"
       :class="{ 'touched': isInputTouched }"
       style="">
-      <input
-        class="v-input"
-        type="text"
-        :class="{ 'touched': isInputTouched }"
-        :style="{ height: inputStyle.height + 'rem' }"
-        :value="value"
-        @input="onInput"
-        @focus="onFocus"
-      />
-      <label class="v-input-label">{{ placeHolderValue }}</label>
+      <span v-if="isLabelShowValue">{{ placeHolderValue }}</span>
+      <div class="v-input-content">
+        <input
+          class="v-input"
+          type="text"
+          :class="{ 'touched': isInputTouched }"
+          :style="{ height: inputStyle.height + 'rem' }"
+          :value="value"
+          @input="onInput"
+          @focus="onFocus"
+        />
+        <label class="v-input-label">{{ placeHolderValue }}</label>
+      </div>
     </div>
     <div class="v-input-messages"></div>
   </div>
@@ -35,6 +38,10 @@ const props = defineProps({
     type: String,
     default: 'default',
   },
+  isLabelShow: {
+    type: Boolean,
+    default: true,
+  },
   size: {
     type: [String, Number],
     default: 'medium',
@@ -44,6 +51,8 @@ const props = defineProps({
 const emit = defineEmits(['update:value', 'focus']);
 
 const placeHolderValue = computed(() => props.placeholder);
+
+const isLabelShowValue = computed(() => props.isLabelShow && props.styleType !== 'form');
 
 const inputTypeValue = computed(() => `v-input-container-${props.styleType}`);
 
@@ -94,71 +103,97 @@ const onFocus = () => {
   --border-width: 1px;
 
   .v-input-field {
-    position: relative;
     width: 100%;
 
-    .v-input {
-      display: block;
+    .v-input-content {
+      position: relative;
       width: 100%;
-      font-size: 1rem;
-      word-break: break-word;
-      -webkit-appearance: none;
-      outline: none;
-      -webkit-appearance: none;
-      line-height: 1.5;
-    }
 
-    .v-input-label {
-      display: block;
-      position: absolute;
-      left: 0.75rem;
-      top: v-bind('labelStyle.top');
-      padding: 0 0.25rem;
-      font-size: 1rem;
-      font-weight: 400;
-      cursor: text;
-      pointer-events: none;
-      transform-origin: left center;
-      white-space: nowrap;
-      line-height: 1.5;
+      .v-input {
+        display: block;
+        width: 100%;
+        font-size: 1rem;
+        word-break: break-word;
+        -webkit-appearance: none;
+        outline: none;
+        -webkit-appearance: none;
+        line-height: 1.5;
+      }
+
+      .v-input-label {
+        display: block;
+        position: absolute;
+        left: 0.75rem;
+        top: v-bind('labelStyle.top');
+        padding: 0 0.25rem;
+        font-size: 1rem;
+        font-weight: 400;
+        cursor: text;
+        pointer-events: none;
+        transform-origin: left center;
+        white-space: nowrap;
+        line-height: 1.5;
+      }
     }
   }
 }
 
 .v-input-container-default {
   .v-input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 
-    &.touched,
-    &.v-input:focus {
-      .v-input-label {
+    .v-input-content {
+      .v-input {
+        border-radius: var(--border-radius-default);
+        padding: 0 calc(0.9rem - var(--border-width));
+        border: none;
+        background-color: var(--color-chat-hover);
+      }
+
+      &.touched label,
+      .v-input.touched + label {
         display: none;
       }
-    }
-
-    .v-input {
-      border-radius: var(--border-radius-default);
     }
   }
 }
 
 .v-input-container-form {
-  .v-input-field {
+  .v-input-content {
     .v-input {
       border-radius: var(--border-radius-default);
       border: var(--border-width) solid var(--color-borders-input);
       padding: 0 calc(0.9rem - var(--border-width));
+      background-color: var(--color-background);
+      color: var(--color-text);
+      transition: border-color .15s ease;
+    }
+
+    .v-input:focus {
+      border-color: var(--color-primary);
+      box-shadow: inset 0 0 0 1px var(--color-primary);
+      caret-color: var(--color-primary);
+    }
+
+    .v-input-label {
+      background-color: var(--color-background);
+      border: none;
+      color: var(--color-placeholders);
+      transition: top .15s ease-out, transform .15s ease-out, color .15s ease-out;
     }
 
     &.touched label,
     .v-input:focus + label,
     .v-input.touched + label {
       top: v-bind('labelStyle.topAfterFocus');
-      transform: scale(0.7);
+      transform: scale(0.8);
+      color: var(--color-text-secondary);
     }
 
-    .v-input-label {
-      background-color: #fff;
-      transition: top .15s ease-out, transform .15s ease-out, color .15s ease-out;
+    .v-input:focus + label {
+      color: var(--color-primary);
     }
   }
 }

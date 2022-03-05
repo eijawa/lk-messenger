@@ -9,7 +9,7 @@
     <v-input
       v-model:value="searchQuery"
       placeholder="Поиск"
-      style-type="form"
+      style-type="default"
       @input="onSearch"
       @focus="onFocus"
     />
@@ -35,7 +35,6 @@ const onSearch = () => {
 };
 
 const onFocus = () => {
-  console.log('onFocus');
   isSearchActive.value = true;
   emit('searchFocus');
 };
