@@ -13,26 +13,8 @@ $volsu-universities-colors: (
     "r": #212026, // Rights
 );
 
-$default-colors: (
-    "hover": #f4f4f5,
-    "focus": #f4f4f5,
-    "text-focus": #fff,
-    "message": #f4f4f5,
-    "ripple": rgba(0, 0, 0, 0.08),
-    "green": #4dcd5e,
-    "light-gray": #c6c8ca,
-    "gray": #707579, // 0.8 opacity somethere
-    "black": #000,
-    "white": #fff,
-);
-
-
 
 :root {
-    @each $name, $color in $default-colors {
-        --color-#{$name}: #{$color};
-    }
-
     @each $university, $color in $volsu-universities-colors {
         --volsu-u-#{$university}: #{$color};
 

@@ -35,6 +35,7 @@ $color-white: #ffffff;
 $color-black: #101010;
 $color-dark-gray: #2e3939;
 $color-gray: #c4c9cc;
+$color-secondary: #707579;
 $color-text-secondary: #707579;
 $color-text-secondary-apple: #8a8a90;
 $color-text-meta: #686c72;
@@ -90,7 +91,12 @@ $color-message-reaction-own-hover: #b5e0a4;
   --color-primary-shade-darker: #{color.mix($color-primary, $color-black, 84%)};
   --color-primary-shade-rgb: #{toRGB(color.mix($color-primary, $color-black, 92%))};
   --color-primary-opacity: rgba(var(--color-primary), 0.5);
+
+  --color-default: #{$color-secondary};
+  --color-default-shade: #{color.mix($color-secondary, $color-black, 92%)};
+
   --color-green: #{$color-green};
+  --color-green-shade: #{color.mix($color-green, $color-black, 92%)};
   --color-green-darker: #{color.mix($color-green, $color-black, 84%)};
 
   --color-error: #{$color-error};
@@ -98,6 +104,7 @@ $color-message-reaction-own-hover: #b5e0a4;
   --color-error-rgb: #{toRGB($color-error)};
 
   --color-warning: #{$color-warning};
+  --color-warning-shade: #{color.mix($color-warning, $color-black, 92%)};
 
   --color-yellow: #{$color-yellow};
 
@@ -151,4 +158,6 @@ $color-message-reaction-own-hover: #b5e0a4;
   --small: 2rem;
   --medium: 2.75rem;
   --larrge: 3.5em;
+  // Padding
+  --padding-default: 0.25rem;
 }

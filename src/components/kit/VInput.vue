@@ -23,17 +23,17 @@
         />
         <label class="v-input-label">{{ placeHolderValue }}</label>
       </div>
-      <div class="v-input-actions">
-        <div class="clearable">
-          <v-button>
-            <v-icon
-              :src="ClearableIcon"
-              name="clear"
-              :size="18"
-            />
-          </v-button>
-        </div>
-      </div>
+<!--      <div class="v-input-actions">-->
+<!--        <div class="clearable">-->
+<!--          <v-button>-->
+<!--            <v-icon-->
+<!--              :src="ClearableIcon"-->
+<!--              name="clear"-->
+<!--              :size="18"-->
+<!--            />-->
+<!--          </v-button>-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="suffix">
         <slot name="suffix" />
       </div>
@@ -150,7 +150,7 @@ const onFocus = () => {
         word-break: break-word;
         -webkit-appearance: none;
         outline: none;
-        line-height: 1.5;
+        line-height: var(--default-line-height);
         padding: 0 0.4rem;
         border: none;
         border-radius: 0;
@@ -169,7 +169,7 @@ const onFocus = () => {
         pointer-events: none;
         transform-origin: left center;
         white-space: nowrap;
-        line-height: 1.5;
+        line-height: var(--default-line-height);
       }
     }
 
