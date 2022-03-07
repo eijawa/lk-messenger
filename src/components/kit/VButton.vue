@@ -4,7 +4,7 @@
     class="v-button-base"
     :class="[typeValue, fluidValue, roundValue, circleValue, ghostValue]"
     :style="{ height: buttonStyle.height + 'rem', fontSize: `${buttonStyle.fontSize}rem`, fontWeight: buttonStyle.fontWeight }"
-    @click="onClick"
+    @click.stop="onClick"
   >
     <span class="v-button-text"><slot name="default" /></span>
   </button>
@@ -83,17 +83,32 @@ const buttonStyle = computed(() => ({
   borderRadiusRound: `${sizeValue.value}rem`,
 }));
 
-const onClick = e => {
+const vButtonWaveEffect = e => {
   const buttonSize = Math.max(buttonRef.value.offsetWidth, buttonRef.value.offsetHeight);
   const x = e.offsetX - buttonSize / 2;
   const y = e.offsetY - buttonSize / 2;
-
   const wave = document.createElement('span');
   wave.className = 'v-button-wave-effect';
-  wave.style.cssText = `width: ${buttonSize}px; height: ${buttonSize}px;top: ${y}px; left:${x}px;`;
+  wave.style.cssText = `width: ${buttonSize}px; height: ${buttonSize}px; top:${y}px; left:${x}px;`;
 
   buttonRef.value.appendChild(wave);
   setTimeout(() => wave.remove(), 500);
+};
+
+const vButtonBorderEffect = e => {
+  const boxShadowColor = getComputedStyle(buttonRef.value).borderColor.replace(')', ', 0.2)').replace('rgb', 'rgba');
+  buttonRef.value.style.boxShadow = `0 0 0 3px ${boxShadowColor}`;
+  setTimeout(() => {
+    buttonRef.value.style.boxShadow = 'unset';
+  }, 250);
+};
+
+const onClick = e => {
+  if (ghostValue.value === '') {
+    vButtonWaveEffect(e);
+  } else {
+    vButtonBorderEffect(e);
+  }
 };
 </script>
 
@@ -120,25 +135,33 @@ const onClick = e => {
   padding: 0 1rem;
   border-radius: var(--border-radius-default-small);
   font-weight: 400;
-  transition: color .2s ease, background-color .2s ease, opacity .2s ease, border-color .2s ease;
+  transition: color .2s ease, background-color .2s ease, opacity .2s ease, border-color .2s ease, box-shadow .2s ease;
   background-color: transparent;
 
   .v-button-text {
+    user-select: none;
+    pointer-events: none;
     line-height: var(--default-line-height);
   }
 
   :global(.v-button-wave-effect) {
+    position: absolute;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     transform: scale(0);
     animation: v-button-wave-effect-animation .35s linear;
     pointer-events: none;
-    position: absolute;
   }
 
   @keyframes v-button-wave-effect-animation {
     100% {
       transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  @keyframes v-button-border-effect-animation {
+    100% {
       opacity: 0;
     }
   }
