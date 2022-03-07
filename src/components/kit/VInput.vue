@@ -23,17 +23,21 @@
         />
         <label class="v-input-label">{{ placeHolderValue }}</label>
       </div>
-<!--      <div class="v-input-actions">-->
-<!--        <div class="clearable">-->
-<!--          <v-button>-->
-<!--            <v-icon-->
-<!--              :src="ClearableIcon"-->
-<!--              name="clear"-->
-<!--              :size="18"-->
-<!--            />-->
-<!--          </v-button>-->
-<!--        </div>-->
-<!--      </div>-->
+      <div class="v-input-actions">
+        <div v-if="props.value" class="clearable">
+          <v-button
+            quaternary
+            circle
+            @click="onClickClearHandler">
+            <template #icon>
+              <v-icon
+                name="clear"
+                :src="ClearableIcon"
+                :size="18" />
+            </template>
+          </v-button>
+        </div>
+      </div>
       <div class="suffix">
         <slot name="suffix" />
       </div>
@@ -104,6 +108,10 @@ const labelStyle = computed(() => ({
   transform: `scale(0.7) translate(0, -${(sizeValue.value / 2)}rem)`,
 }));
 
+const onClickClearHandler = () => {
+  emit('update:value', '');
+};
+
 const onClick = () => {
   inputRef.value.focus();
   isInputFocus.value = true;
@@ -133,7 +141,7 @@ const onFocus = () => {
     display: flex;
     align-items: center;
     cursor: text;
-    padding: 0 calc(0.6rem - var(--border-width));
+    padding: 0 0.1rem 0 calc(0.6rem - var(--border-width));
 
     &.focus {
       caret-color: var(--color-primary);

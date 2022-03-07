@@ -3,10 +3,11 @@
     ref="buttonRef"
     class="v-button-base"
     :class="[typeValue, fluidValue, roundValue, circleValue, ghostValue, disabledValue, quaternaryValue]"
-    :style="{ height: buttonStyle.height + 'rem', fontSize: `${buttonStyle.fontSize}rem`, fontWeight: buttonStyle.fontWeight }"
+    :style="{ fontSize: `${buttonStyle.fontSize}rem`, fontWeight: buttonStyle.fontWeight }"
     @click.stop="onClick"
   >
     <span class="v-button-text"><slot name="default" /></span>
+    <slot name="icon" />
   </button>
 </template>
 
@@ -87,7 +88,7 @@ const sizeValue = computed(() => {
 });
 
 const buttonStyle = computed(() => ({
-  height: sizeValue.value,
+  height: `${sizeValue.value}rem`,
   fontSize: fontSize.value,
   fontWeight: fontWeight.value,
   borderRadiusRound: `${sizeValue.value}rem`,
@@ -128,6 +129,7 @@ const onClick = e => {
 @use "sass:color";
 
 .v-button-base {
+  height: v-bind('buttonStyle.height');
   position: relative;
   width: initial;
   display: inline-flex;
@@ -243,6 +245,9 @@ const onClick = e => {
 
   &.circle {
     border-radius: 50%;
+    height: auto;
+    width: auto;
+    padding: 0.5rem;
   }
 
   &:not(.ghost, .quaternary) {

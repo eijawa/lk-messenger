@@ -31,7 +31,17 @@
           <v-button type="primary" quaternary>Primary</v-button>
           <v-button type="success" quaternary>Success</v-button>
           <v-button type="warning" quaternary>Warning</v-button>
-          <v-button type="error" quaternary>Error</v-button>
+          <div>
+            <v-button
+              type="default"
+              quaternary
+              circle
+            >
+              <template #icon>
+                <v-icon :src="MenuIcon" name="menu" />
+              </template>
+            </v-button>
+          </div>
         </div>
       </div>
 
@@ -55,17 +65,17 @@
           <v-button
             type="primary"
             size="medium"
-            >medium
+          >medium
           </v-button>
           <v-button
             type="primary"
             size="large"
-            >large
+          >large
           </v-button>
           <v-button
             type="primary"
             :size="4.5"
-            >4.5 rem
+          >4.5 rem
           </v-button>
         </div>
       </div>
@@ -91,6 +101,8 @@
 <script setup>
 import VButton from '@/components/kit/VButton.vue';
 import VInput from '@/components/kit/VInput.vue';
+import VIcon from '@/components/kit/VIcon.vue';
+import MenuIcon from '@/assets/icons/burger.svg';
 import { ref } from 'vue';
 
 const inputValue = ref('');
