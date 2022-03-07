@@ -24,6 +24,52 @@
         </div>
       </div>
 
+      <div class="components-groups">
+        <div>Quaternary</div>
+        <div class="components-list">
+          <v-button type="default" quaternary>Default</v-button>
+          <v-button type="primary" quaternary>Primary</v-button>
+          <v-button type="success" quaternary>Success</v-button>
+          <v-button type="warning" quaternary>Warning</v-button>
+          <v-button type="error" quaternary>Error</v-button>
+        </div>
+      </div>
+
+      <div class="components-groups">
+        <div>Disabled</div>
+        <div class="components-list">
+          <v-button type="default" disabled>Default</v-button>
+          <v-button type="primary" disabled>Primary</v-button>
+        </div>
+      </div>
+
+      <div class="components-groups">
+        <div>Round and size</div>
+        <div class="components-list">
+          <v-button
+            type="primary"
+            size="small"
+            round
+          >small
+          </v-button>
+          <v-button
+            type="primary"
+            size="medium"
+            >medium
+          </v-button>
+          <v-button
+            type="primary"
+            size="large"
+            >large
+          </v-button>
+          <v-button
+            type="primary"
+            :size="4.5"
+            >4.5 rem
+          </v-button>
+        </div>
+      </div>
+
     </div>
     <div class="components-container">
       <h3>Inputs</h3>

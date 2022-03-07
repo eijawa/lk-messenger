@@ -2,7 +2,7 @@
   <button
     ref="buttonRef"
     class="v-button-base"
-    :class="[typeValue, fluidValue, roundValue, circleValue, ghostValue]"
+    :class="[typeValue, fluidValue, roundValue, circleValue, ghostValue, disabledValue, quaternaryValue]"
     :style="{ height: buttonStyle.height + 'rem', fontSize: `${buttonStyle.fontSize}rem`, fontWeight: buttonStyle.fontWeight }"
     @click.stop="onClick"
   >
@@ -46,6 +46,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  quaternary: {
+    type: Boolean,
+    default: false,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const buttonRef = ref(null);
@@ -54,6 +62,8 @@ const fluidValue = computed(() => props.fluid ? 'fluid' : '');
 const circleValue = computed(() => props.circle ? 'circle' : '');
 const roundValue = computed(() => props.round ? 'round' : '');
 const ghostValue = computed(() => props.ghost ? 'ghost' : '');
+const quaternaryValue = computed(() => props.quaternary ? 'quaternary' : '');
+const disabledValue = computed(() => props.disabled ? 'disabled' : '');
 const fontSize = computed(() => props.fontSize);
 const fontWeight = computed(() => props.fontWeight);
 
@@ -104,10 +114,12 @@ const vButtonBorderEffect = e => {
 };
 
 const onClick = e => {
-  if (ghostValue.value === '') {
-    vButtonWaveEffect(e);
-  } else {
-    vButtonBorderEffect(e);
+  if (disabledValue.value === '') {
+    if (ghostValue.value === '') {
+      vButtonWaveEffect(e);
+    } else {
+      vButtonBorderEffect(e);
+    }
   }
 };
 </script>
@@ -146,16 +158,16 @@ const onClick = e => {
 
   :global(.v-button-wave-effect) {
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     transform: scale(0);
-    animation: v-button-wave-effect-animation .35s linear;
+    animation: v-button-wave-effect-animation .4s linear;
     pointer-events: none;
   }
 
   @keyframes v-button-wave-effect-animation {
     100% {
-      transform: scale(2);
+      transform: scale(2.5);
       opacity: 0;
     }
   }
@@ -233,7 +245,7 @@ const onClick = e => {
     border-radius: 50%;
   }
 
-  &:not(.ghost) {
+  &:not(.ghost, .quaternary) {
     color: #ffffff;
     border: none;
 
@@ -247,6 +259,27 @@ const onClick = e => {
 
     &:hover {
       background-color: transparent;
+    }
+  }
+
+  &.quaternary {
+    background-color: transparent;
+    border: none;
+
+    &:hover {
+      background-color: var(--color-chat-hover);
+      border: none;
+    }
+  }
+
+  &.disabled {
+    background-color: var(--color-gray);
+    border: none;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: var(--color-gray);
+      border: none;
     }
   }
 }
