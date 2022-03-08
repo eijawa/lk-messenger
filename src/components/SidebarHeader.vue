@@ -1,10 +1,20 @@
 <template>
   <div class="sidebar-header">
-    <a-button type="text" @click="headerHandler">
-      <template #icon>
-        <v-icon :src="BurgerIcon" name="burger" />
-      </template>
-    </a-button>
+    <div class="sibebar-header-action">
+      <v-button
+        type="default"
+        quaternary
+        circle
+        @click="sideBarActionClickHandler"
+      >
+        <template #icon>
+          <v-icon
+            :src="MenuIcon"
+            name="menu"
+            :fill="sideBarActionFillColor" />
+        </template>
+      </v-button>
+    </div>
 
     <v-input
       v-model:value="searchQuery"
@@ -29,8 +39,9 @@
 <script setup>
 import { computed, ref } from 'vue';
 import VInput from '@/components/kit/VInput.vue';
+import VButton from '@/components/kit/VButton.vue';
 import VIcon from '@/components/kit/VIcon.vue';
-import BurgerIcon from '@/assets/icons/burger.svg?url';
+import MenuIcon from '@/assets/icons/menu.svg?url';
 import SearchIcon from '@/assets/icons/search.svg?url';
 
 const emit = defineEmits(['searchFocus', 'backClick', 'search']);
@@ -38,8 +49,6 @@ const emit = defineEmits(['searchFocus', 'backClick', 'search']);
 const isSearchActive = ref(false);
 
 const searchQuery = ref('');
-
-const headerIcon = computed(() => (isSearchActive.value ? ['fa', 'chevron-left'] : ['fas', 'bars']));
 
 const onSearch = () => {
   emit('search', searchQuery.value);
@@ -50,6 +59,8 @@ const rootStyle = getComputedStyle(root);
 const searchFillColorDefault = `rgba(${rootStyle.getPropertyValue('--color-text-secondary-rgb')}, 0.5)`;
 const searchFillColorActive = rootStyle.getPropertyValue('--color-primary');
 const searchFillColor = ref(searchFillColorDefault);
+
+const sideBarActionFillColor = rootStyle.getPropertyValue('--color-text-secondary');
 
 const onFocus = () => {
   isSearchActive.value = true;
@@ -71,19 +82,21 @@ const backClickHandler = () => {
   emit('backClick');
 };
 
-const headerHandler = computed(() => (isSearchActive.value ? backClickHandler : menuClickHandler));
+const sideBarActionClickHandler = computed(() => (isSearchActive.value ? backClickHandler : menuClickHandler));
 </script>
 
 <style lang="scss" scoped>
 .sidebar-header {
   width: 100%;
-  padding: 10px 1rem;
+  padding: 0.5rem 0.875rem 0.5rem 0.875rem;
   background-color: #fff;
   display: flex;
   gap: 10px;
-}
 
-.ant-input-search {
-  height: min-content;
+  .sibebar-header-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 </style>

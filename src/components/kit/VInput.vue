@@ -155,7 +155,7 @@ const clearIconFillColor = rootStyle.getPropertyValue('--color-icon-secondary');
     display: flex;
     align-items: center;
     cursor: text;
-    padding: 0 0.2rem 0 calc(0.8rem - var(--border-width));
+    padding: 0 0.4rem 0 calc(0.8rem - var(--border-width));
 
     &.focus {
       caret-color: var(--color-primary);
@@ -275,7 +275,6 @@ const clearIconFillColor = rootStyle.getPropertyValue('--color-icon-secondary');
   .v-input-field {
     border-radius: var(--border-radius-default);
     background-color: var(--color-chat-hover);
-    transition: border-color .15s ease, box-shadow .1s ease;
 
     &.focus {
       box-shadow: inset 0 0 0 2px var(--color-primary);

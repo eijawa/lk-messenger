@@ -117,11 +117,13 @@ onMounted(async () => {
       right: unset;
       transform: unset;
     }
+
     .messenger-main:not(.messenger-main-opened) {
       transform: unset;
     }
+
     .messenger-sidebar {
-      width: 420px;
+      max-width: 360px;
     }
   }
 }

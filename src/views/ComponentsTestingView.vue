@@ -124,7 +124,7 @@ import { ref } from 'vue';
 import VButton from '@/components/kit/VButton.vue';
 import VInput from '@/components/kit/VInput.vue';
 import VIcon from '@/components/kit/VIcon.vue';
-import MenuIcon from '@/assets/icons/burger.svg?url';
+import MenuIcon from '@/assets/icons/menu.svg?url';
 import SearchIcon from '@/assets/icons/search.svg?url';
 
 const inputValueDefault = ref('');
