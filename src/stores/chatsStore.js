@@ -38,7 +38,7 @@ const generateChat = async (index, userStore) => {
   const chatType = faker.random.arrayElement(['dialog', 'chat']);
   let avatar = null;
 
-  let chatMembers = [];
+  const chatMembers = [];
   if (chatType === 'dialog') {
     avatar = faker.random.arrayElement([faker.image.avatar(), faker.image.avatar(), null]);
     chatMembers.push(await generateUser(avatar));
@@ -46,9 +46,10 @@ const generateChat = async (index, userStore) => {
     avatar = faker.random.arrayElement([faker.image.business(128, 128, true), null]);
 
     const chatMembersCount = faker.datatype.number({ min: 1, max: 3 });
-    chatMembers = Array.from({ length: chatMembersCount }, async () => {
+    const arrayLoops = Array.from({ length: chatMembersCount }, (v, k) => k);
+    await arrayLoops.forEach(async () => {
       const user = await generateUser();
-      return user;
+      chatMembers.push(user);
     });
   }
 
@@ -93,8 +94,9 @@ export const useChatsStore = defineStore('chatsStore', {
         this.chats = chatsData.result;
       } else {
         const userStore = useUserStore();
-        Array.from({ length: 14 }, (v, k) => k).forEach(async index => {
-          const chat = await generateChat(index, userStore);
+        const arrayLoops = Array.from({ length: 14 }, (v, k) => k);
+        await arrayLoops.forEach(async item => {
+          const chat = await generateChat(item, userStore);
           this.chats.push(chat);
         });
       }

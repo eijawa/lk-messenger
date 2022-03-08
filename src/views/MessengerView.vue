@@ -76,7 +76,7 @@ const onSearch = async query => {
 
 onMounted(async () => {
   await chatsStore.getChats();
-  // console.log(chatsStore.chats);
+  console.log(chatsStore.chats);
 });
 </script>
 
