@@ -30,7 +30,7 @@ import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { useChatsStore } from '@/stores/chatsStore';
 import SidebarHeader from '@/components/SidebarHeader.vue';
 import MessengerSearch from '@/components/MessengerSearch.vue';
-import ChatsList from '@/components/ChatsList.vue';
+import ChatsList from '@/components/chat/ChatsList.vue';
 import NewChatButton from '@/components/NewChatButton.vue';
 import { SearchService } from '@/services/SearchService';
 
@@ -76,7 +76,7 @@ const onSearch = async query => {
 
 onMounted(async () => {
   await chatsStore.getChats();
-  console.log(chatsStore.chats);
+  // console.log(chatsStore.chats);
 });
 </script>
 
@@ -102,6 +102,10 @@ onMounted(async () => {
         .n-scrollbar-rail {
           display: block;
         }
+      }
+
+      .n-scrollbar-content {
+        height: 100%;
       }
     }
   }

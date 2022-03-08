@@ -5,55 +5,58 @@ import { useUserStore } from '@/stores/userStore';
 
 import config from '@/config';
 
-import { faker } from '@faker-js/faker';
-
 import { ChatsService } from '@/services/ChatsService';
 
 const chatsService = new ChatsService();
 
-const generateUser = (avatar = faker.image.avatar()) => ({
-  id: faker.datatype.number({ max: 100000000 }),
-  avatarSrc: avatar,
-  username: faker.name.findName(),
-});
+const generateChat = async (index, userStore) => {
+  const { faker } = await import('@faker-js/faker');
 
-const generateMessage = (messageFrom, userId) => {
-  const messageContentText = faker.lorem.lines();
+  const generateUser = async (avatar = faker.image.avatar()) => ({
+    id: faker.datatype.number({ max: 100000000 }),
+    avatarSrc: avatar,
+    username: faker.name.findName(),
+  });
 
-  const message = {
-    conversationMessageId: faker.datatype.number({ max: 100000 }),
-    date: String(faker.date.recent(10)),
-    from: messageFrom,
-    text: messageContentText,
+  const generateMessage = async (messageFrom, userId) => {
+    const messageContentText = faker.lorem.lines();
+
+    const message = {
+      conversationMessageId: faker.datatype.number({ max: 100000 }),
+      date: String(faker.date.recent(10)),
+      from: messageFrom,
+      text: messageContentText,
+    };
+
+    if (messageFrom.id === userId) {
+      message.isRead = faker.random.arrayElement([true, false]);
+    }
+
+    return message;
   };
 
-  if (messageFrom.id === userId) {
-    message.isRead = faker.random.arrayElement([true, false]);
-  }
-
-  return message;
-};
-
-const generateChat = (index, userStore) => {
   const chatType = faker.random.arrayElement(['dialog', 'chat']);
   let avatar = null;
 
   let chatMembers = [];
   if (chatType === 'dialog') {
     avatar = faker.random.arrayElement([faker.image.avatar(), faker.image.avatar(), null]);
-    chatMembers.push(generateUser(avatar));
+    chatMembers.push(await generateUser(avatar));
   } else {
     avatar = faker.random.arrayElement([faker.image.business(128, 128, true), null]);
 
     const chatMembersCount = faker.datatype.number({ min: 1, max: 3 });
-    chatMembers = Array.from({ length: chatMembersCount }, () => generateUser());
+    chatMembers = Array.from({ length: chatMembersCount }, async () => {
+      const user = await generateUser();
+      return user;
+    });
   }
 
   const chatTitle = chatType === 'dialog' ? chatMembers[0].username : faker.name.title();
 
   const chatLastMessageFrom = faker.random.arrayElement([faker.random.arrayElement(chatMembers), userStore.user]);
 
-  const chatLastMessage = generateMessage(chatLastMessageFrom, userStore.user.id);
+  const chatLastMessage = await generateMessage(chatLastMessageFrom, userStore.user.id);
 
   const chat = {
     conversation: {
@@ -90,7 +93,10 @@ export const useChatsStore = defineStore('chatsStore', {
         this.chats = chatsData.result;
       } else {
         const userStore = useUserStore();
-        this.chats = Array.from({ length: 14 }, (_, idx) => generateChat(idx, userStore));
+        Array.from({ length: 14 }, (v, k) => k).forEach(async index => {
+          const chat = await generateChat(index, userStore);
+          this.chats.push(chat);
+        });
       }
     },
   },

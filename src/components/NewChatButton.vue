@@ -1,39 +1,4 @@
 <template>
-<!--  <a-popover-->
-<!--    v-model:visible="isShow"-->
-<!--    trigger="click"-->
-<!--    placement="topRight"-->
-<!--  >-->
-<!--    <template #content>-->
-<!--      <a-button-group>-->
-<!--        <a-button type="text">-->
-<!--          <template #icon>-->
-<!--            <font-awesome-icon :icon="['fas', 'users']" />-->
-<!--            Новая группа-->
-<!--          </template>-->
-<!--        </a-button>-->
-
-<!--        <a-button type="text">-->
-<!--          <template #icon>-->
-<!--            <font-awesome-icon :icon="['fas', 'user']" />-->
-<!--            Новое сообщение-->
-<!--          </template>-->
-<!--        </a-button>-->
-<!--      </a-button-group>-->
-<!--    </template>-->
-
-<!--    <a-button-->
-<!--      class="newchatbtn"-->
-<!--      type="primary"-->
-<!--      shape="circle"-->
-<!--      size="lg"-->
-<!--    >-->
-<!--      <template #icon>-->
-<!--        <font-awesome-icon :icon="['fas', 'pen']" size="lg" />-->
-<!--      </template>-->
-<!--    </a-button>-->
-<!--  </a-popover>-->
-
   <n-popover
     trigger="click"
     :show="isShow"

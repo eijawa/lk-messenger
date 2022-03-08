@@ -19,7 +19,7 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useChatsStore } from '@/stores/chatsStore';
 
-import ChatsListItem from '@/components/ChatsListItem.vue';
+import ChatsListItem from '@/components/chat/ChatsListItem.vue';
 import VEmpty from '@/components/kit/VEmpty.vue';
 
 const chatsStore = useChatsStore();
