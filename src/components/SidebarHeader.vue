@@ -8,13 +8,19 @@
 
     <v-input
       v-model:value="searchQuery"
-      placeholder="Поиск"
-      style-type="form"
+      placeholder="Введите текст"
+      style-type="search"
+      round
       @input="onSearch"
       @focus="onFocus"
+      @focusout="onFocusOut"
     >
-      <template #suffix>
-        <v-icon :src="BurgerIcon" name="test2" />
+      <template #prefix>
+        <v-icon
+          name="search"
+          :src="SearchIcon"
+          :fill="searchFillColor"
+        />
       </template>
     </v-input>
   </div>
@@ -25,6 +31,7 @@ import { computed, ref } from 'vue';
 import VInput from '@/components/kit/VInput.vue';
 import VIcon from '@/components/kit/VIcon.vue';
 import BurgerIcon from '@/assets/icons/burger.svg?url';
+import SearchIcon from '@/assets/icons/search.svg?url';
 
 const emit = defineEmits(['searchFocus', 'backClick', 'search']);
 
@@ -38,9 +45,20 @@ const onSearch = () => {
   emit('search', searchQuery.value);
 };
 
+const root = document.querySelector(':root');
+const rootStyle = getComputedStyle(root);
+const searchFillColorDefault = `rgba(${rootStyle.getPropertyValue('--color-text-secondary-rgb')}, 0.5)`;
+const searchFillColorActive = rootStyle.getPropertyValue('--color-primary');
+const searchFillColor = ref(searchFillColorDefault);
+
 const onFocus = () => {
   isSearchActive.value = true;
+  searchFillColor.value = searchFillColorActive;
   emit('searchFocus');
+};
+
+const onFocusOut = () => {
+  searchFillColor.value = searchFillColorDefault;
 };
 
 const menuClickHandler = () => {
