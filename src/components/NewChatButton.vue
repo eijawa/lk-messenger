@@ -36,13 +36,27 @@
 
   <n-popover
     trigger="click"
+    :show="isShow"
     placement="top-end"
     :show-arrow="false"
     to=".new-chat-popover"
   >
     <template #trigger>
       <div class="new-chat-button-trigger">
-        <v-button>Клик</v-button>
+        <v-button
+          type="primary"
+          circle
+          size="large"
+          @click="onClickHandler"
+        >
+          <template #icon>
+            <v-icon
+              name="clear"
+              :src="PenIcon"
+              fill="white"
+            />
+          </template>
+        </v-button>
       </div>
     </template>
     <div>
@@ -56,8 +70,15 @@ import { ref } from 'vue';
 import { NPopover } from 'naive-ui';
 
 import VButton from '@/components/kit/VButton.vue';
+import VIcon from '@/components/kit/VIcon.vue';
+
+import PenIcon from '@/assets/icons/pen.svg?url';
 
 const isShow = ref(false);
+
+const onClickHandler = () => {
+  isShow.value = !isShow.value;
+};
 </script>
 
 <style lang="scss" scoped>

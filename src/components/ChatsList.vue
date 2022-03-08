@@ -3,7 +3,7 @@
     Нет начатых бесед...
   </v-empty>
 
-  <ul v-else class="chats-list">
+  <div v-else class="chats-list">
     <chats-list-item
       v-for="c in chats"
       :key="c.id"
@@ -11,7 +11,7 @@
       :chat="c"
       @open="onOpenHandler"
     ></chats-list-item>
-  </ul>
+  </div>
 </template>
 
 <script setup>
@@ -37,18 +37,11 @@ const onOpenHandler = chatId => {
 
 <style lang="scss" scoped>
 .chats-list {
-  padding: 0.5rem 0.5rem 0 0.5rem;
-
+  padding: 0.5rem 0 0 0;
   overflow-y: auto;
-}
 
-@media (min-width: 927px) {
-  .chats-list {
-    overflow-y: hidden;
-
-    &:hover {
-      overflow-y: auto;
-    }
+  @media (min-width: 927px) {
+    padding: 0.5rem 0.5rem 0 0.5rem;
   }
 }
 </style>

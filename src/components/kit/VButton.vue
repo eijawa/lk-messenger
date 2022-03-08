@@ -7,7 +7,9 @@
     @click.stop="onClick"
   >
     <span class="v-button-text"><slot name="default" /></span>
-    <slot name="icon" />
+    <span class="v-button-icon">
+      <slot name="icon" />
+    </span>
   </button>
 </template>
 
@@ -158,6 +160,13 @@ const onClick = e => {
     line-height: var(--default-line-height);
   }
 
+  .v-button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
   :global(.v-button-wave-effect) {
     position: absolute;
     background-color: rgba(255, 255, 255, 0.2);
@@ -245,8 +254,7 @@ const onClick = e => {
 
   &.circle {
     border-radius: 50%;
-    height: auto;
-    width: auto;
+    min-width: v-bind('buttonStyle.height');
     padding: 0.5rem;
   }
 

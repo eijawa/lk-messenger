@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
+import { useUserStore } from '@/stores/userStore';
+
 import config from '@/config';
 
 import { faker } from '@faker-js/faker';
@@ -9,57 +11,68 @@ import { ChatsService } from '@/services/ChatsService';
 
 const chatsService = new ChatsService();
 
-const generateUser = () => ({
-  id: faker.datatype.uuid(),
-  avatarSrc: faker.image.avatar(),
-  username: faker.name.firstName(),
-  university: faker.random.arrayElement(['eaf', 'pt', 'pht', 'ns', 'pac', 'wwe', 'care', 'hwwcast', 'mait', 'r']),
+const generateUser = (avatar = faker.image.avatar()) => ({
+  id: faker.datatype.number({ max: 100000000 }),
+  avatarSrc: avatar,
+  username: faker.name.findName(),
 });
 
-const generateMessage = (ownerId, potentialReaders) => {
+const generateMessage = (messageFrom, userId) => {
   const messageContentText = faker.lorem.lines();
-  const potentialReadersId = [...potentialReaders].map(r => r.id);
-  const messageType = faker.random.arrayElement(['default', 'reply']);
 
-  return {
-    id: faker.datatype.uuid(),
-    type: messageType,
-    content: {
-      text: messageContentText,
-    },
+  const message = {
+    conversationMessageId: faker.datatype.number({ max: 100000 }),
     date: String(faker.date.recent(10)),
-    owner: {
-      id: ownerId,
-    },
-    readBy: faker.random.arrayElements(potentialReadersId),
+    from: messageFrom,
+    text: messageContentText,
   };
+
+  if (messageFrom.id === userId) {
+    message.isRead = faker.random.arrayElement([true, false]);
+  }
+
+  return message;
 };
 
-const generateChat = index => {
-  const chatType = faker.random.arrayElement(['dialog', 'group']);
+const generateChat = (index, userStore) => {
+  const chatType = faker.random.arrayElement(['dialog', 'chat']);
+  let avatar = null;
 
   let chatMembers = [];
   if (chatType === 'dialog') {
-    chatMembers.push(generateUser());
+    avatar = faker.random.arrayElement([faker.image.avatar(), faker.image.avatar(), null]);
+    chatMembers.push(generateUser(avatar));
   } else {
-    const chatMembersCount = faker.datatype.number({ min: 1, max: 10 });
+    avatar = faker.random.arrayElement([faker.image.business(128, 128, true), null]);
+
+    const chatMembersCount = faker.datatype.number({ min: 1, max: 3 });
     chatMembers = Array.from({ length: chatMembersCount }, () => generateUser());
   }
 
-  const chatTitle = chatType === 'tat' ? chatMembers[0].username : faker.name.title();
+  const chatTitle = chatType === 'dialog' ? chatMembers[0].username : faker.name.title();
 
-  const chatLastMessageOwner = faker.random.arrayElement(chatMembers);
-  const chatLastMessage = generateMessage(chatLastMessageOwner.id, chatMembers);
+  const chatLastMessageFrom = faker.random.arrayElement([faker.random.arrayElement(chatMembers), userStore.user]);
 
-  return {
-    id: String(index),
-    avatarSrc: faker.image.avatar(),
-    title: chatTitle,
-    type: chatType,
-    members: chatMembers,
+  const chatLastMessage = generateMessage(chatLastMessageFrom, userStore.user.id);
+
+  const chat = {
+    conversation: {
+      id: String(index),
+      avatarSrc: avatar,
+      title: chatTitle,
+      type: chatType,
+      isMuted: faker.random.arrayElement([false, false, true]),
+      isVerified: faker.random.arrayElement([false, false, true]),
+      isPinned: faker.random.arrayElement([false, false, true]),
+    },
     lastMessage: chatLastMessage,
-    newMessagesCount: faker.datatype.number(24),
   };
+
+  if (chatLastMessageFrom.id !== userStore.user.id) {
+    chat.conversation.unReadCount = faker.datatype.number(24);
+  }
+
+  return chat;
 };
 
 export const useChatsStore = defineStore('chatsStore', {
@@ -76,7 +89,8 @@ export const useChatsStore = defineStore('chatsStore', {
         const chatsData = await chatsService.getChats();
         this.chats = chatsData.result;
       } else {
-        this.chats = Array.from({ length: 12 }, (_, idx) => generateChat(idx));
+        const userStore = useUserStore();
+        this.chats = Array.from({ length: 14 }, (_, idx) => generateChat(idx, userStore));
       }
     },
   },

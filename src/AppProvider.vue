@@ -32,5 +32,9 @@ const themeOverrides = {
       },
     },
   },
+  Scrollbar: {
+    color: 'rgba(0, 0, 0, 0.2)',
+    colorHover: 'rgba(0, 0, 0, 0.2)',
+  },
 };
 </script>

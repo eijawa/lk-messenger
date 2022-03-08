@@ -7,8 +7,10 @@
         @search="onSearch"
       />
 
-      <chats-list v-if="!isSearchActive" />
-      <messenger-search v-else :date="searchData" />
+      <n-scrollbar class="sidebar-scrollbar">
+        <chats-list v-if="!isSearchActive" />
+        <messenger-search v-else :date="searchData" />
+      </n-scrollbar>
 
       <new-chat-button />
       <div class="new-chat-popover"></div>
@@ -22,6 +24,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import { NScrollbar } from 'naive-ui';
 
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { useChatsStore } from '@/stores/chatsStore';
@@ -88,6 +91,19 @@ onMounted(async () => {
     overflow: hidden;
     max-height: 100vh;
     width: 100%;
+
+    :deep(.sidebar-scrollbar) {
+      .n-scrollbar-rail {
+        display: none;
+        right: 0;
+      }
+
+      @media (min-width: 927px) {
+        .n-scrollbar-rail {
+          display: block;
+        }
+      }
+    }
   }
 
   .messenger-main {

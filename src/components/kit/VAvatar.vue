@@ -55,6 +55,10 @@ const srcValue = computed(() => props.src);
     align-items: center;
     justify-content: center;
     font-size: 1.3125rem;
+
+    img {
+      border-radius: 50%;
+    }
   }
 }
 </style>

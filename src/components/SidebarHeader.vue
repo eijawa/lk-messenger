@@ -18,7 +18,7 @@
 
     <v-input
       v-model:value="searchQuery"
-      placeholder="Введите текст"
+      placeholder="Поиск"
       style-type="search"
       round
       @input="onSearch"
