@@ -105,7 +105,8 @@ onMounted(async () => {
       }
 
       .n-scrollbar-content {
-        height: 100%;
+        display: flex;
+        min-height: 100%;
       }
     }
   }

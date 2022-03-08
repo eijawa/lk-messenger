@@ -13,8 +13,10 @@
 .v-empty {
   display: flex;
   height: 100%;
+  width: 100%;
   justify-content: center;
   align-items: center;
+  margin: auto 0;
 
   .v-empty-text {
     padding: 0.25rem 1rem;
