@@ -127,6 +127,7 @@ const onClick = () => {
 };
 
 const onFocusOut = () => {
+  console.log('focus out');
   isInputFocus.value = false;
 };
 

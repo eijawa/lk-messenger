@@ -14,7 +14,6 @@
 
 <script setup>
 import { computed } from 'vue';
-
 import getFirstLetters from '@/helpers/firstLettersHelper';
 
 const props = defineProps({
@@ -45,7 +44,6 @@ const props = defineProps({
 });
 
 const defaultColor = computed(() => props.palette !== '' ? `var(--volsu-u-${props.palette}-gr)` : 'var(--color-gray)');
-
 const titleFirstLetters = computed(() => getFirstLetters(props.title));
 </script>
 

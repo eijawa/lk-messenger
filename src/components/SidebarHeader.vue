@@ -10,7 +10,7 @@
         <template #icon>
           <v-icon
             :src="MenuIcon"
-            name="menu"
+            name="menu or back"
             :fill="sideBarActionFillColor" />
         </template>
       </v-button>
@@ -88,7 +88,7 @@ const sideBarActionClickHandler = computed(() => (isSearchActive.value ? backCli
 <style lang="scss" scoped>
 .sidebar-header {
   width: 100%;
-  padding: 0.5rem 0.875rem 0.5rem 0.875rem;
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
   background-color: #fff;
   display: flex;
   gap: 10px;

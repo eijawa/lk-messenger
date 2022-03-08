@@ -4,7 +4,6 @@
       <avatar
         :title="title"
         :size="avatarSize"
-        :palette="universityPallete"
         :is-group="chatType === 'group'"
         :is-monochrome="isActive"
       />
@@ -13,11 +12,7 @@
     <div class="chat-card__content">
       <div class="chat-card__header">
         <div class="chat-card__title typo">
-          <font-awesome-icon
-            v-if="isTeacher"
-            :icon="['fas', 'graduation-cap']"
-            title="Преподаватель"/>
-          <span :style="{ marginLeft: isTeacher ? '0.25rem' : '0' }" :title="title">{{ title }}</span>
+          <span>{{ title }}</span>
         </div>
 
         <div class="chat-card__meta">
@@ -41,8 +36,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-
 import Avatar from '@/components/kit/Avatar/Avatar.vue';
 
 const props = defineProps({
@@ -58,10 +51,6 @@ const props = defineProps({
     type: Number,
     default: 54,
   },
-  universityPallete: {
-    type: String,
-    default: '',
-  },
   chatType: {
     type: String,
     default: 'tat',
@@ -69,10 +58,6 @@ const props = defineProps({
   text: {
     type: String,
     default: '',
-  },
-  isTeacher: {
-    type: Boolean,
-    default: false,
   },
   isActive: {
     type: Boolean,

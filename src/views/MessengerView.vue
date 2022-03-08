@@ -13,6 +13,7 @@
       <new-chat-button />
       <div class="new-chat-popover"></div>
     </div>
+
     <div class="messenger-main" :class="{ 'messenger-main-opened': isChatOpened }">
       <router-view />
     </div>
@@ -71,8 +72,8 @@ const onSearch = async query => {
 
 
 onMounted(async () => {
-  await messengerSettingsStore.fetchUserInfo();
-  await chatsStore.fetchUserChats();
+  await chatsStore.getChats();
+  console.log(chatsStore.chats);
 });
 </script>
 
