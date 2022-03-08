@@ -3,7 +3,7 @@
     <div
       ref="inputFieldRef"
       class="v-input-field"
-      :class="{ 'touched': isInputTouched, 'focus': isInputFocus }"
+      :class="[ { 'touched': isInputTouched, 'focus': isInputFocus }, roundValue ]"
       @click="onClick"
     >
       <div class="prefix">
@@ -33,7 +33,9 @@
               <v-icon
                 name="clear"
                 :src="ClearableIcon"
-                :size="18" />
+                :size="18"
+                :fill="clearIconFillColor"
+              />
             </template>
           </v-button>
         </div>
@@ -69,6 +71,10 @@ const props = defineProps({
     type: [String, Number],
     default: 'medium',
   },
+  round: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(['update:value', 'focus']);
@@ -76,6 +82,8 @@ const emit = defineEmits(['update:value', 'focus']);
 const placeHolderValue = computed(() => props.placeholder);
 const inputTypeValue = computed(() => `v-input-container-${props.styleType}`);
 const isInputTouched = computed(() => props.value);
+const roundValue = computed(() => props.round ? 'round' : '');
+
 const isInputFocus = ref(false);
 const inputRef = ref(null);
 
@@ -100,6 +108,7 @@ const sizeValue = computed(() => {
 
 const inputStyle = computed(() => ({
   height: sizeValue.value,
+  borderRadiusRound: `${sizeValue.value}rem`,
 }));
 
 const labelStyle = computed(() => ({
@@ -128,6 +137,11 @@ const onInput = event => {
 const onFocus = () => {
   emit('focus');
 };
+
+const root = document.querySelector(':root');
+const rootStyle = getComputedStyle(root);
+
+const clearIconFillColor = rootStyle.getPropertyValue('--color-icon-secondary');
 </script>
 
 <style lang="scss" scoped>
@@ -141,7 +155,7 @@ const onFocus = () => {
     display: flex;
     align-items: center;
     cursor: text;
-    padding: 0 0.1rem 0 calc(0.6rem - var(--border-width));
+    padding: 0 0.2rem 0 calc(0.8rem - var(--border-width));
 
     &.focus {
       caret-color: var(--color-primary);
@@ -201,6 +215,11 @@ const onFocus = () => {
 
       }
 
+      .v-input-label {
+        color: var(--color-placeholders);
+        transition: top .15s ease-out, transform .15s ease-out, color .15s ease-out;
+      }
+
       &.touched label,
       .v-input.touched + label {
         display: none;
@@ -251,4 +270,41 @@ const onFocus = () => {
     }
   }
 }
+
+.v-input-container-search {
+  .v-input-field {
+    border-radius: var(--border-radius-default);
+    background-color: var(--color-chat-hover);
+    transition: border-color .15s ease, box-shadow .1s ease;
+
+    &.focus {
+      box-shadow: inset 0 0 0 2px var(--color-primary);
+    }
+
+    .v-input-content {
+      .v-input {
+
+      }
+
+      .v-input-label {
+        color: var(--color-placeholders);
+        transition: top .15s ease-out, transform .15s ease-out, color .15s ease-out;
+      }
+
+      &.touched label,
+      .v-input.touched + label {
+        display: none;
+      }
+    }
+  }
+}
+
+.v-input-container-base {
+  .v-input-field {
+    &.round {
+      border-radius: v-bind('inputStyle.borderRadiusRound');
+    }
+  }
+}
+
 </style>

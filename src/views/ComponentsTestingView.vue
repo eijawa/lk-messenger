@@ -84,10 +84,31 @@
     <div class="components-container">
       <h3>Inputs</h3>
       <div class="components-groups">
+        <div>Search</div>
+        <div class="components-inputs components-list">
+          <v-input
+            v-model:value="inputValueDefault"
+            placeholder="Введите текст"
+            style-type="search"
+            round
+            @focus="onFocus"
+            @focusout="onFocusOut"
+          >
+            <template #prefix>
+              <v-icon
+                name="search"
+                :src="SearchIcon"
+                :fill="searchFillColor"
+              />
+            </template>
+          </v-input>
+        </div>
+      </div>
+      <div class="components-groups">
         <div>Form</div>
         <div class="components-inputs components-list">
           <v-input
-            v-model:value="inputValue"
+            v-model:value="inputValueForm"
             placeholder="Введите текст"
             style-type="form"
           />
@@ -99,13 +120,29 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import VButton from '@/components/kit/VButton.vue';
 import VInput from '@/components/kit/VInput.vue';
 import VIcon from '@/components/kit/VIcon.vue';
-import MenuIcon from '@/assets/icons/burger.svg';
-import { ref } from 'vue';
+import MenuIcon from '@/assets/icons/burger.svg?url';
+import SearchIcon from '@/assets/icons/search.svg?url';
 
-const inputValue = ref('');
+const inputValueDefault = ref('');
+const inputValueForm = ref('');
+
+const root = document.querySelector(':root');
+const rootStyle = getComputedStyle(root);
+const searchFillColorDefault = `rgba(${rootStyle.getPropertyValue('--color-text-secondary-rgb')}, 0.5)`;
+const searchFillColorActive = rootStyle.getPropertyValue('--color-primary');
+const searchFillColor = ref(searchFillColorDefault);
+
+const onFocus = () => {
+  searchFillColor.value = searchFillColorActive;
+};
+
+const onFocusOut = () => {
+  searchFillColor.value = searchFillColorDefault;
+};
 </script>
 
 <style lang="scss" scoped>

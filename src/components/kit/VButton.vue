@@ -106,7 +106,7 @@ const vButtonWaveEffect = e => {
   setTimeout(() => wave.remove(), 500);
 };
 
-const vButtonBorderEffect = e => {
+const vButtonBorderEffect = () => {
   const boxShadowColor = getComputedStyle(buttonRef.value).borderColor.replace(')', ', 0.2)').replace('rgb', 'rgba');
   buttonRef.value.style.boxShadow = `0 0 0 3px ${boxShadowColor}`;
   setTimeout(() => {
@@ -119,7 +119,7 @@ const onClick = e => {
     if (ghostValue.value === '') {
       vButtonWaveEffect(e);
     } else {
-      vButtonBorderEffect(e);
+      vButtonBorderEffect();
     }
   }
 };
@@ -272,7 +272,7 @@ const onClick = e => {
     border: none;
 
     &:hover {
-      background-color: var(--color-chat-hover);
+      background-color: var(--color-interactive-element-hover);
       border: none;
     }
   }
