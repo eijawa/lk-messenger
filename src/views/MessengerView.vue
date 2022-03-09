@@ -2,12 +2,14 @@
   <div class="messenger">
     <div class="messenger-sidebar">
       <sidebar-header
+        class="v-sidebar-header"
+        :class="{ 'scroll': isSideBarScrolling }"
         @search-focus="searchStateChange(true)"
         @back-click="searchStateChange(false)"
         @search="onSearch"
       />
 
-      <n-scrollbar class="sidebar-scrollbar">
+      <n-scrollbar class="sidebar-scrollbar" @scroll="sidebarScrollingHandler">
         <chats-list v-if="!isSearchActive" />
         <messenger-search v-else :date="searchData" />
       </n-scrollbar>
@@ -73,6 +75,14 @@ const onSearch = async query => {
   }
 };
 
+const isSideBarScrolling = ref(false);
+const sidebarScrollingHandler = e => {
+  if (e.target.scrollTop !== 0) {
+    isSideBarScrolling.value = true;
+  } else {
+    isSideBarScrolling.value = false;
+  }
+};
 
 onMounted(async () => {
   await chatsStore.getChats();
@@ -90,7 +100,16 @@ onMounted(async () => {
     flex-direction: column;
     overflow: hidden;
     max-height: 100vh;
+    height: 100vh;
     width: 100%;
+
+    .v-sidebar-header {
+      transition: box-shadow, border-bottom-color .3s ease;
+    }
+
+    .v-sidebar-header.scroll {
+      box-shadow: 0 2px 2px var(--color-light-shadow);
+    }
 
     :deep(.sidebar-scrollbar) {
       .n-scrollbar-rail {
