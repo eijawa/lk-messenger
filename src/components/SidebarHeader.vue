@@ -8,10 +8,22 @@
         @click="sideBarActionClickHandler"
       >
         <template #icon>
-          <v-icon
-            :src="MenuIcon"
-            name="menu or back"
-            :fill="sideBarActionFillColor" />
+          <Transition name="menu-icon">
+            <v-icon
+              v-if="!isSearchActive"
+              class="sidebar-header-action-icon"
+              :src="MenuIcon"
+              name="menu"
+              :fill="sideBarActionFillColor" />
+          </Transition>
+          <Transition name="back-icon">
+            <v-icon
+              v-if="isSearchActive"
+              class="sidebar-header-action-icon"
+              :src="BackIcon"
+              name="back"
+              :fill="sideBarActionFillColor" />
+          </Transition>
         </template>
       </v-button>
     </div>
@@ -42,6 +54,7 @@ import VInput from '@/components/kit/VInput.vue';
 import VButton from '@/components/kit/VButton.vue';
 import VIcon from '@/components/kit/VIcon.vue';
 import MenuIcon from '@/assets/icons/menu.svg?url';
+import BackIcon from '@/assets/icons/back.svg?url';
 import SearchIcon from '@/assets/icons/search.svg?url';
 
 const emit = defineEmits(['searchFocus', 'backClick', 'search']);
@@ -91,12 +104,57 @@ const sideBarActionClickHandler = computed(() => (isSearchActive.value ? backCli
   padding: 0.5rem 1rem 0.5rem 0.5rem;
   background-color: #fff;
   display: flex;
+  justify-content: space-between;
   gap: 10px;
 
   .sibebar-header-action {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+
+    .sidebar-header-action-icon {
+      position: absolute;
+    }
+
+    .menu-icon-enter-active {
+      animation: menu-icon-in .3s;
+    }
+
+    .menu-icon-leave-active {
+      animation: menu-icon-in .2s reverse;
+    }
+
+    @keyframes menu-icon-in {
+      0% {
+        opacity: 0;
+        transform: rotate(0deg);
+      }
+      100% {
+        opacity: 1;
+        transform: rotate(-180deg);
+      }
+    }
+
+    .back-icon-enter-active {
+      animation: back-icon-in .3s;
+    }
+
+    .back-icon-leave-active {
+      animation: back-icon-in .2s reverse;
+    }
+
+    @keyframes back-icon-in {
+      0% {
+        opacity: 0;
+        transform: rotate(-180deg);
+      }
+      100% {
+        opacity: 1;
+        transform: rotate(0deg);
+      }
+    }
   }
 }
 </style>
