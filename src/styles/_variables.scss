@@ -55,7 +55,7 @@ $color-message-reaction-own-hover: #b5e0a4;
 :root {
   // Color/Background
   --color-background: #{$color-white};
-  --color-background-compact-menu: #FFFFFFBB;
+  --color-background-compact-menu: rgba(255, 255, 255, 0.733333);
   --color-background-compact-menu-reactions: #FFFFFFEB;
   --color-background-compact-menu-hover: #000000B2;
   --color-background-selected: #f4f4f5;

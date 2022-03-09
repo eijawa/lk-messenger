@@ -18,12 +18,15 @@ import {
   NDialogProvider,
 } from 'naive-ui';
 
+import { getCSSVariable } from '@/helpers/cssVariablesHelper';
+
+const borderRadiusDefault = getCSSVariable('--border-radius-default');
+const colorText = getCSSVariable('--color-text');
+const colorShadowDefault = getCSSVariable('--color-default-shadow');
+
 const themeOverrides = {
   common: {
     // primaryColor: '#FF0000',
-  },
-  Button: {
-    // textColor: '#FF0000',
   },
   Select: {
     peers: {
@@ -31,6 +34,12 @@ const themeOverrides = {
         // textColor: '#FF0000',
       },
     },
+  },
+  Popover: {
+    textColor: colorText,
+    borderRadius: borderRadiusDefault,
+    padding: '0px',
+    boxShadow: `0 0.25rem 0.5rem 0.125rem ${colorShadowDefault}`,
   },
   Scrollbar: {
     color: 'rgba(0, 0, 0, 0.2)',

@@ -1,14 +1,9 @@
 <template>
-  <n-popover
-    trigger="click"
-    :show="isShow"
-    placement="top-end"
-    :show-arrow="false"
-    to=".new-chat-popover"
-  >
+  <v-popover :is-show="isShow" @click-outside="onClickOutsideHandler">
     <template #trigger>
       <div class="new-chat-button-trigger">
         <v-button
+          class="v-button-new-chat"
           type="primary"
           circle
           size="large"
@@ -25,15 +20,33 @@
       </div>
     </template>
     <div>
-      Теекст
+      Теееееееееееееекст
     </div>
-  </n-popover>
+    <div>
+      Теееееееееееееекст
+    </div>
+    <div>
+      Теееееееееееееекст
+    </div>
+    <div>
+      Теееееееееееееекст
+    </div>
+    <div>
+      Теееееееееееееекст
+    </div>
+    <div>
+      Тееееееееееееееееееееееееееееееееееееекст
+    </div>
+    <div>
+      Теееееееееееееекст
+    </div>
+  </v-popover>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { NPopover } from 'naive-ui';
 
+import VPopover from '@/components/VPopover.vue';
 import VButton from '@/components/kit/VButton.vue';
 import VIcon from '@/components/kit/VIcon.vue';
 
@@ -44,38 +57,15 @@ const isShow = ref(false);
 const onClickHandler = () => {
   isShow.value = !isShow.value;
 };
+
+const onClickOutsideHandler = e => {
+  if (!e.target.classList.contains('v-button-new-chat')) {
+    isShow.value = false;
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-.ant-btn-group {
-  display: flex;
-  flex-direction: column;
-
-  .ant-btn {
-    width: auto;
-
-    padding: 0.25rem 0.5rem;
-
-    gap: 0.5rem;
-
-    display: grid;
-    grid-template-columns: 32px auto;
-    place-items: center;
-    justify-content: flex-start;
-  }
-}
-
-.newchatbtn {
-  padding: 1.5rem;
-
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-
-  display: flex;
-  place-items: center;
-  place-content: center;
-}
 
 .new-chat-button-trigger {
   position: absolute;
