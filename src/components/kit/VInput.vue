@@ -19,7 +19,7 @@
           :value="value"
           @input="onInput"
           @focus="onFocus"
-          @focusout="onFocusOut"
+          @blur="onFocusOut"
         />
         <label class="v-input-label">{{ placeHolderValue }}</label>
       </div>
@@ -126,9 +126,10 @@ const onClick = () => {
   isInputFocus.value = true;
 };
 
-const onFocusOut = () => {
-  console.log('focus out');
-  isInputFocus.value = false;
+const onFocusOut = e => {
+  if (e.target !== document.activeElement) {
+    isInputFocus.value = false;
+  }
 };
 
 const onInput = event => {
