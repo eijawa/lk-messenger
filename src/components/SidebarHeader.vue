@@ -10,7 +10,7 @@
         <template #icon>
           <Transition name="menu-icon">
             <v-icon
-              v-if="!isSearchActive"
+              v-show="!isSearchActive"
               class="sidebar-header-action-icon"
               :src="MenuIcon"
               name="menu"
@@ -18,7 +18,7 @@
           </Transition>
           <Transition name="back-icon">
             <v-icon
-              v-if="isSearchActive"
+              v-show="isSearchActive"
               class="sidebar-header-action-icon"
               :src="BackIcon"
               name="back"

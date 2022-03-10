@@ -12,7 +12,7 @@
           <template #icon>
             <Transition name="pen-icon">
               <v-icon
-                v-if="!isShow"
+                v-show="!isShow"
                 class="new-chat-button-icon"
                 name="clear"
                 :src="PenIcon"
@@ -21,7 +21,7 @@
             </Transition>
             <Transition name="close-icon">
               <v-icon
-                v-if="isShow"
+                v-show="isShow"
                 name="close"
                 :src="CloseIcon"
                 :size="32"
