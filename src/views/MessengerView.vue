@@ -9,10 +9,12 @@
         @search="onSearch"
       />
 
-      <n-scrollbar class="sidebar-scrollbar" @scroll="sidebarScrollingHandler">
-        <chats-list v-if="!isSearchActive" />
-        <messenger-search v-else :date="searchData" />
-      </n-scrollbar>
+      <div class="sidebar-list">
+        <n-scrollbar class="sidebar-scrollbar" @scroll="sidebarScrollingHandler">
+          <chats-list v-if="!isSearchActive" />
+          <messenger-search v-else :date="searchData" />
+        </n-scrollbar>
+      </div>
 
       <new-chat-button />
       <div class="new-chat-popover"></div>
@@ -77,11 +79,7 @@ const onSearch = async query => {
 
 const isSideBarScrolling = ref(false);
 const sidebarScrollingHandler = e => {
-  if (e.target.scrollTop !== 0) {
-    isSideBarScrolling.value = true;
-  } else {
-    isSideBarScrolling.value = false;
-  }
+  isSideBarScrolling.value = e.target.scrollTop !== 0;
 };
 
 onMounted(async () => {
@@ -92,16 +90,31 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .messenger {
-  display: flex;
+  height: 100%;
+  overflow: hidden;
+
+  @media (min-width: 927px) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 100%;
+  }
+
+  @media (max-width: 926px) {
+    height: calc(var(--vh, 1vh) * 100);
+  }
 
   .messenger-sidebar {
-    position: relative;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    max-height: 100vh;
-    height: 100vh;
-    width: 100%;
+    //background-color: #2e3939;
+
+    @media (min-width: 927px) {
+      min-width: 360px;
+      max-width: 360px;
+    }
 
     .v-sidebar-header {
       transition: box-shadow, border-bottom-color .3s ease;
@@ -111,60 +124,57 @@ onMounted(async () => {
       box-shadow: 0 2px 2px var(--color-light-shadow);
     }
 
-    :deep(.sidebar-scrollbar) {
-      .n-scrollbar-rail {
-        display: none;
-        right: 0;
-      }
+    .sidebar-list {
+      flex: 1;
+      overflow: hidden;
+      contain: strict;
 
-      @media (min-width: 927px) {
+      :deep(.sidebar-scrollbar) {
         .n-scrollbar-rail {
-          display: block;
+          display: none;
+          right: 0;
         }
-      }
 
-      .n-scrollbar-content {
-        display: flex;
-        min-height: 100%;
+        @media (min-width: 927px) {
+          .n-scrollbar-rail {
+            display: block;
+          }
+        }
+
+        .n-scrollbar-content {
+          display: flex;
+          min-height: 100%;
+        }
       }
     }
   }
 
   .messenger-main {
     display: flex;
-    height: 100vh;
-    max-width: none;
-    width: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    transform: translate3d(0, 0, 0);
-    transition: 300ms cubic-bezier(0.8, 1, 0.68, 1);
+    position: relative;
+    min-width: 0;
+    height: 100%;
+    z-index: 1;
+
     background-color: #f0f2f5;
-  }
+    //background-color: #49d3d3;
 
-  .messenger-main:not(.messenger-main-opened) {
-    transform: translate3d(100vw, 0, 0);
-  }
-
-  @media (min-width: 927px) {
-    .messenger-main {
-      position: relative;
-      left: unset;
-      top: unset;
-      bottom: unset;
-      right: unset;
+    &:not(.messenger-main-opened) {
       transform: unset;
     }
 
-    .messenger-main:not(.messenger-main-opened) {
-      transform: unset;
-    }
+    @media (max-width: 926px) {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      transform: translate3d(0, 0, 0);
+      transition: 300ms cubic-bezier(0.8, 1, 0.68, 1);
 
-    .messenger-sidebar {
-      max-width: 360px;
+      &:not(.messenger-main-opened) {
+        transform: translate3d(100vw, 0, 0);
+      }
     }
   }
 }
