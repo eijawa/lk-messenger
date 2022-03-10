@@ -109,11 +109,17 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    //background-color: #2e3939;
 
     @media (min-width: 927px) {
       min-width: 360px;
       max-width: 360px;
+    }
+
+    @media (max-width: 926px) {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: calc(var(--vh, 1vh)*100);
     }
 
     .v-sidebar-header {
