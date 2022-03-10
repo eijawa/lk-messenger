@@ -122,8 +122,10 @@ const onClickClearHandler = () => {
 };
 
 const onClick = () => {
-  inputRef.value.focus();
-  isInputFocus.value = true;
+  if (!isInputFocus.value) {
+    inputRef.value.focus();
+    isInputFocus.value = true;
+  }
 };
 
 const onFocusOut = e => {
@@ -137,6 +139,10 @@ const onInput = event => {
 };
 
 const onFocus = () => {
+  if (!isInputFocus.value) {
+    inputRef.value.focus();
+    isInputFocus.value = true;
+  }
   emit('focus');
 };
 
