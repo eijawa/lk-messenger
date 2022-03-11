@@ -110,21 +110,20 @@ const touchStartHandler = e => {
 };
 
 const touchMoveHandler = e => {
-  const touchDistanceTmp = Math.ceil(touchDistance);
-  touchDistance = Math.ceil(e.touches[0].clientX - touchStartX);
+  const touchDistanceTmp = Math.round(touchDistance);
+  touchDistance = Math.round(e.touches[0].clientX - touchStartX);
 
   if (touchDistance > 0) {
     transformStart = true;
   }
 
   if (transformStart) {
-    if (touchDistance > touchDistanceTmp) {
+    if (touchDistance > touchDistanceTmp && touchDistance > 0) {
       for (let i = touchDistanceTmp; i < touchDistance; i += 1) {
+        console.log(i);
         viewTransform.value = `translate3d(${i}px, 0, 0)`;
       }
     } else if (touchDistance > 0) {
-      console.log(touchDistanceTmp);
-      console.log(touchDistance);
       for (let j = touchDistanceTmp; j > touchDistance; j -= 1) {
         viewTransform.value = `translate3d(${j}px, 0, 0)`;
       }
@@ -142,11 +141,11 @@ const touchMoveHandler = e => {
 
 const touchEndHandler = e => {
   touchStart.value = false;
+  transformStart = false;
   if (touchDistance > 100) {
     messengerSettingsStore.$patch({
       isChatOpened: false,
     });
-    transformStart = false;
     viewTransform.value = 'translate3d(0, 0, 0)';
     // console.log(e);
   } else {
@@ -253,7 +252,7 @@ onMounted(async () => {
 
 
       &:not(.messenger-touch-start) {
-        transition: 300ms cubic-bezier(0.8, 1, 0.68, 1);
+        transition: .15s cubic-bezier(0.8, 1, 0.68, 1);
       }
 
       &:not(.messenger-main-opened) {
