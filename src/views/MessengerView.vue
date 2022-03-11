@@ -22,7 +22,7 @@
 
     <div
       class="messenger-main"
-      :class="{ 'messenger-main-opened': isChatOpened }"
+      :class="{ 'messenger-main-opened': isChatOpened, 'messenger-touch-start': touchStart }"
       @touchstart="touchStartHandler"
       @touchmove="touchMoveHandler"
       @touchend="touchEndHandler"
@@ -100,11 +100,13 @@ const sidebarScrollingHandler = e => {
 let touchStartX = 0;
 let touchDistance = 0;
 let touchYdifference = 0;
+const touchStart = ref(false);
 let transformStart = false;
 const viewTransform = ref('translate3d(0, 0, 0)');
 const touchStartHandler = e => {
   // console.log(e);
   touchStartX = e.touches[0].clientX;
+  touchStart.value = true;
 };
 
 const touchMoveHandler = e => {
@@ -139,7 +141,8 @@ const touchMoveHandler = e => {
 };
 
 const touchEndHandler = e => {
-  if (touchDistance > 200) {
+  touchStart.value = false;
+  if (touchDistance > 100) {
     messengerSettingsStore.$patch({
       isChatOpened: false,
     });
@@ -247,7 +250,11 @@ onMounted(async () => {
       right: 0;
       transform: v-bind('viewTransform');
       //transition: 10ms linear;
-      //transition: 300ms cubic-bezier(0.8, 1, 0.68, 1);
+
+
+      &:not(.messenger-touch-start) {
+        transition: 300ms cubic-bezier(0.8, 1, 0.68, 1);
+      }
 
       &:not(.messenger-main-opened) {
         transform: translate3d(100vw, 0, 0)
