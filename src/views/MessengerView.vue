@@ -23,6 +23,7 @@
     <div
       class="messenger-main"
       :class="{ 'messenger-main-opened': isChatOpened, 'messenger-touch-start': touchStart }"
+      :style="{ transform: viewTransform }"
       @touchstart="touchStartHandler"
       @touchmove="touchMoveHandler"
       @touchend="touchEndHandler"
@@ -102,7 +103,7 @@ let touchDistance = 0;
 let touchYdifference = 0;
 const touchStart = ref(false);
 let transformStart = false;
-const viewTransform = ref('translate3d(0, 0, 0)');
+const viewTransform = ref('translateX(0)');
 const touchStartHandler = e => {
   // console.log(e);
   touchStartX = e.touches[0].clientX;
@@ -119,37 +120,45 @@ const touchMoveHandler = e => {
 
   if (transformStart) {
     if (touchDistance > touchDistanceTmp && touchDistance > 0) {
-      for (let i = touchDistanceTmp; i < touchDistance; i += 0.25) {
-        console.log(i);
-        viewTransform.value = `translate3d(${i}px, 0, 0)`;
+      for (let i = touchDistanceTmp; i < touchDistance; i += 1) {
+        // console.log(i);
+        viewTransform.value = `translateX(${i}px)`;
       }
     } else if (touchDistance > 0) {
-      for (let j = touchDistanceTmp; j > touchDistance; j -= 0.25) {
-        viewTransform.value = `translate3d(${j}px, 0, 0)`;
+      for (let j = touchDistanceTmp; j > touchDistance; j -= 1) {
+        viewTransform.value = `translateX(${j}px)`;
       }
     } else {
-      viewTransform.value = 'translate3d(0, 0, 0)';
+      viewTransform.value = 'translateX(0)';
     }
   }
-
-
-  // {
-  //   viewTransform.value = 'translate3d(0, 0, 0)';
-  // }
-  // console.log(touchDistance);
 };
+
+// const touchMoveHandler = e => {
+//   const touchDistanceTmp = Math.round(touchDistance);
+//   touchDistance = Math.round(e.touches[0].clientX - touchStartX);
+//
+//   if (touchDistance > 0) {
+//     transformStart = true;
+//   }
+//
+//   if (touchDistance > 0) {
+//     console.log(touchDistance);
+//     viewTransform.value = `translateX(${touchDistance}px)`;
+//   }
+// };
 
 const touchEndHandler = e => {
   touchStart.value = false;
   transformStart = false;
-  if (touchDistance > 100) {
+  if (touchDistance > 200) {
     messengerSettingsStore.$patch({
       isChatOpened: false,
     });
-    viewTransform.value = 'translate3d(0, 0, 0)';
+    viewTransform.value = 'translateX(0)';
     // console.log(e);
   } else {
-    viewTransform.value = 'translate3d(0, 0, 0)';
+    viewTransform.value = 'translateX(0)';
   }
 };
 
@@ -247,16 +256,17 @@ onMounted(async () => {
       top: 0;
       bottom: 0;
       right: 0;
-      transform: v-bind('viewTransform');
-      //transition: 10ms linear;
+      animation-timing-function: linear;
+      //transition: transform 150ms linear;
 
 
       &:not(.messenger-touch-start) {
-        transition: .15s cubic-bezier(0.8, 1, 0.68, 1);
+        //transition: transform .2s cubic-bezier(0.8, 1, 0.68, 1);
+        transition: transform .2s linear;
       }
 
       &:not(.messenger-main-opened) {
-        transform: translate3d(100vw, 0, 0)
+        transform: translateX(100vw) !important;
       }
     }
   }
