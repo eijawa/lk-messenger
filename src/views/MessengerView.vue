@@ -20,8 +20,16 @@
       <div class="new-chat-popover"></div>
     </div>
 
-    <div class="messenger-main" :class="{ 'messenger-main-opened': isChatOpened }">
-      <router-view />
+    <div
+      class="messenger-main"
+      :class="{ 'messenger-main-opened': isChatOpened }"
+      @touchstart="touchStartHandler"
+      @touchmove="touchMoveHandler"
+      @touchend="touchEndHandler"
+      @touchcancel="touchEndHandler"
+    >
+      <v-button type="primary" @click="onClickButtonBackHandler">Назад</v-button>
+      <!--      <router-view />-->
     </div>
   </div>
 </template>
@@ -36,6 +44,7 @@ import SidebarHeader from '@/components/SidebarHeader.vue';
 import MessengerSearch from '@/components/MessengerSearch.vue';
 import ChatsList from '@/components/chat/ChatsList.vue';
 import NewChatButton from '@/components/NewChatButton.vue';
+import VButton from '@/components/kit/VButton.vue';
 import { SearchService } from '@/services/SearchService';
 
 const messengerSettingsStore = useMessengerSettingsStore();
@@ -77,9 +86,46 @@ const onSearch = async query => {
   }
 };
 
+const onClickButtonBackHandler = () => {
+  messengerSettingsStore.$patch({
+    isChatOpened: false,
+  });
+};
+
 const isSideBarScrolling = ref(false);
 const sidebarScrollingHandler = e => {
   isSideBarScrolling.value = e.target.scrollTop !== 0;
+};
+
+let touchStartX = 0;
+let touchDistance = 0;
+let touchYdifference = 0;
+const viewTransform = ref('translate3d(0, 0, 0)');
+const touchStartHandler = e => {
+  // console.log(e);
+  touchStartX = e.touches[0].clientX;
+
+};
+
+const touchMoveHandler = e => {
+  touchDistance = e.touches[0].clientX - touchStartX;
+  if (touchDistance > 0) {
+    viewTransform.value = `translate3d(${touchDistance}px, 0, 0)`;
+    // console.log(viewTransform.value);
+  }
+  // console.log(touchDistance);
+};
+
+const touchEndHandler = e => {
+  if (touchDistance > 200) {
+    messengerSettingsStore.$patch({
+      isChatOpened: false,
+    });
+    viewTransform.value = 'translate3d(0, 0, 0)';
+    // console.log(e);
+  } else {
+    viewTransform.value = 'translate3d(0, 0, 0)';
+  }
 };
 
 onMounted(async () => {
@@ -120,7 +166,7 @@ onMounted(async () => {
       position: fixed;
       left: 0;
       top: 0;
-      height: calc(var(--vh, 1vh)*100);
+      height: calc(var(--vh, 1vh) * 100);
     }
 
     .v-sidebar-header {
@@ -176,11 +222,11 @@ onMounted(async () => {
       top: 0;
       bottom: 0;
       right: 0;
-      transform: translate3d(0, 0, 0);
+      transform: v-bind('viewTransform');
       transition: 300ms cubic-bezier(0.8, 1, 0.68, 1);
 
       &:not(.messenger-main-opened) {
-        transform: translate3d(100vw, 0, 0);
+        transform: translate3d(100vw, 0, 0)
       }
     }
   }

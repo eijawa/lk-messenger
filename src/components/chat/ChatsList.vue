@@ -5,16 +5,16 @@
 
   <div v-else class="chats-list">
     <chats-list-item
-      v-for="c in chats"
-      :key="c.id"
-      :is-opened="openedChatId === c.id"
-      :chat="c"
-      @open="onOpenHandler"
+      v-for="chat in chats"
+      :key="chat.conversation.id"
+      :chat="chat"
+      @click="chatsItemClickHandler(chat.conversation.id)"
     ></chats-list-item>
   </div>
 </template>
 
 <script setup>
+import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useChatsStore } from '@/stores/chatsStore';
@@ -23,6 +23,7 @@ import ChatsListItem from '@/components/chat/ChatsListItem.vue';
 import VEmpty from '@/components/kit/VEmpty.vue';
 
 const chatsStore = useChatsStore();
+const messengerSettingsStore = useMessengerSettingsStore();
 const router = useRouter();
 
 const chats = computed(() => chatsStore.chats ?? []);
@@ -32,6 +33,12 @@ const openedChatId = ref(-1);
 const onOpenHandler = chatId => {
   openedChatId.value = chatId;
   router.push(`/chats/${chatId}`);
+};
+
+const chatsItemClickHandler = chatId => {
+  messengerSettingsStore.$patch({
+    isChatOpened: true,
+  });
 };
 </script>
 

@@ -1,12 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export const useMessengerSettingsStore = defineStore('messengerSettingsStore', {
-  state: () => {
-    const isChatOpened = ref(false);
+export const useMessengerSettingsStore = defineStore('messengerSettingsStore', () => {
+  const isChatOpened = ref(false);
 
-    return {
-      isChatOpened,
-    };
-  },
+  return {
+    isChatOpened,
+  };
 });
