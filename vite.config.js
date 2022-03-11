@@ -47,7 +47,7 @@ const claims = process.env.CLAIMS === 'true';
 const reload = process.env.RELOAD_SW === 'true';
 
 if (process.env.SW === 'true') {
-  pwaOptions.srcDir = 'src';
+  pwaOptions.srcDir = './';
   pwaOptions.filename = claims ? 'claims-sw.js' : 'prompt-sw.js';
   pwaOptions.strategies = 'injectManifest';
   pwaOptions.manifestname = 'PWA Inject Manifest';
@@ -65,6 +65,7 @@ if (reload) {
 
 export default defineConfig({
   publicDir: path.resolve(__dirname, 'public'),
+  root: 'src',
   build: {
     sourcemap: process.env.SOURCE_MAP === 'true',
     outDir: path.resolve(__dirname, 'dist'),
