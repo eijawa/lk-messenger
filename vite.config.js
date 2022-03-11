@@ -48,7 +48,7 @@ const reload = process.env.RELOAD_SW === 'true';
 
 if (process.env.SW === 'true') {
   pwaOptions.srcDir = 'src';
-  pwaOptions.filename = claims ? 'claims-sw.ts' : 'prompt-sw.ts';
+  pwaOptions.filename = claims ? 'claims-sw.js' : 'prompt-sw.js';
   pwaOptions.strategies = 'injectManifest';
   pwaOptions.manifestname = 'PWA Inject Manifest';
   pwaOptions.manifest.short_name = 'PWA Inject';
@@ -64,10 +64,9 @@ if (reload) {
 }
 
 export default defineConfig({
-  root: path.resolve(__dirname, 'src'),
   publicDir: path.resolve(__dirname, 'public'),
   build: {
-    sourcemap: process.env.SOURCE_MAP === 'false',
+    sourcemap: process.env.SOURCE_MAP === 'true',
     outDir: path.resolve(__dirname, 'dist'),
     rollupOptions: {
       input: {
