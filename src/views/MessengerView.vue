@@ -100,19 +100,41 @@ const sidebarScrollingHandler = e => {
 let touchStartX = 0;
 let touchDistance = 0;
 let touchYdifference = 0;
+let transformStart = false;
 const viewTransform = ref('translate3d(0, 0, 0)');
 const touchStartHandler = e => {
   // console.log(e);
   touchStartX = e.touches[0].clientX;
-
 };
 
 const touchMoveHandler = e => {
-  touchDistance = e.touches[0].clientX - touchStartX;
+  const touchDistanceTmp = Math.ceil(touchDistance);
+  touchDistance = Math.ceil(e.touches[0].clientX - touchStartX);
+
   if (touchDistance > 0) {
-    viewTransform.value = `translate3d(${touchDistance}px, 0, 0)`;
-    // console.log(viewTransform.value);
+    transformStart = true;
   }
+
+  if (transformStart) {
+    if (touchDistance > touchDistanceTmp) {
+      for (let i = touchDistanceTmp; i < touchDistance; i += 1) {
+        viewTransform.value = `translate3d(${i}px, 0, 0)`;
+      }
+    } else if (touchDistance > 0) {
+      console.log(touchDistanceTmp);
+      console.log(touchDistance);
+      for (let j = touchDistanceTmp; j > touchDistance; j -= 1) {
+        viewTransform.value = `translate3d(${j}px, 0, 0)`;
+      }
+    } else {
+      viewTransform.value = 'translate3d(0, 0, 0)';
+    }
+  }
+
+
+  // {
+  //   viewTransform.value = 'translate3d(0, 0, 0)';
+  // }
   // console.log(touchDistance);
 };
 
@@ -121,6 +143,7 @@ const touchEndHandler = e => {
     messengerSettingsStore.$patch({
       isChatOpened: false,
     });
+    transformStart = false;
     viewTransform.value = 'translate3d(0, 0, 0)';
     // console.log(e);
   } else {
@@ -223,7 +246,8 @@ onMounted(async () => {
       bottom: 0;
       right: 0;
       transform: v-bind('viewTransform');
-      transition: 300ms cubic-bezier(0.8, 1, 0.68, 1);
+      //transition: 10ms linear;
+      //transition: 300ms cubic-bezier(0.8, 1, 0.68, 1);
 
       &:not(.messenger-main-opened) {
         transform: translate3d(100vw, 0, 0)
