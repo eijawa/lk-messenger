@@ -119,12 +119,12 @@ const touchMoveHandler = e => {
 
   if (transformStart) {
     if (touchDistance > touchDistanceTmp && touchDistance > 0) {
-      for (let i = touchDistanceTmp; i < touchDistance; i += 1) {
+      for (let i = touchDistanceTmp; i < touchDistance; i += 0.25) {
         console.log(i);
         viewTransform.value = `translate3d(${i}px, 0, 0)`;
       }
     } else if (touchDistance > 0) {
-      for (let j = touchDistanceTmp; j > touchDistance; j -= 1) {
+      for (let j = touchDistanceTmp; j > touchDistance; j -= 0.25) {
         viewTransform.value = `translate3d(${j}px, 0, 0)`;
       }
     } else {
