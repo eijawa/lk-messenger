@@ -109,6 +109,7 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: relative;
 
     @media (min-width: 927px) {
       min-width: 360px;
