@@ -103,16 +103,26 @@ let touchDistance = 0;
 let touchYdifference = 0;
 const touchStart = ref(false);
 let transformStart = false;
+let dateStart = null;
+let touchStartPoint = null;
 const viewTransform = ref('translateX(0)');
 const touchStartHandler = e => {
   // console.log(e);
-  touchStartX = e.touches[0].clientX;
+  touchStartX = e.changedTouches[0].clientX;
   touchStart.value = true;
+
+  dateStart = Date.now();
+
+  touchStartPoint = e.changedTouches[0];
 };
 
 const touchMoveHandler = e => {
-  const touchDistanceTmp = Math.round(touchDistance);
+  const touchDistanceTmp = touchDistance;
   touchDistance = Math.round(e.touches[0].clientX - touchStartX);
+  //
+  // console.log(`%c${touchDistanceTmp}`, 'color: red');
+  // console.log(touchDistance);
+
 
   if (touchDistance > 0) {
     transformStart = true;
@@ -134,23 +144,17 @@ const touchMoveHandler = e => {
   }
 };
 
-// const touchMoveHandler = e => {
-//   const touchDistanceTmp = Math.round(touchDistance);
-//   touchDistance = Math.round(e.touches[0].clientX - touchStartX);
-//
-//   if (touchDistance > 0) {
-//     transformStart = true;
-//   }
-//
-//   if (touchDistance > 0) {
-//     console.log(touchDistance);
-//     viewTransform.value = `translateX(${touchDistance}px)`;
-//   }
-// };
 
 const touchEndHandler = e => {
   touchStart.value = false;
   transformStart = false;
+  const dateEnd = Date.now();
+  const distance = Math.sqrt((e.changedTouches[0].clientX - touchStartPoint.clientX) ** 2 + (e.changedTouches[0].clientY - touchStartPoint.clientY) ** 2);
+  console.log(distance);
+
+  const touchSpeed = distance / ();
+
+
   if (touchDistance > 200) {
     messengerSettingsStore.$patch({
       isChatOpened: false,
