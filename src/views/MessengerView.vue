@@ -326,17 +326,16 @@ onMounted(async () => {
     z-index: 1;
 
     background-color: #f0f2f5;
-    //background-color: #49d3d3;
-
-    &:not(.messenger-main-opened) {
-      transform: unset;
-    }
 
     .layout-touch-test {
       display: flex;
       flex-direction: column;
       width: 100%;
       overflow-y: scroll;
+    }
+
+    &:not(.messenger-main-opened) {
+      transform: unset;
     }
 
     @media (max-width: 926px) {
@@ -352,6 +351,12 @@ onMounted(async () => {
       &:not(.messenger-touch-start) {
         //transition: transform .2s cubic-bezier(0.8, 1, 0.68, 1);
         transition: transform .12s linear;
+      }
+
+      &.messenger-touch-start {
+        .layout-touch-test {
+          touch-action: none;
+        }
       }
 
       &:not(.messenger-main-opened) {
