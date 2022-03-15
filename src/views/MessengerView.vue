@@ -176,7 +176,7 @@ const touchMoveHandler = e => {
 
   if (!isSecondTouch) {
     isSecondTouch = true;
-    if (touchDistanceX > 1 && Math.abs(e.touches[0].clientY - touchStartPoint.clientY) < 3) {
+    if (touchDistanceX > 1 && Math.abs(e.touches[0].clientY - touchStartPoint.clientY) < 6) {
       isXTouch = true;
     }
   }
