@@ -99,7 +99,7 @@ const sidebarScrollingHandler = e => {
 };
 
 let touchStartX = 0;
-let touchDistance = 0;
+let touchDistanceX = 0;
 let touchYdifference = 0;
 const touchStart = ref(false);
 let transformStart = false;
@@ -117,25 +117,25 @@ const touchStartHandler = e => {
 };
 
 const touchMoveHandler = e => {
-  const touchDistanceTmp = touchDistance;
-  touchDistance = Math.round(e.touches[0].clientX - touchStartX);
+  const touchDistanceTmp = touchDistanceX;
+  touchDistanceX = Math.round(e.touches[0].clientX - touchStartX);
   //
   // console.log(`%c${touchDistanceTmp}`, 'color: red');
   // console.log(touchDistance);
 
 
-  if (touchDistance > 0) {
+  if (touchDistanceX > 0) {
     transformStart = true;
   }
 
   if (transformStart) {
-    if (touchDistance > touchDistanceTmp && touchDistance > 0) {
-      for (let i = touchDistanceTmp; i < touchDistance; i += 1) {
+    if (touchDistanceX > touchDistanceTmp && touchDistanceX > 0) {
+      for (let i = touchDistanceTmp; i < touchDistanceX; i += 1) {
         // console.log(i);
         viewTransform.value = `translateX(${i}px)`;
       }
-    } else if (touchDistance > 0) {
-      for (let j = touchDistanceTmp; j > touchDistance; j -= 1) {
+    } else if (touchDistanceX > 0) {
+      for (let j = touchDistanceTmp; j > touchDistanceX; j -= 1) {
         viewTransform.value = `translateX(${j}px)`;
       }
     } else {
@@ -149,13 +149,19 @@ const touchEndHandler = e => {
   touchStart.value = false;
   transformStart = false;
   const dateEnd = Date.now();
-  const distance = Math.sqrt((e.changedTouches[0].clientX - touchStartPoint.clientX) ** 2 + (e.changedTouches[0].clientY - touchStartPoint.clientY) ** 2);
-  console.log(distance);
+  const touchDistance = Math.sqrt((e.changedTouches[0].clientX - touchStartPoint.clientX) ** 2 + (e.changedTouches[0].clientY - touchStartPoint.clientY) ** 2);
+  // console.log(distance);
 
-  const touchSpeed = distance / ();
+  // const dateDifference = dateEnd.getTime() - dateStart.getTime();
+
+  const touchSeconds = (dateEnd - dateStart) / 1000;
+  const touchSpeed = touchDistance / touchSeconds;
+
+  console.log(`%c${touchDistanceX}`, 'color: red');
+  console.log(touchSpeed);
 
 
-  if (touchDistance > 200) {
+  if (touchDistanceX > 140 || (touchDistanceX > 50 && touchSpeed > 1700)) {
     messengerSettingsStore.$patch({
       isChatOpened: false,
     });
@@ -266,7 +272,7 @@ onMounted(async () => {
 
       &:not(.messenger-touch-start) {
         //transition: transform .2s cubic-bezier(0.8, 1, 0.68, 1);
-        transition: transform .2s linear;
+        transition: transform .12s linear;
       }
 
       &:not(.messenger-main-opened) {
