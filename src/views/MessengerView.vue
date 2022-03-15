@@ -30,6 +30,12 @@
       @touchcancel="touchEndHandler"
     >
       <v-button type="primary" @click="onClickButtonBackHandler">Назад</v-button>
+      <div style="margin-top: 5rem">
+        <h3>Touch distance: {{ touchDistanceRef }}</h3>
+        <h3>Touch seconds: {{ touchSecondsRef }}</h3>
+        <h3>Touch distanceX: {{ touchDistanceXRef }}</h3>
+        <h3>Touch speed: {{ touchSpeedRef }}</h3>
+      </div>
       <!--      <router-view />-->
     </div>
   </div>
@@ -145,6 +151,11 @@ const touchMoveHandler = e => {
 };
 
 
+
+const touchDistanceRef = ref(null);
+const touchSecondsRef = ref(null);
+const touchDistanceXRef = ref(null);
+const touchSpeedRef = ref(null);
 const touchEndHandler = e => {
   touchStart.value = false;
   transformStart = false;
@@ -160,8 +171,13 @@ const touchEndHandler = e => {
   console.log(`%c${touchDistanceX}`, 'color: red');
   console.log(touchSpeed);
 
+  touchDistanceRef.value = touchDistance;
+  touchSecondsRef.value = touchSeconds;
+  touchDistanceXRef.value = touchDistanceX;
+  touchSpeedRef.value = touchSpeed;
 
-  if (touchDistanceX > 140 || (touchDistanceX > 50 && touchSpeed > 1700)) {
+
+  if (touchDistanceX > 140 || (touchDistanceX > 50 && touchSpeed > 1499)) {
     messengerSettingsStore.$patch({
       isChatOpened: false,
     });
