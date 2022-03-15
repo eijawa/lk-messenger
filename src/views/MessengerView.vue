@@ -350,7 +350,7 @@ onMounted(async () => {
 
       &:not(.messenger-touch-start) {
         //transition: transform .2s cubic-bezier(0.8, 1, 0.68, 1);
-        transition: transform .12s linear;
+        transition: transform .09s linear;
       }
 
       &.messenger-touch-start {
