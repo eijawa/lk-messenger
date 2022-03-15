@@ -29,12 +29,41 @@
       @touchend="touchEndHandler"
       @touchcancel="touchEndHandler"
     >
-      <v-button type="primary" @click="onClickButtonBackHandler">Назад</v-button>
-      <div style="margin-top: 5rem">
-        <h3>Touch distance: {{ touchDistanceRef }}</h3>
-        <h3>Touch seconds: {{ touchSecondsRef }}</h3>
-        <h3>Touch distanceX: {{ touchDistanceXRef }}</h3>
-        <h3>Touch speed: {{ touchSpeedRef }}</h3>
+      <div class="layout-touch-test">
+        <v-button type="primary" @click="onClickButtonBackHandler">Назад</v-button>
+        <div style="margin-top: 5rem">
+          <h3>Transform start: {{ transformStartRef }}</h3>
+          <h3>Touch distance: {{ touchDistanceRef }}</h3>
+          <h3>Touch seconds: {{ touchSecondsRef }}</h3>
+          <h3>Touch distanceX: {{ touchDistanceXRef }}</h3>
+          <h3>Touch speed: {{ touchSpeedRef }}</h3>
+        </div>
+        <div>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+        </div>
       </div>
       <!--      <router-view />-->
     </div>
@@ -104,6 +133,11 @@ const sidebarScrollingHandler = e => {
   isSideBarScrolling.value = e.target.scrollTop !== 0;
 };
 
+let touchStartValue = {
+  x: 0,
+  y: 0,
+};
+
 let touchStartX = 0;
 let touchDistanceX = 0;
 let touchYdifference = 0;
@@ -112,14 +146,23 @@ let transformStart = false;
 let dateStart = null;
 let touchStartPoint = null;
 const viewTransform = ref('translateX(0)');
+
+const transformStartRef = ref(null);
+
+let isSecondTouch = false;
+let isXTouch = false;
 const touchStartHandler = e => {
   // console.log(e);
+
+  // touchStart.x
   touchStartX = e.changedTouches[0].clientX;
   touchStart.value = true;
 
   dateStart = Date.now();
 
   touchStartPoint = e.changedTouches[0];
+  transformStart = false;
+  transformStartRef.value = false;
 };
 
 const touchMoveHandler = e => {
@@ -129,12 +172,24 @@ const touchMoveHandler = e => {
   // console.log(`%c${touchDistanceTmp}`, 'color: red');
   // console.log(touchDistance);
 
+  // console.log(touchStartPoint);
+  // console.log(e);
 
-  if (touchDistanceX > 0) {
-    transformStart = true;
+  if (!isSecondTouch) {
+    isSecondTouch = true;
+    if (touchDistanceX > 2 && Math.abs(e.touches[0].clientY - touchStartPoint.clientY) < 2) {
+      isXTouch = true;
+    }
   }
 
-  if (transformStart) {
+  if (touchDistanceX > 0 && isXTouch) {
+    transformStart = true;
+    transformStartRef.value = true;
+  }
+
+
+
+  if (transformStart && isXTouch) {
     if (touchDistanceX > touchDistanceTmp && touchDistanceX > 0) {
       for (let i = touchDistanceTmp; i < touchDistanceX; i += 1) {
         // console.log(i);
@@ -168,8 +223,8 @@ const touchEndHandler = e => {
   const touchSeconds = (dateEnd - dateStart) / 1000;
   const touchSpeed = touchDistance / touchSeconds;
 
-  console.log(`%c${touchDistanceX}`, 'color: red');
-  console.log(touchSpeed);
+  // console.log(`%c${touchDistanceX}`, 'color: red');
+  // console.log(touchSpeed);
 
   touchDistanceRef.value = touchDistance;
   touchSecondsRef.value = touchSeconds;
@@ -177,15 +232,15 @@ const touchEndHandler = e => {
   touchSpeedRef.value = touchSpeed;
 
 
-  if (touchDistanceX > 140 || (touchDistanceX > 30 && touchSpeed > 999)) {
+  if (transformStart && (touchDistanceX > 140 || (touchDistanceX > 30 && touchSpeed > 999))) {
     messengerSettingsStore.$patch({
       isChatOpened: false,
     });
-    viewTransform.value = 'translateX(0)';
-    // console.log(e);
-  } else {
-    viewTransform.value = 'translateX(0)';
   }
+
+  isSecondTouch = false;
+  isXTouch = false;
+  viewTransform.value = 'translateX(0)';
 };
 
 onMounted(async () => {
@@ -274,6 +329,13 @@ onMounted(async () => {
 
     &:not(.messenger-main-opened) {
       transform: unset;
+    }
+
+    .layout-touch-test {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      overflow-y: scroll;
     }
 
     @media (max-width: 926px) {
