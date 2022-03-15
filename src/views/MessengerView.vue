@@ -156,7 +156,6 @@ const touchStartHandler = e => {
 
   // touchStart.x
   touchStartX = e.changedTouches[0].clientX;
-  touchStart.value = true;
 
   dateStart = Date.now();
 
@@ -185,6 +184,7 @@ const touchMoveHandler = e => {
   if (touchDistanceX > 0 && isXTouch) {
     transformStart = true;
     transformStartRef.value = true;
+    touchStart.value = true;
   }
 
 
