@@ -322,6 +322,7 @@ onMounted(async () => {
     position: relative;
     min-width: 0;
     height: 100%;
+    width: 100%;
     z-index: 1;
 
     background-color: #f0f2f5;
@@ -341,10 +342,9 @@ onMounted(async () => {
       position: fixed;
       left: 0;
       top: 0;
-      bottom: 0;
-      right: 0;
       height: calc(var(--vh, 1vh) * 100);
       animation-timing-function: linear;
+      overflow: hidden;
       //transition: transform 150ms linear;
 
 
