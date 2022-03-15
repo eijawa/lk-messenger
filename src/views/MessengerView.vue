@@ -177,7 +177,7 @@ const touchMoveHandler = e => {
 
   if (!isSecondTouch) {
     isSecondTouch = true;
-    if (touchDistanceX > 2 && Math.abs(e.touches[0].clientY - touchStartPoint.clientY) < 2) {
+    if (touchDistanceX > 1 && Math.abs(e.touches[0].clientY - touchStartPoint.clientY) < 3) {
       isXTouch = true;
     }
   }
@@ -356,6 +356,7 @@ onMounted(async () => {
       &.messenger-touch-start {
         .layout-touch-test {
           touch-action: none;
+          overflow: hidden;
         }
       }
 
