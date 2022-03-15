@@ -192,7 +192,6 @@ const touchMoveHandler = e => {
   if (transformStart && isXTouch) {
     if (touchDistanceX > touchDistanceTmp && touchDistanceX > 0) {
       for (let i = touchDistanceTmp; i < touchDistanceX; i += 1) {
-        // console.log(i);
         viewTransform.value = `translateX(${i}px)`;
       }
     } else if (touchDistanceX > 0) {
@@ -344,6 +343,7 @@ onMounted(async () => {
       top: 0;
       bottom: 0;
       right: 0;
+      height: calc(var(--vh, 1vh) * 100);
       animation-timing-function: linear;
       //transition: transform 150ms linear;
 
