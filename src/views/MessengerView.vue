@@ -232,7 +232,7 @@ const touchEndHandler = e => {
   transformStartRef.value = false;
 
 
-  if (isXTouch && (touchDistanceX > 140 || (touchDistanceX > 30 && touchSpeed > 999))) {
+  if (isXTouch && (touchDistanceX > 140 || (touchDistanceX > 30 && touchSpeed > 599))) {
     messengerSettingsStore.$patch({
       isChatOpened: false,
     });
