@@ -176,7 +176,7 @@ const touchMoveHandler = e => {
 
   if (!isSecondTouch) {
     isSecondTouch = true;
-    if (touchDistanceX > 1 && Math.abs(e.touches[0].clientY - touchStartPoint.clientY) < 6) {
+    if (touchDistanceX > 1 && Math.abs(e.touches[0].clientY - touchStartPoint.clientY) < 7) {
       isXTouch = true;
     }
   }
@@ -232,7 +232,7 @@ const touchEndHandler = e => {
   transformStartRef.value = false;
 
 
-  if (isXTouch && (touchDistanceX > 140 || (touchDistanceX > 30 && touchSpeed > 599))) {
+  if (isXTouch && (touchDistanceX > 140 || (touchDistanceX > 30 && touchSpeed > 549))) {
     messengerSettingsStore.$patch({
       isChatOpened: false,
     });
