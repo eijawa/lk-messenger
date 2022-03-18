@@ -1,13 +1,15 @@
 <template>
   <div
     class="layout-swiping"
-    :class="{ 'layout-swiping-opened': props.isOpened, 'layout-swiping-touch-start': isXTouch }"
+    :class="[{ 'layout-swiping-opened': props.isOpened, 'layout-swiping-touch-start': isXTouch }, props.standingStyle]"
     :style="{ transform: viewTransform }"
     @touchstart.passive="touchStartHandler"
     @touchmove.passive="touchMoveHandler"
     @touchend="touchEndHandler"
     @touchcancel="touchEndHandler">
-    <slot name="default" />
+    <div class="layout-swiping-content">
+      <slot name="default" />
+    </div>
   </div>
 </template>
 
@@ -18,6 +20,10 @@ const props = defineProps({
   isOpened: {
     type: Boolean,
     required: true,
+  },
+  standingStyle: {
+    type: String,
+    default: 'default',
   },
 });
 
@@ -86,25 +92,46 @@ const touchEndHandler = e => {
 </script>
 
 <style lang="scss" scoped>
-.layout-swiping{
+.layout-swiping {
   display: flex;
   position: relative;
   min-width: 0;
   height: 100%;
   width: 100%;
-  z-index: 1;
 
-  background-color: #f0f2f5;
-
-  .layout-touch-test {
-    display: flex;
-    flex-direction: column;
+  .layout-swiping-content {
     width: 100%;
-    overflow-y: scroll;
+    height: 100%;
+    overflow: auto;
   }
 
   &:not(.layout-swiping-opened) {
     transform: unset;
+  }
+
+  &.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: calc(var(--vh, 1vh) * 100);
+    animation-timing-function: linear;
+    overflow: hidden;
+
+
+    &:not(.layout-swiping-touch-start) {
+      transition: transform .15s linear;
+    }
+
+    &.layout-swiping-touch-start {
+      .layout-swiping-content {
+        touch-action: none;
+        overflow: hidden;
+      }
+    }
+
+    &:not(.layout-swiping-opened) {
+      transform: translateX(100vw) !important;
+    }
   }
 
   @media (max-width: 926px) {
@@ -120,7 +147,7 @@ const touchEndHandler = e => {
     }
 
     &.layout-swiping-touch-start {
-      .layout-touch-test {
+      .layout-swiping-content {
         touch-action: none;
         overflow: hidden;
       }

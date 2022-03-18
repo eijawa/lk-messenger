@@ -20,9 +20,13 @@
       <div class="new-chat-popover"></div>
     </div>
 
-    <v-layout-swiping :is-opened="isChatOpened" @close="onCloseHandler">
-      <div class="layout-touch-test">
+    <v-layout-swiping
+      :is-opened="isChatOpened"
+      class="middle-column"
+      @close="onCloseHandler">
+      <div class="middle-column-content">
         <v-button type="primary" @click="onClickButtonBackHandler">Назад</v-button>
+        <v-button type="primary" @click="onClickButtonMoreInfo">Информация</v-button>
         <div>
           <h4>Lorem</h4>
           <h4>Lorem</h4>
@@ -31,6 +35,63 @@
           <h4>Lorem</h4>
           <h4>Lorem</h4>
           <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+          <h4>Lorem</h4>
+        </div>
+      </div>
+    </v-layout-swiping>
+
+    <v-layout-swiping
+      :is-opened="isMoreInfoOpened"
+      standing-style="modal"
+      class="left-column"
+      @close="onCloseMoreInfoHandler"
+    >
+      <div class="left-column-content">
+        <v-button type="primary" @click="onCloseMoreInfoHandler">Назад</v-button>
+        <div>
           <h4>Lorem</h4>
           <h4>Lorem</h4>
           <h4>Lorem</h4>
@@ -89,7 +150,6 @@ const searchData = ref({
 const isSearchActive = ref(false);
 
 
-
 const searchStateChange = async state => {
   isSearchActive.value = state;
   searchData.value = {
@@ -121,6 +181,16 @@ const onClickButtonBackHandler = () => {
   });
 };
 
+const isMoreInfoOpened = ref(false);
+const messengerGridStyle = computed(() => isMoreInfoOpened.value ? 'auto 2.5fr 1fr' : 'auto 1fr');
+const onClickButtonMoreInfo = () => {
+  isMoreInfoOpened.value = true;
+};
+
+const onCloseMoreInfoHandler = () => {
+  isMoreInfoOpened.value = false;
+};
+
 const isSideBarScrolling = ref(false);
 const sidebarScrollingHandler = e => {
   isSideBarScrolling.value = e.target.scrollTop !== 0;
@@ -135,17 +205,17 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .messenger {
-  height: 100%;
+  --left-column-width: 360px;
+  --right-column-width: 25vw;
+
+  height: calc(var(--vh, 1vh) * 100);
   overflow: hidden;
 
   @media (min-width: 927px) {
+    height: 100%;
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: 100%;
-  }
-
-  @media (max-width: 926px) {
-    height: calc(var(--vh, 1vh) * 100);
   }
 
   .messenger-sidebar {
@@ -157,8 +227,8 @@ onMounted(async () => {
     position: relative;
 
     @media (min-width: 927px) {
-      min-width: 360px;
-      max-width: 360px;
+      min-width: var(--left-column-width);
+      max-width:  var(--left-column-width);
     }
 
     @media (max-width: 926px) {
@@ -199,6 +269,47 @@ onMounted(async () => {
         }
       }
     }
+  }
+
+  .middle-column {
+    background-color: #ffffff;
+    width: 100%;
+    z-index: 1;
+
+    .middle-column-content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+
+  .left-column {
+    background-color: #fb8c00;
+    width: 100%;
+    z-index: 2;
+    left: unset;
+    right: 0;
+
+    @media (min-width: 927px) {
+      width: calc(100% - var(--left-column-width));
+    }
+
+    @media (min-width: 1300px) {
+      width: var(--right-column-width);
+    }
+
+    .left-column-content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+
+
+  // TODO: Доделать анимации появления MoreInfo
+
+  .left-column:hover ~ .middle-column {
+    background-color: #3c7940;
   }
 }
 </style>
