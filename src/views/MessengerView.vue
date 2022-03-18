@@ -20,7 +20,7 @@
       <div class="new-chat-popover"></div>
     </div>
 
-    <v-layout-swiping>
+    <v-layout-swiping :is-opened="isChatOpened" @close="onCloseHandler">
       <div class="layout-touch-test">
         <v-button type="primary" @click="onClickButtonBackHandler">Назад</v-button>
         <div>
@@ -71,6 +71,14 @@ import { SearchService } from '@/services/SearchService';
 const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
 const searchService = new SearchService();
+
+const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
+
+const onCloseHandler = () => {
+  messengerSettingsStore.$patch({
+    isChatOpened: false,
+  });
+};
 
 const searchData = ref({
   users: [],
