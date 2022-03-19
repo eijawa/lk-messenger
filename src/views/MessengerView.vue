@@ -315,6 +315,7 @@ onMounted(async () => {
 
     @media (min-width: 1300px) {
       width: var(--right-column-width);
+
       transition: width .4s ease-out;
     }
 
