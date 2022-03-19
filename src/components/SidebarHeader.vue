@@ -1,32 +1,46 @@
 <template>
   <div class="sidebar-header">
-    <div class="sibebar-header-action">
-      <v-button
-        type="default"
-        quaternary
-        circle
-        @click="sideBarActionClickHandler"
-      >
-        <template #icon>
-          <Transition name="menu-icon">
-            <v-icon
-              v-show="!isSearchActive"
-              class="sidebar-header-action-icon"
-              :src="MenuIcon"
-              name="menu"
-              :fill="sideBarActionFillColor" />
-          </Transition>
-          <Transition name="back-icon">
-            <v-icon
-              v-show="isSearchActive"
-              class="sidebar-header-action-icon"
-              :src="BackIcon"
-              name="back"
-              :fill="sideBarActionFillColor" />
-          </Transition>
-        </template>
-      </v-button>
-    </div>
+    <v-popover
+      :is-show="isShow"
+      placement="bottom-start"
+      to=".sidebar-header-menu-popover">
+      <template #trigger>
+        <div class="sibebar-header-action">
+          <v-button
+            type="default"
+            quaternary
+            circle
+            @click="onSideBarActionClickHandler"
+          >
+            <template #icon>
+              <Transition name="menu-icon">
+                <v-icon
+                  v-show="!isSearchActive"
+                  class="sidebar-header-action-icon"
+                  :src="MenuIcon"
+                  name="menu"
+                  :fill="sideBarActionFillColor" />
+              </Transition>
+              <Transition name="back-icon">
+                <v-icon
+                  v-show="isSearchActive"
+                  class="sidebar-header-action-icon"
+                  :src="BackIcon"
+                  name="back"
+                  :fill="sideBarActionFillColor" />
+              </Transition>
+            </template>
+          </v-button>
+        </div>
+      </template>
+      <div class="header-menu">
+        <v-menu-button>Настройки</v-menu-button>
+        <v-menu-button>Настройки</v-menu-button>
+        <v-menu-button>Настройки</v-menu-button>
+        <v-menu-button>Настройки</v-menu-button>
+        <v-menu-button>Настройки</v-menu-button>
+      </div>
+    </v-popover>
 
     <v-input
       v-model:value="searchQuery"
@@ -34,8 +48,8 @@
       style-type="search"
       round
       @input="onSearch"
-      @focus="onFocus"
-      @focusout="onFocusOut"
+      @focus="onFocusHandler"
+      @focusout="onFocusOutHandler"
     >
       <template #prefix>
         <v-icon
@@ -45,14 +59,15 @@
         />
       </template>
     </v-input>
-    <div class="sidebar-header-menu-popover"></div>
   </div>
 </template>
 
 <script setup>
 import { computed, ref } from 'vue';
+import VPopover from '@/components/kit/VPopover.vue';
 import VInput from '@/components/kit/VInput.vue';
 import VButton from '@/components/kit/VButton.vue';
+import VMenuButton from '@/components/kit/VMenuButton.vue';
 import VIcon from '@/components/kit/VIcon.vue';
 import MenuIcon from '@/assets/icons/menu.svg?url';
 import BackIcon from '@/assets/icons/back.svg?url';
@@ -76,27 +91,27 @@ const searchFillColor = ref(searchFillColorDefault);
 
 const sideBarActionFillColor = rootStyle.getPropertyValue('--color-text-secondary');
 
-const onFocus = () => {
+const onFocusHandler = () => {
   isSearchActive.value = true;
   searchFillColor.value = searchFillColorActive;
   emit('searchFocus');
 };
 
-const onFocusOut = () => {
+const onFocusOutHandler = () => {
   searchFillColor.value = searchFillColorDefault;
 };
 
-const menuClickHandler = () => {
-  //
+const isShow = ref(false);
+const onMenuClickHandler = () => {
+  isShow.value = !isShow.value;
 };
-
-const backClickHandler = () => {
+const onBackClickHandler = () => {
   searchQuery.value = '';
   isSearchActive.value = false;
   emit('backClick');
 };
 
-const sideBarActionClickHandler = computed(() => (isSearchActive.value ? backClickHandler : menuClickHandler));
+const onSideBarActionClickHandler = computed(() => (isSearchActive.value ? onBackClickHandler : onMenuClickHandler));
 </script>
 
 <style lang="scss" scoped>
@@ -157,5 +172,9 @@ const sideBarActionClickHandler = computed(() => (isSearchActive.value ? backCli
       }
     }
   }
+}
+
+.header-menu {
+  width: 270px;
 }
 </style>

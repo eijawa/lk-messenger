@@ -8,6 +8,7 @@
         @back-click="searchStateChange(false)"
         @search="onSearch"
       />
+      <div class="sidebar-header-menu-popover"></div>
 
       <div class="sidebar-list">
         <n-scrollbar class="sidebar-scrollbar" @scroll="sidebarScrollingHandler">

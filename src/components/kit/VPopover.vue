@@ -3,9 +3,9 @@
     class="v-popover"
     trigger="click"
     :show="props.isShow"
-    placement="top-end"
+    :placement="props.placement"
     :show-arrow="false"
-    to=".new-chat-popover"
+    :to="props.to"
     :on-clickoutside="onClickOutsideHandler"
   >
     <template #trigger>
@@ -21,6 +21,14 @@ import { NPopover } from 'naive-ui';
 const props = defineProps({
   isShow: {
     type: Boolean,
+    required: true,
+  },
+  to: {
+    type: String,
+    required: true,
+  },
+  placement: {
+    type: String,
     required: true,
   },
 });

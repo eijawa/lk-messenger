@@ -1,5 +1,9 @@
 <template>
-  <v-popover :is-show="isShow" @click-outside="onClickOutsideHandler">
+  <v-popover
+    :is-show="isShow"
+    placement="top-end"
+    to=".new-chat-popover"
+    @click-outside="onClickOutsideHandler">
     <template #trigger>
       <div class="new-chat-button-trigger">
         <v-button
