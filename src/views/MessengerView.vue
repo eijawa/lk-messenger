@@ -278,7 +278,8 @@ onMounted(async () => {
     z-index: 1;
 
     @media (min-width: 1300px) {
-      transition: width .4s ease-out;
+      transition: width .2s ease-out;
+
       &.collapse {
         width: calc(100% - var(--right-column-width));
       }
@@ -315,8 +316,6 @@ onMounted(async () => {
 
     @media (min-width: 1300px) {
       width: var(--right-column-width);
-
-      transition: width .4s ease-out;
     }
 
     .left-column-content {

@@ -54,7 +54,6 @@ const touchMoveHandler = e => {
     }
   }
 
-
   if (isXTouch.value) {
     if (touchDistanceX > touchDistanceTmp && touchDistanceX > 0) {
       for (let i = touchDistanceTmp; i < touchDistanceX; i += 1) {
