@@ -23,6 +23,7 @@
     <v-layout-swiping
       :is-opened="isChatOpened"
       class="middle-column"
+      :class="[middleColumnCollapse]"
       @close="onCloseHandler">
       <div class="middle-column-content">
         <v-button type="primary" @click="onClickButtonBackHandler">Назад</v-button>
@@ -86,7 +87,7 @@
     <v-layout-swiping
       :is-opened="isMoreInfoOpened"
       standing-style="modal"
-      class="left-column"
+      class="left-column modal"
       @close="onCloseMoreInfoHandler"
     >
       <div class="left-column-content">
@@ -182,7 +183,7 @@ const onClickButtonBackHandler = () => {
 };
 
 const isMoreInfoOpened = ref(false);
-const messengerGridStyle = computed(() => isMoreInfoOpened.value ? 'auto 2.5fr 1fr' : 'auto 1fr');
+const middleColumnCollapse = computed(() => isMoreInfoOpened.value ? 'collapse' : '');
 const onClickButtonMoreInfo = () => {
   isMoreInfoOpened.value = true;
 };
@@ -276,6 +277,13 @@ onMounted(async () => {
     width: 100%;
     z-index: 1;
 
+    @media (min-width: 1300px) {
+      transition: width .4s ease-out;
+      &.collapse {
+        width: calc(100% - var(--right-column-width));
+      }
+    }
+
     .middle-column-content {
       display: flex;
       flex-direction: column;
@@ -288,14 +296,27 @@ onMounted(async () => {
     width: 100%;
     z-index: 2;
     left: unset;
-    right: 0;
+
+    &.modal {
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: calc(var(--vh, 1vh) * 100);
+      overflow: hidden;
+
+      &:not(.layout-swiping-opened) {
+        width: 0;
+      }
+    }
 
     @media (min-width: 927px) {
       width: calc(100% - var(--left-column-width));
+      transition: width .2s ease-out;
     }
 
     @media (min-width: 1300px) {
       width: var(--right-column-width);
+      transition: width .4s ease-out;
     }
 
     .left-column-content {
@@ -303,13 +324,6 @@ onMounted(async () => {
       flex-direction: column;
       width: 100%;
     }
-  }
-
-
-  // TODO: Доделать анимации появления MoreInfo
-
-  .left-column:hover ~ .middle-column {
-    background-color: #3c7940;
   }
 }
 </style>
