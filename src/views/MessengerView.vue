@@ -295,21 +295,20 @@ onMounted(async () => {
     background-color: #fb8c00;
     width: 100%;
     z-index: 2;
-    left: unset;
-
-    &.modal {
-      position: fixed;
-      right: 0;
-      top: 0;
-      height: calc(var(--vh, 1vh) * 100);
-      overflow: hidden;
-
-      &:not(.layout-swiping-opened) {
-        width: 0;
-      }
-    }
 
     @media (min-width: 927px) {
+      &.modal {
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: calc(var(--vh, 1vh) * 100);
+        overflow: hidden;
+
+        &:not(.layout-swiping-opened) {
+          width: 0;
+        }
+      }
+
       width: calc(100% - var(--left-column-width));
       transition: width .2s ease-out;
     }
