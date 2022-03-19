@@ -45,6 +45,7 @@
         />
       </template>
     </v-input>
+    <div class="sidebar-header-menu-popover"></div>
   </div>
 </template>
 

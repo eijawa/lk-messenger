@@ -127,7 +127,7 @@ import MessengerSearch from '@/components/MessengerSearch.vue';
 import ChatsList from '@/components/chat/ChatsList.vue';
 import NewChatButton from '@/components/NewChatButton.vue';
 import VButton from '@/components/kit/VButton.vue';
-import VLayoutSwiping from '@/components/VLayoutSwiping.vue';
+import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
 import { SearchService } from '@/services/SearchService';
 
 const messengerSettingsStore = useMessengerSettingsStore();

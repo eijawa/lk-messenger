@@ -59,7 +59,7 @@
 <script setup>
 import { ref } from 'vue';
 
-import VPopover from '@/components/VPopover.vue';
+import VPopover from '@/components/kit/VPopover.vue';
 import VButton from '@/components/kit/VButton.vue';
 import VIcon from '@/components/kit/VIcon.vue';
 
