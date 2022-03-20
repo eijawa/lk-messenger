@@ -37,11 +37,50 @@
         </div>
       </template>
       <div class="header-menu">
-        <v-menu-button>Настройки</v-menu-button>
-        <v-menu-button>Настройки</v-menu-button>
-        <v-menu-button>Настройки</v-menu-button>
-        <v-menu-button>Настройки</v-menu-button>
-        <v-menu-button>Настройки</v-menu-button>
+        <v-menu-button size="small" font-size="0.875">
+          <template #icon>
+            <v-icon
+              :src="SettingsIcon"
+              name="settings"
+              :size="20"
+              :fill="sideBarActionFillColor"
+            />
+          </template>
+          Настройки
+        </v-menu-button>
+        <v-menu-button size="small" font-size="0.875">
+          <template #icon>
+            <v-icon
+              :src="SettingsIcon"
+              name="settings"
+              :size="20"
+              :fill="sideBarActionFillColor"
+            />
+          </template>
+          Настройки
+        </v-menu-button>
+        <v-menu-button size="small" font-size="0.875">
+          <template #icon>
+            <v-icon
+              :src="SettingsIcon"
+              name="settings"
+              :size="20"
+              :fill="sideBarActionFillColor"
+            />
+          </template>
+          Настройки
+        </v-menu-button>
+        <v-menu-button size="small" font-size="0.875">
+          <template #icon>
+            <v-icon
+              :src="SettingsIcon"
+              name="settings"
+              :size="20"
+              :fill="sideBarActionFillColor"
+            />
+          </template>
+          Настройки
+        </v-menu-button>
       </div>
     </v-popover>
 
@@ -75,6 +114,7 @@ import VIcon from '@/components/kit/VIcon.vue';
 import MenuIcon from '@/assets/icons/menu.svg?url';
 import BackIcon from '@/assets/icons/back.svg?url';
 import SearchIcon from '@/assets/icons/search.svg?url';
+import SettingsIcon from '@/assets/icons/settings.svg?url';
 
 const emit = defineEmits(['searchFocus', 'backClick', 'search']);
 
@@ -128,7 +168,6 @@ const onSideBarActionClickHandler = computed(() => (isSearchActive.value ? onBac
 .sidebar-header {
   width: 100%;
   padding: 0.5rem 1rem 0.5rem 0.5rem;
-  background-color: #fff;
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -186,5 +225,8 @@ const onSideBarActionClickHandler = computed(() => (isSearchActive.value ? onBac
 
 .header-menu {
   width: 270px;
+  padding: 0.25rem 0;
+  display: flex;
+  flex-direction: column;
 }
 </style>

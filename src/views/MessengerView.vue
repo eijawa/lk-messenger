@@ -242,6 +242,7 @@ onMounted(async () => {
 
     .v-sidebar-header {
       transition: box-shadow, border-bottom-color .3s ease;
+      background: var(--color-background);
     }
 
     .v-sidebar-header.scroll {

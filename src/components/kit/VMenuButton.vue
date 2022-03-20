@@ -4,12 +4,13 @@
     class="v-button-menu-base"
     :class="[typeValue, disabledValue]"
     :style="{ fontSize: `${buttonMenuStyle.fontSize}rem`, fontWeight: buttonMenuStyle.fontWeight }"
-    @click.stop="onClick"
   >
     <span class="v-button-menu-icon">
       <slot name="icon" />
     </span>
-    <span class="v-button-menu-text"><slot name="default" /></span>
+    <span class="v-button-menu-text">
+      <slot name="default" />
+    </span>
     <span class="v-button-menu-right">
       <slot name="right" />
     </span>
@@ -74,31 +75,13 @@ const buttonMenuStyle = computed(() => ({
   fontWeight: fontWeight.value,
   borderRadiusRound: `${sizeValue.value}rem`,
 }));
-
-const vButtonWaveEffect = e => {
-  const buttonMenuSize = Math.max(buttonBaseRef.value.offsetWidth, buttonBaseRef.value.offsetHeight);
-  const x = e.offsetX - buttonMenuSize / 2;
-  const y = e.offsetY - buttonMenuSize / 2;
-  const wave = document.createElement('span');
-  wave.className = 'v-button-wave-effect';
-  wave.style.cssText = `width: ${buttonMenuSize}px; height: ${buttonMenuSize}px; top:${y}px; left:${x}px;`;
-
-  buttonBaseRef.value.appendChild(wave);
-  setTimeout(() => wave.remove(), 500);
-};
-
-const onClick = e => {
-  if (disabledValue.value === '') {
-    vButtonWaveEffect(e);
-  }
-};
 </script>
 
 <style lang="scss" scoped>
 .v-button-menu-base {
   height: v-bind('buttonMenuStyle.height');
   position: relative;
-  width: 100%;
+  width: auto;
   display: inline-flex;
   flex-wrap: nowrap;
   flex-shrink: 0;
@@ -107,23 +90,37 @@ const onClick = e => {
   text-align: center;
   line-height: var(--default-line-height);
   outline: none;
-  margin: 0;
   cursor: pointer;
   overflow: hidden;
   text-decoration: none;
   user-select: none;
   border: none;
-  padding: 0 1rem;
-  border-radius: var(--border-radius-default-small);
+  padding: 0.25rem 0.75rem;
+  margin: 0.25rem;
+  border-radius: var(--border-radius-default-tiny);
   font-weight: 400;
-  transition: color .2s ease, background-color .2s ease, opacity .2s ease, border-color .2s ease, box-shadow .2s ease;
+  font-family: unset;
+  transition: color .2s ease, transform .15s ease-in-out;
   background-color: transparent;
+  color: var(--color-text);
+
+  &:hover {
+    background-color: var(--color-background-compact-menu-hover);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 
   .v-button-menu-icon {
     display: flex;
     align-items: center;
     justify-content: center;
     pointer-events: none;
+
+    :slotted(svg) {
+      margin-right: 1.25rem;
+    }
   }
 
   .v-button-menu-text {
