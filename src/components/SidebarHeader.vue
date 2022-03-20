@@ -3,11 +3,14 @@
     <v-popover
       :is-show="isShow"
       placement="bottom-start"
-      to=".sidebar-header-menu-popover">
+      to=".sidebar-header-menu-popover"
+      @click-outside="onClickOutsideHandler"
+    >
       <template #trigger>
         <div class="sibebar-header-action">
           <v-button
             type="default"
+            class="sibebar-header-action-button"
             quaternary
             circle
             @click="onSideBarActionClickHandler"
@@ -105,6 +108,13 @@ const isShow = ref(false);
 const onMenuClickHandler = () => {
   isShow.value = !isShow.value;
 };
+
+const onClickOutsideHandler = e => {
+  if (!e.target.classList.contains('sibebar-header-action-button')) {
+    isShow.value = false;
+  }
+};
+
 const onBackClickHandler = () => {
   searchQuery.value = '';
   isSearchActive.value = false;
