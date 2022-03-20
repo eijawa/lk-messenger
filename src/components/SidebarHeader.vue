@@ -36,54 +36,8 @@
           </v-button>
         </div>
       </template>
-      <div class="header-menu">
-        <v-menu-button size="small" font-size="0.875">
-          <template #icon>
-            <v-icon
-              :src="SettingsIcon"
-              name="settings"
-              :size="20"
-              :fill="sideBarActionFillColor"
-            />
-          </template>
-          Настройки
-        </v-menu-button>
-        <v-menu-button size="small" font-size="0.875">
-          <template #icon>
-            <v-icon
-              :src="SettingsIcon"
-              name="settings"
-              :size="20"
-              :fill="sideBarActionFillColor"
-            />
-          </template>
-          Настройки
-        </v-menu-button>
-        <v-menu-button size="small" font-size="0.875">
-          <template #icon>
-            <v-icon
-              :src="SettingsIcon"
-              name="settings"
-              :size="20"
-              :fill="sideBarActionFillColor"
-            />
-          </template>
-          Настройки
-        </v-menu-button>
-        <v-menu-button size="small" font-size="0.875">
-          <template #icon>
-            <v-icon
-              :src="SettingsIcon"
-              name="settings"
-              :size="20"
-              :fill="sideBarActionFillColor"
-            />
-          </template>
-          Настройки
-        </v-menu-button>
-      </div>
+      <sidebar-header-menu />
     </v-popover>
-
     <v-input
       v-model:value="searchQuery"
       placeholder="Поиск"
@@ -109,12 +63,11 @@ import { computed, ref } from 'vue';
 import VPopover from '@/components/kit/VPopover.vue';
 import VInput from '@/components/kit/VInput.vue';
 import VButton from '@/components/kit/VButton.vue';
-import VMenuButton from '@/components/kit/VMenuButton.vue';
 import VIcon from '@/components/kit/VIcon.vue';
+import SidebarHeaderMenu from '@/components/SidebarHeaderMenu.vue';
 import MenuIcon from '@/assets/icons/menu.svg?url';
 import BackIcon from '@/assets/icons/back.svg?url';
 import SearchIcon from '@/assets/icons/search.svg?url';
-import SettingsIcon from '@/assets/icons/settings.svg?url';
 
 const emit = defineEmits(['searchFocus', 'backClick', 'search']);
 
@@ -221,12 +174,5 @@ const onSideBarActionClickHandler = computed(() => (isSearchActive.value ? onBac
       }
     }
   }
-}
-
-.header-menu {
-  width: 270px;
-  padding: 0.25rem 0;
-  display: flex;
-  flex-direction: column;
 }
 </style>
