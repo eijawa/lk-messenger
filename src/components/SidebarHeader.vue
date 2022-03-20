@@ -101,10 +101,8 @@ const onMenuClickHandler = () => {
   isShow.value = !isShow.value;
 };
 
-const onClickOutsideHandler = e => {
-  if (!e.target.classList.contains('sibebar-header-action-button')) {
-    isShow.value = false;
-  }
+const onClickOutsideHandler = () => {
+  isShow.value = false;
 };
 
 const onBackClickHandler = () => {

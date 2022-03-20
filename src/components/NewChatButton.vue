@@ -85,10 +85,8 @@ const onClickHandler = () => {
   isShow.value = !isShow.value;
 };
 
-const onClickOutsideHandler = e => {
-  if (!e.target.classList.contains('v-button-new-chat')) {
-    isShow.value = false;
-  }
+const onClickOutsideHandler = () => {
+  isShow.value = false;
 };
 </script>
 

@@ -52,7 +52,9 @@ watch((isShowValue), showValue => {
 });
 
 const onClickOutsideHandler = e => {
-  emit('clickOutside', e);
+  if (e.type === 'mouseup') {
+    emit('clickOutside', e);
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -64,9 +66,12 @@ const onClickOutsideHandler = e => {
 }
 
 :global(.v-binder-follower-container) {
-  width: 100vw;
-  height: 100vh;
-  pointer-events: inherit;
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  pointer-events: inherit;
 }
 </style>
