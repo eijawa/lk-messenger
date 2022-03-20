@@ -67,5 +67,6 @@ const onClickOutsideHandler = e => {
   width: 100vw;
   height: 100vh;
   pointer-events: inherit;
+  position: fixed;
 }
 </style>
