@@ -60,6 +60,7 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+import { getCSSVariable } from '@/helpers/cssVariablesHelper';
 import VPopover from '@/components/kit/VPopover.vue';
 import VInput from '@/components/kit/VInput.vue';
 import VButton from '@/components/kit/VButton.vue';
@@ -79,13 +80,11 @@ const onSearch = () => {
   emit('search', searchQuery.value);
 };
 
-const root = document.querySelector(':root');
-const rootStyle = getComputedStyle(root);
-const searchFillColorDefault = `rgba(${rootStyle.getPropertyValue('--color-text-secondary-rgb')}, 0.5)`;
-const searchFillColorActive = rootStyle.getPropertyValue('--color-primary');
+const searchFillColorDefault = `rgba(${getCSSVariable('--color-text-secondary-rgb')}, 0.5)`;
+const searchFillColorActive = getCSSVariable('--color-primary');
 const searchFillColor = ref(searchFillColorDefault);
 
-const sideBarActionFillColor = rootStyle.getPropertyValue('--color-text-secondary');
+const sideBarActionFillColor = getCSSVariable('--color-text-secondary');
 
 const onFocusHandler = () => {
   isSearchActive.value = true;
