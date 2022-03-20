@@ -26,7 +26,7 @@ export const useChatsStore = defineStore('chatsStore', {
         this.chats = chatsData.result;
       } else {
         const userStore = useUserStore();
-        const arrayLoops = Array.from({ length: 14 }, (v, k) => k);
+        const arrayLoops = Array.from({ length: 20 }, (v, k) => k);
         await arrayLoops.forEach(async item => {
           const chat = await generateChat(item, userStore);
           this.chats.push(chat);
