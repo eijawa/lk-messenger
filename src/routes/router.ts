@@ -1,11 +1,11 @@
-import { createWebHistory, createRouter } from 'vue-router';
+import { createWebHistory, createRouter, RouteRecordRaw } from 'vue-router';
 
 import MessengerView from '@/views/MessengerView.vue';
 import ChatInDepth from '@/views/ChatInDepth.vue';
 import AuthView from '@/views/AuthView.vue';
 import ComponentsTesting from '@/views/ComponentsTestingView.vue';
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'MessengerView',
@@ -31,7 +31,9 @@ const routes = [
   },
 ];
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+export default router;

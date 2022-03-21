@@ -1,11 +1,13 @@
 module.exports = {
-  plugins: ['vue', 'import'],
-
+  plugins: ['@typescript-eslint', 'vue', 'import'],
   extends: [
     'airbnb-base',
+    'airbnb-typescript/base',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:vue/vue3-recommended',
     'plugin:import/recommended',
-    'prettier',
+    'plugin:import/typescript',
   ],
   env: {
     browser: true,
@@ -15,24 +17,33 @@ module.exports = {
   },
   parser: 'vue-eslint-parser',
   parserOptions: {
+    project: './tsconfig.json',
+    tsconfigRootDir: './',
+    parser: '@typescript-eslint/parser',
     ecmaVersion: 'latest',
     sourceType: 'module',
+    extraFileExtensions: ['.vue'],
   },
   settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
     'import/resolver': {
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.json',
       },
       alias: {
-        map: [['@', './src']],
+        map: [['@/', './src/']],
+        extensions: ['.vue', '.ts'],
       },
     },
   },
   rules: {
-    quotes: ['error', 'single'],
-    semi: ['error', 'always'],
-    indent: ['error', 2],
-    'import/no-unresolved': 'off',
+    'import/no-unresolved': 'error',
     'comma-dangle': ['error', 'always-multiline'],
     'arrow-parens': ['error', 'as-needed'],
     'no-trailing-spaces': 'error',
@@ -51,11 +62,10 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'class-methods-use-this': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
-    'import/extensions': 'off',
-    'no-unused-vars': 'warn',
+    // 'import/extensions': 'off',
 
     'vue/component-tags-order': ['error', {
-      order: ['template', 'script', 'style'],
+      order: ['script', 'template', 'style'],
     }],
     'vue/first-attribute-linebreak': ['error', {
       singleline: 'beside',
@@ -78,5 +88,8 @@ module.exports = {
     'vue/object-curly-spacing': ['error', 'always'],
     'vue/space-infix-ops': ['error', { int32Hint: true }],
     'vue/arrow-spacing': 'error',
+
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
   },
 };

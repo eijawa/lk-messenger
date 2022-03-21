@@ -2,11 +2,10 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 import Vue from '@vitejs/plugin-vue';
-import replace from '@rollup/plugin-replace';
-import { VitePWA } from 'vite-plugin-pwa';
+import replace, { RollupReplaceOptions } from '@rollup/plugin-replace';
+import { ManifestOptions, VitePWA, VitePWAOptions } from 'vite-plugin-pwa';
 
-
-const pwaOptions = {
+const pwaOptions: Partial<VitePWAOptions> = {
   mode: 'development',
   base: '/',
   includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
@@ -42,26 +41,22 @@ const pwaOptions = {
   },
 };
 
-const replaceOptions = { __DATE__: new Date().toISOString() };
+const replaceOptions: RollupReplaceOptions = { __DATE__: new Date().toISOString() };
 const claims = process.env.CLAIMS === 'true';
 const reload = process.env.RELOAD_SW === 'true';
 
 if (process.env.SW === 'true') {
   pwaOptions.srcDir = './';
-  pwaOptions.filename = claims ? 'claims-sw.js' : 'prompt-sw.js';
+  pwaOptions.filename = claims ? 'claims-sw.ts' : 'prompt-sw.ts';
   pwaOptions.strategies = 'injectManifest';
-  pwaOptions.manifestname = 'PWA Inject Manifest';
-  pwaOptions.manifest.short_name = 'PWA Inject';
+  (pwaOptions.manifest as Partial<ManifestOptions>).name = 'PWA Inject Manifest';
+  (pwaOptions.manifest as Partial<ManifestOptions>).short_name = 'PWA Inject';
 }
 
-if (claims)
-  pwaOptions.registerType = 'autoUpdate';
+if (claims) { pwaOptions.registerType = 'autoUpdate'; }
 
-if (reload) {
-  // @ts-ignore
-  // eslint-disable-next-line no-underscore-dangle
-  replaceOptions.__RELOAD_SW__ = 'true';
-}
+// eslint-disable-next-line no-underscore-dangle
+if (reload) { replaceOptions.__RELOAD_SW__ = 'true'; }
 
 export default defineConfig({
   publicDir: path.resolve(__dirname, 'public'),
