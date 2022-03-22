@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import AppProvider from '@/AppProvider.vue';
+
 let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
 
@@ -9,12 +11,9 @@ window.addEventListener('resize', () => {
 </script>
 
 <template>
-  <div>
-    123
-  </div>
-<!--  <app-provider>-->
-<!--    <router-view />-->
-<!--  </app-provider>-->
+  <app-provider>
+    <router-view />
+  </app-provider>
 </template>
 
 <style lang="scss">

@@ -1,30 +1,19 @@
-<template>
-  <n-config-provider :theme-overrides="themeOverrides">
-    <n-loading-bar-provider>
-      <n-message-provider>
-        <n-dialog-provider>
-          <slot></slot>
-        </n-dialog-provider>
-      </n-message-provider>
-    </n-loading-bar-provider>
-  </n-config-provider>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import {
   NConfigProvider,
   NLoadingBarProvider,
   NMessageProvider,
   NDialogProvider,
+  GlobalThemeOverrides,
 } from 'naive-ui';
 
-import { getCSSVariable } from '@/helpers/cssVariablesHelper';
+import { getCSSVariable } from '@/use/useCssVariables';
 
 const borderRadiusDefault = getCSSVariable('--border-radius-default');
 const colorText = getCSSVariable('--color-text');
 const colorShadowDefault = getCSSVariable('--color-default-shadow');
 
-const themeOverrides = {
+const themeOverrides: GlobalThemeOverrides = {
   common: {
     // primaryColor: '#FF0000',
   },
@@ -47,3 +36,15 @@ const themeOverrides = {
   },
 };
 </script>
+
+<template>
+  <n-config-provider :theme-overrides="themeOverrides">
+    <n-loading-bar-provider>
+      <n-message-provider>
+        <n-dialog-provider>
+          <slot />
+        </n-dialog-provider>
+      </n-message-provider>
+    </n-loading-bar-provider>
+  </n-config-provider>
+</template>
