@@ -14,7 +14,7 @@ const props = defineProps({
     required: true,
   },
   styleType: {
-    type: String as PropType<'default' | 'form'>,
+    type: String as PropType<'default' | 'form' | 'search'>,
     default: 'default',
   },
   size: {
@@ -87,7 +87,7 @@ const onFocusOut = (e: Event) => {
   }
 };
 
-const onInput = (e: InputEvent) => {
+const onInput = (e: Event) => {
   emit('update:value', (e.target as HTMLInputElement).value);
 };
 const onFocus = () => {

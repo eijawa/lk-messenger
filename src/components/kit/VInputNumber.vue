@@ -82,7 +82,7 @@ const onFocusOut = (e: Event) => {
     isInputFocus.value = false;
   }
 };
-const onInput = (e: InputEvent) => {
+const onInput = (e: Event) => {
   const inputValue = Number.parseInt((e.target as HTMLInputElement).value, 10);
   if (inputValue > props.min) {
     emit('update:value', inputValue);

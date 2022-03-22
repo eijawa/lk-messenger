@@ -38,7 +38,7 @@ const fixingBadgeIconFillColor = useGetCSSVariable('--color-pinned');
   <div class="chats-list-items">
     <div class="chats-list-items-content">
       <v-avatar
-        :title="chatValue.conversation.info.title"
+        :title="chatValue.conversation.info?.title"
         :src="chatValue.conversation.info.avatar"
       />
       <div class="info">
@@ -54,7 +54,7 @@ const fixingBadgeIconFillColor = useGetCSSVariable('--color-pinned');
                 name="fixing-badge"
               />
             </div>
-            <div v-if="chatValue.conversation.info?.verified" class="mute">
+            <div v-if="chatValue.conversation.info.verified" class="mute">
               <v-icon
                 :src="MuteIcon"
                 :fill="fixingBadgeIconFillColor"

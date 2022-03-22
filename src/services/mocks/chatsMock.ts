@@ -41,6 +41,7 @@ export const generateChat = async (index: number, currentUser: User): Promise<Ch
     info: {
       avatar,
       title,
+      verified: faker.random.arrayElement([false, false, true]),
     },
     unReadCount: 0,
     pinned: faker.random.arrayElement([false, false, true]),

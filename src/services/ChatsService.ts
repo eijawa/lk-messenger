@@ -16,14 +16,11 @@ export interface ConversationPeer {
   type: ConversationType,
 }
 
-export interface ChatInfo {
+export interface ConversationInfo {
   title: string,
   avatar: string | undefined,
+  verified: boolean,
 }
-
-// interface ConversationSettings {
-//
-// }
 
 export interface PushSettings {
   disabledForever: boolean,
@@ -33,7 +30,7 @@ export interface PushSettings {
 
 export interface Conversation {
   peer: ConversationPeer,
-  info: User | ChatInfo,
+  info: ConversationInfo,
   unReadCount: number,
   markedUnRead?: boolean,
   pinned: boolean,
