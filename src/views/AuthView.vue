@@ -1,9 +1,3 @@
-<template>
-  <div class="auth-module">
-    <a-spin />
-  </div>
-</template>
-
 <script setup>
 import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -11,14 +5,20 @@ import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 
-onMounted(() => {
+onMounted(async () => {
   const { jwt } = route.query;
   if (typeof jwt === 'string') {
     localStorage.setItem('jwt', jwt);
-    router.push({ path: '/' });
+    await router.push({ path: '/' });
   }
 });
 </script>
+
+<template>
+  <div class="auth-module">
+    Загрузка...
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .auth-module {
