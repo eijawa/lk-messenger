@@ -1,9 +1,9 @@
-export const useFetch = async <T>(url: RequestInfo, params: RequestInit = {}): Promise<T> => {
+export const useFetch = async <T>(url: RequestInfo, params?: RequestInit): Promise<T> => {
   const token = localStorage.getItem('jwt');
   let paramsValue: RequestInit = {};
 
   if (token) {
-    if (params === {}) {
+    if (typeof params === 'undefined') {
       paramsValue = {
         method: 'GET',
         headers: {
