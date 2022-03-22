@@ -1,9 +1,9 @@
-export const useFetch = async (url, params = null) => {
+export const useFetch = async (url: string, params: RequestInit = {}) => {
   const token = localStorage.getItem('jwt');
   let paramsValue = null;
 
   if (token) {
-    if (params === null) {
+    if (params === {}) {
       paramsValue = {
         method: 'GET',
         headers: {
