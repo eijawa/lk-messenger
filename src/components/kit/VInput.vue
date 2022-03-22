@@ -1,62 +1,12 @@
-<template>
-  <div class="v-input-container-base" :class="[inputTypeValue]">
-    <div
-      ref="inputFieldRef"
-      class="v-input-field"
-      :class="[ { 'touched': isInputTouched, 'focus': isInputFocus }, roundValue ]"
-      @click="onClick"
-    >
-      <div class="prefix">
-        <slot name="prefix" />
-      </div>
-      <div class="v-input-content">
-        <input
-          ref="inputRef"
-          class="v-input"
-          type="text"
-          :class="{ 'touched': isInputTouched }"
-          :style="{ height: inputStyle.height + 'rem' }"
-          :value="value"
-          @input="onInput"
-          @focus="onFocus"
-          @blur="onFocusOut"
-        />
-        <label class="v-input-label">{{ placeHolderValue }}</label>
-      </div>
-      <div class="v-input-actions">
-        <div v-if="props.value" class="clearable">
-          <v-button
-            quaternary
-            circle
-            @click="onClickClearHandler">
-            <template #icon>
-              <v-icon
-                name="clear"
-                :src="ClearableIcon"
-                :size="18"
-                :fill="clearIconFillColor"
-              />
-            </template>
-          </v-button>
-        </div>
-      </div>
-      <div class="suffix">
-        <slot name="suffix" />
-      </div>
-    </div>
-    <div class="v-input-messages"></div>
-  </div>
-</template>
-
-<script setup>
-import { computed, ref } from 'vue';
+<script lang="ts" setup>
+import { computed, ref, PropType } from 'vue';
 import VIcon from '@/components/kit/VIcon.vue';
 import ClearableIcon from '@/assets/icons/x.svg';
 import VButton from '@/components/kit/VButton.vue';
 
 const props = defineProps({
   value: {
-    type: [String, Number, null],
+    type: [String, Number, null] as PropType<string | number | null>,
     required: true,
   },
   placeholder: {
@@ -64,7 +14,7 @@ const props = defineProps({
     required: true,
   },
   styleType: {
-    type: String,
+    type: String as PropType<'default' | 'form'>,
     default: 'default',
   },
   size: {
@@ -75,6 +25,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  messages: {
+    type: Array as PropType<Array<string>>,
+    default: () => [],
+  },
 });
 
 const emit = defineEmits(['update:value', 'focus']);
@@ -82,20 +36,20 @@ const emit = defineEmits(['update:value', 'focus']);
 const placeHolderValue = computed(() => props.placeholder);
 const inputTypeValue = computed(() => `v-input-container-${props.styleType}`);
 const isInputTouched = computed(() => props.value);
-const roundValue = computed(() => props.round ? 'round' : '');
-
+const roundValue = computed(() => (props.round ? 'round' : ''));
 const isInputFocus = ref(false);
-const inputRef = ref(null);
+const inputRef = ref<null | HTMLInputElement>(null);
+const isMessagesNotEmpty = computed(() => props.messages.length !== 0);
+const messagesContainerHeight = computed(() => `${props.messages.length
++ props.messages.length * 0.125}rem`);
 
-const sizeCalculate = size => {
+const sizeCalculate = (size: string | number) => {
   if (size === 'medium') {
     return 2.75;
   }
-
   if (size === 'small') {
     return 2;
   }
-
   return 3.5;
 };
 
@@ -122,24 +76,22 @@ const onClickClearHandler = () => {
 };
 
 const onClick = () => {
-  if (!isInputFocus.value) {
+  if (!isInputFocus.value && inputRef.value !== null) {
     inputRef.value.focus();
     isInputFocus.value = true;
   }
 };
-
-const onFocusOut = e => {
+const onFocusOut = (e: Event) => {
   if (e.target !== document.activeElement) {
     isInputFocus.value = false;
   }
 };
 
-const onInput = event => {
-  emit('update:value', event.target.value);
+const onInput = (e: InputEvent) => {
+  emit('update:value', (e.target as HTMLInputElement).value);
 };
-
 const onFocus = () => {
-  if (!isInputFocus.value) {
+  if (!isInputFocus.value && inputRef.value !== null) {
     inputRef.value.focus();
     isInputFocus.value = true;
   }
@@ -147,13 +99,77 @@ const onFocus = () => {
 };
 
 const root = document.querySelector(':root');
-const rootStyle = getComputedStyle(root);
-
-const clearIconFillColor = rootStyle.getPropertyValue('--color-icon-secondary');
+const clearIconFillColor = ref('black');
+if (root) {
+  const rootStyle = getComputedStyle(root);
+  clearIconFillColor.value = rootStyle.getPropertyValue('--color-icon-secondary');
+}
 </script>
 
-<style lang="scss" scoped>
+<template>
+  <div class="v-input-container-base" :class="[inputTypeValue]">
+    <div
+      ref="inputFieldRef"
+      class="v-input-field"
+      :class="[ { 'touched': isInputTouched, 'focus': isInputFocus }, roundValue ]"
+      @click="onClick"
+    >
+      <div class="prefix">
+        <slot name="prefix" />
+      </div>
+      <div class="v-input-content">
+        <input
+          ref="inputRef"
+          class="v-input"
+          type="text"
+          :class="{ 'touched': isInputTouched }"
+          :style="{ height: inputStyle.height + 'rem' }"
+          :value="value"
+          @input="onInput"
+          @focus="onFocus"
+          @blur="onFocusOut"
+        >
+        <label class="v-input-label">{{ placeHolderValue }}</label>
+      </div>
+      <div class="v-input-actions">
+        <div v-if="props.value" class="clearable">
+          <v-button
+            quaternary
+            circle
+            @click="onClickClearHandler"
+          >
+            <template #icon>
+              <v-icon
+                name="clear"
+                :src="ClearableIcon"
+                :size="18"
+                :fill="clearIconFillColor"
+              />
+            </template>
+          </v-button>
+        </div>
+      </div>
+      <div class="suffix">
+        <slot name="suffix" />
+      </div>
+    </div>
+    <TransitionGroup
+      name="messages"
+      tag="div"
+      class="v-input-messages"
+      :class="{ 'notEmpty': isMessagesNotEmpty }"
+    >
+      <div
+        v-for="(message, index) in props.messages"
+        :key="index"
+      >
+        {{ message }}
+      </div>
+    </TransitionGroup>
+  </div>
+</template>
 
+<style lang="scss" scoped>
 .v-input-container-base {
   width: 100%;
   --border-width: 1px;
@@ -210,6 +226,30 @@ const clearIconFillColor = rootStyle.getPropertyValue('--color-icon-secondary');
       align-items: center;
       justify-content: center;
     }
+  }
+
+  .v-input-messages {
+    margin-top: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    color: var(--color-error);
+    transition: height .2s ease-out;
+    height: 0;
+    min-height: 0;
+    &.notEmpty {
+      height: v-bind(messagesContainerHeight);
+      min-height: unset;
+    }
+  }
+  .messages-enter-active,
+  .messages-leave-active {
+    transition: all .2s ease;
+  }
+  .messages-enter-from,
+  .messages-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
   }
 }
 
