@@ -14,7 +14,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import getFirstLetters from '@/helpers/firstLettersHelper';
+import getFirstLetters from '@/use/useStringFormatter';
 
 const props = defineProps({
   title: {

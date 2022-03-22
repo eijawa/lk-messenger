@@ -7,11 +7,11 @@ import {
   GlobalThemeOverrides,
 } from 'naive-ui';
 
-import { getCSSVariable } from '@/use/useCssVariables';
+import { useGetCSSVariable } from '@/use/useCssVariables';
 
-const borderRadiusDefault = getCSSVariable('--border-radius-default');
-const colorText = getCSSVariable('--color-text');
-const colorShadowDefault = getCSSVariable('--color-default-shadow');
+const borderRadiusDefault = useGetCSSVariable('--border-radius-default');
+const colorText = useGetCSSVariable('--color-text');
+const colorShadowDefault = useGetCSSVariable('--color-default-shadow');
 
 const themeOverrides: GlobalThemeOverrides = {
   common: {

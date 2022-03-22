@@ -1,19 +1,5 @@
-<template>
-  <div class="v-avatar-container">
-    <div class="v-avatar" :style="{ width: size, height: size }">
-      <img
-        v-if="srcValue"
-        :style="{ width: size, height: size }"
-        :src="srcValue"
-        alt="avatar"
-      >
-      <span v-else>М</span>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import getFirstLetters from '@/helpers/firstLettersHelper';
+<script lang="ts" setup>
+import { useFirstLetters } from '@/use/useStringFormatter';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -36,9 +22,23 @@ const props = defineProps({
 });
 
 const size = computed(() => `${props.size}rem`);
-const titleFirstLetters = computed(() => getFirstLetters(props.title));
+const titleFirstLetters = computed(() => useFirstLetters(props.title));
 const srcValue = computed(() => props.src);
 </script>
+
+<template>
+  <div class="v-avatar-container">
+    <div class="v-avatar" :style="{ width: size, height: size }">
+      <img
+        v-if="srcValue"
+        :style="{ width: size, height: size }"
+        :src="srcValue"
+        alt="avatar"
+      >
+      <span v-else>М</span>
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .v-avatar-container {

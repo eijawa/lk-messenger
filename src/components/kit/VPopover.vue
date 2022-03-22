@@ -3,7 +3,7 @@ import { NPopover } from 'naive-ui';
 import {
   computed, onMounted, PropType, watch,
 } from 'vue';
-import { setCSSVariable } from '@/use/useCssVariables';
+import { useSetCSSVariable } from '@/use/useCssVariables';
 
 const props = defineProps({
   isShow: {
@@ -36,7 +36,7 @@ onMounted(() => {
 });
 
 watch((isShowValue), showValue => {
-  setCSSVariable(followerContainerPointerEventsVar, showValue ? 'all' : 'none');
+  useSetCSSVariable(followerContainerPointerEventsVar, showValue ? 'all' : 'none');
 });
 
 const onClickOutsideHandler = (e: MouseEvent) => {

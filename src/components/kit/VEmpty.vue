@@ -1,7 +1,7 @@
 <template>
   <div class="v-empty">
     <span class="v-empty-text">
-       <slot name="default" />
+      <slot name="default" />
     </span>
   </div>
 </template>
