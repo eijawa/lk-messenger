@@ -120,7 +120,7 @@ const onClick = (e: MouseEvent) => {
     ref="buttonRef"
     class="v-button-base"
     :class="[typeValue, fluidValue, roundValue, circleValue,
-    ghostValue, disabledValue, quaternaryValue]"
+             ghostValue, disabledValue, quaternaryValue]"
     :style="{ fontSize: `${buttonStyle.fontSize}rem`, fontWeight: buttonStyle.fontWeight }"
     @click.stop="onClick"
   >

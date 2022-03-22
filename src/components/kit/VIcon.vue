@@ -1,15 +1,3 @@
-<template>
-  <inline-svg
-    :src="srcValue"
-    :alt="`${props.name} icon`"
-    :class="className"
-    :style="{ width, height: 'auto', outline: 'none' }"
-    :fill="fill"
-    :stroke="props.stroke"
-    :stroke-width="props.strokeWidth"
-  />
-</template>
-
 <script lang="ts" setup>
 import { computed } from 'vue';
 import InlineSvg from 'vue-inline-svg';
@@ -43,6 +31,18 @@ const props = defineProps({
 
 const srcValue = computed(() => props.src);
 const className = computed(() => `r1-icon-svg r1-icon-svg--${props.name}`);
-
 const width = computed(() => props.size);
 </script>
+
+<template>
+  <inline-svg
+    :src="srcValue"
+    :alt="`${props.name} icon`"
+    :class="className"
+    :style="{ width, height: 'auto', outline: 'none' }"
+    :fill="fill"
+    :stroke="props.stroke"
+    :stroke-width="props.strokeWidth"
+    :title="props.name"
+  />
+</template>
