@@ -1,28 +1,13 @@
-<template>
-  <button
-    ref="buttonRef"
-    class="v-button-base"
-    :class="[typeValue, fluidValue, roundValue, circleValue, ghostValue, disabledValue, quaternaryValue]"
-    :style="{ fontSize: `${buttonStyle.fontSize}rem`, fontWeight: buttonStyle.fontWeight }"
-    @click.stop="onClick"
-  >
-    <span class="v-button-text"><slot name="default" /></span>
-    <span class="v-button-icon">
-      <slot name="icon" />
-    </span>
-  </button>
-</template>
-
-<script setup>
-import { computed, ref } from 'vue';
+<script lang="ts" setup>
+import { computed, ref, PropType } from 'vue';
 
 const props = defineProps({
   type: {
-    type: String,
+    type: String as PropType<'default' | 'primary' | 'success' | 'warning' | 'error'>,
     default: 'default',
   },
   size: {
-    type: [String, Number],
+    type: [String, Number] as PropType<number | 'small' | 'medium' | 'large'>,
     default: 'medium',
   },
   fluid: {
@@ -59,26 +44,24 @@ const props = defineProps({
   },
 });
 
-const buttonRef = ref(null);
+const buttonRef = ref<null | HTMLButtonElement>(null);
 const typeValue = computed(() => props.type);
-const fluidValue = computed(() => props.fluid ? 'fluid' : '');
-const circleValue = computed(() => props.circle ? 'circle' : '');
-const roundValue = computed(() => props.round ? 'round' : '');
-const ghostValue = computed(() => props.ghost ? 'ghost' : '');
-const quaternaryValue = computed(() => props.quaternary ? 'quaternary' : '');
-const disabledValue = computed(() => props.disabled ? 'disabled' : '');
+const fluidValue = computed(() => (props.fluid ? 'fluid' : ''));
+const circleValue = computed(() => (props.circle ? 'circle' : ''));
+const roundValue = computed(() => (props.round ? 'round' : ''));
+const ghostValue = computed(() => (props.ghost ? 'ghost' : ''));
+const quaternaryValue = computed(() => (props.quaternary ? 'quaternary' : ''));
+const disabledValue = computed(() => (props.disabled ? 'disabled' : ''));
 const fontSize = computed(() => props.fontSize);
 const fontWeight = computed(() => props.fontWeight);
 
-const sizeCalculate = size => {
+const sizeCalculate = (size: string | number) => {
   if (size === 'medium') {
     return 2.75;
   }
-
   if (size === 'small') {
     return 2;
   }
-
   return 3.5;
 };
 
@@ -96,27 +79,32 @@ const buttonStyle = computed(() => ({
   borderRadiusRound: `${sizeValue.value}rem`,
 }));
 
-const vButtonWaveEffect = e => {
-  const buttonSize = Math.max(buttonRef.value.offsetWidth, buttonRef.value.offsetHeight);
-  const x = e.offsetX - buttonSize / 2;
-  const y = e.offsetY - buttonSize / 2;
-  const wave = document.createElement('span');
-  wave.className = 'v-button-wave-effect';
-  wave.style.cssText = `width: ${buttonSize}px; height: ${buttonSize}px; top:${y}px; left:${x}px;`;
-
-  buttonRef.value.appendChild(wave);
-  setTimeout(() => wave.remove(), 500);
+const vButtonWaveEffect = (e: MouseEvent) => {
+  if (buttonRef.value !== null) {
+    const buttonSize = Math.max(buttonRef.value.offsetWidth, buttonRef.value.offsetHeight);
+    const x = e.offsetX - buttonSize / 2;
+    const y = e.offsetY - buttonSize / 2;
+    const wave = document.createElement('span');
+    wave.className = 'v-button-wave-effect';
+    wave.style.cssText = `width: ${buttonSize}px; height: ${buttonSize}px; top:${y}px; left:${x}px;`;
+    buttonRef.value.appendChild(wave);
+    setTimeout(() => wave.remove(), 500);
+  }
 };
 
 const vButtonBorderEffect = () => {
-  const boxShadowColor = getComputedStyle(buttonRef.value).borderColor.replace(')', ', 0.2)').replace('rgb', 'rgba');
-  buttonRef.value.style.boxShadow = `0 0 0 3px ${boxShadowColor}`;
-  setTimeout(() => {
-    buttonRef.value.style.boxShadow = 'unset';
-  }, 250);
+  if (buttonRef.value !== null) {
+    const boxShadowColor = getComputedStyle(buttonRef.value).borderColor.replace(')', ', 0.2)').replace('rgb', 'rgba');
+    buttonRef.value.style.boxShadow = `0 0 0 3px ${boxShadowColor}`;
+    setTimeout(() => {
+      if (buttonRef.value !== null) {
+        buttonRef.value.style.boxShadow = 'unset';
+      }
+    }, 250);
+  }
 };
 
-const onClick = e => {
+const onClick = (e: MouseEvent) => {
   if (disabledValue.value === '') {
     if (ghostValue.value === '') {
       vButtonWaveEffect(e);
@@ -126,6 +114,22 @@ const onClick = e => {
   }
 };
 </script>
+
+<template>
+  <button
+    ref="buttonRef"
+    class="v-button-base"
+    :class="[typeValue, fluidValue, roundValue, circleValue,
+    ghostValue, disabledValue, quaternaryValue]"
+    :style="{ fontSize: `${buttonStyle.fontSize}rem`, fontWeight: buttonStyle.fontWeight }"
+    @click.stop="onClick"
+  >
+    <span class="v-button-text"><slot name="default" /></span>
+    <span class="v-button-icon">
+      <slot name="icon" />
+    </span>
+  </button>
+</template>
 
 <style lang="scss" scoped>
 @use "sass:color";
@@ -151,7 +155,8 @@ const onClick = e => {
   padding: 0 1rem;
   border-radius: var(--border-radius-default-small);
   font-weight: 400;
-  transition: color .2s ease, background-color .2s ease, opacity .2s ease, border-color .2s ease, box-shadow .2s ease;
+  transition: color .2s ease, background-color .2s ease,
+  opacity .2s ease, border-color .2s ease, box-shadow .2s ease;
   background-color: transparent;
 
   .v-button-text {
