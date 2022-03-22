@@ -4,8 +4,10 @@
 */
 export const useFirstLetters = (name: string) => {
   let sValue = name.split(' ').map(x => x[0]);
-  if (sValue.length > 3) {
-    sValue = [sValue[0], sValue[sValue.length - 1]];
+  if (sValue.length > 1) {
+    sValue = [sValue[0], sValue[1]];
+  } else {
+    sValue = [sValue[0]];
   }
   return sValue.join('');
 };
