@@ -1,66 +1,6 @@
-<template>
-  <div class="sidebar-header">
-    <v-popover
-      :is-show="isShow"
-      placement="bottom-start"
-      to=".sidebar-header-menu-popover"
-      @click-outside="onClickOutsideHandler"
-    >
-      <template #trigger>
-        <div class="sibebar-header-action">
-          <v-button
-            type="default"
-            class="sibebar-header-action-button"
-            quaternary
-            circle
-            @click="onSideBarActionClickHandler"
-          >
-            <template #icon>
-              <Transition name="menu-icon">
-                <v-icon
-                  v-show="!isSearchActive"
-                  class="sidebar-header-action-icon"
-                  :src="MenuIcon"
-                  name="menu"
-                  :fill="sideBarActionFillColor" />
-              </Transition>
-              <Transition name="back-icon">
-                <v-icon
-                  v-show="isSearchActive"
-                  class="sidebar-header-action-icon"
-                  :src="BackIcon"
-                  name="back"
-                  :fill="sideBarActionFillColor" />
-              </Transition>
-            </template>
-          </v-button>
-        </div>
-      </template>
-      <sidebar-header-menu />
-    </v-popover>
-    <v-input
-      v-model:value="searchQuery"
-      placeholder="Поиск"
-      style-type="search"
-      round
-      @input="onSearch"
-      @focus="onFocusHandler"
-      @focusout="onFocusOutHandler"
-    >
-      <template #prefix>
-        <v-icon
-          name="search"
-          :src="SearchIcon"
-          :fill="searchFillColor"
-        />
-      </template>
-    </v-input>
-  </div>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { computed, ref } from 'vue';
-import { getCSSVariable } from '@/helpers/cssVariablesHelper';
+import { useGetCSSVariable } from '@/use/useCssVariables';
 import VPopover from '@/components/kit/VPopover.vue';
 import VInput from '@/components/kit/VInput.vue';
 import VButton from '@/components/kit/VButton.vue';
@@ -80,11 +20,11 @@ const onSearch = () => {
   emit('search', searchQuery.value);
 };
 
-const searchFillColorDefault = `rgba(${getCSSVariable('--color-text-secondary-rgb')}, 0.5)`;
-const searchFillColorActive = getCSSVariable('--color-primary');
+const searchFillColorDefault = `rgba(${useGetCSSVariable('--color-text-secondary-rgb')}, 0.5)`;
+const searchFillColorActive = useGetCSSVariable('--color-primary');
 const searchFillColor = ref(searchFillColorDefault);
 
-const sideBarActionFillColor = getCSSVariable('--color-text-secondary');
+const sideBarActionFillColor = useGetCSSVariable('--color-text-secondary');
 
 const onFocusHandler = () => {
   isSearchActive.value = true;
@@ -111,8 +51,71 @@ const onBackClickHandler = () => {
   emit('backClick');
 };
 
-const onSideBarActionClickHandler = computed(() => (isSearchActive.value ? onBackClickHandler : onMenuClickHandler));
+const onSideBarActionClickHandler = computed(() => (isSearchActive.value
+  ? onBackClickHandler : onMenuClickHandler));
 </script>
+
+<template>
+  <div class="sidebar-header">
+    <v-popover
+      :is-show="isShow"
+      placement="bottom-start"
+      to=".sidebar-header-menu-popover"
+      @click-outside="onClickOutsideHandler"
+    >
+      <template #trigger>
+        <div class="sibebar-header-action">
+          <v-button
+            type="default"
+            class="sibebar-header-action-button"
+            quaternary
+            circle
+            @click="onSideBarActionClickHandler"
+          >
+            <template #icon>
+              <Transition name="menu-icon">
+                <v-icon
+                  v-show="!isSearchActive"
+                  class="sidebar-header-action-icon"
+                  :src="MenuIcon"
+                  name="menu"
+                  :fill="sideBarActionFillColor"
+                />
+              </Transition>
+              <Transition name="back-icon">
+                <v-icon
+                  v-show="isSearchActive"
+                  class="sidebar-header-action-icon"
+                  :src="BackIcon"
+                  name="back"
+                  :fill="sideBarActionFillColor"
+                />
+              </Transition>
+            </template>
+          </v-button>
+        </div>
+      </template>
+      <sidebar-header-menu />
+    </v-popover>
+    <v-input
+      v-model:value="searchQuery"
+      placeholder="Поиск"
+      style-type="search"
+      round
+      @input="onSearch"
+      @focus="onFocusHandler"
+      @focusout="onFocusOutHandler"
+    >
+      <template #prefix>
+        <v-icon
+          name="search"
+          :src="SearchIcon"
+          :fill="searchFillColor"
+        />
+      </template>
+    </v-input>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .sidebar-header {
