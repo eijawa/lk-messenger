@@ -1,9 +1,37 @@
+<script lang="ts" setup>
+import { ref } from 'vue';
+
+import { useGetCSSVariable } from '@/use/useCssVariables';
+import VPopover from '@/components/kit/VPopover.vue';
+import VButton from '@/components/kit/VButton.vue';
+import VMenuButton from '@/components/kit/VMenuButton.vue';
+import VIcon from '@/components/kit/VIcon.vue';
+
+import PenIcon from '@/assets/icons/pen.svg?url';
+import CloseIcon from '@/assets/icons/x.svg?url';
+import UserIcon from '@/assets/icons/user.svg?url';
+import GroupIcon from '@/assets/icons/group.svg?url';
+
+const isShow = ref(false);
+
+const iconColor = useGetCSSVariable('--color-icon-secondary');
+
+const onClickHandler = () => {
+  isShow.value = !isShow.value;
+};
+
+const onClickOutsideHandler = () => {
+  isShow.value = false;
+};
+</script>
+
 <template>
   <v-popover
     :is-show="isShow"
     placement="top-end"
     to=".new-chat-popover"
-    @click-outside="onClickOutsideHandler">
+    @click-outside="onClickOutsideHandler"
+  >
     <template #trigger>
       <div class="new-chat-button-trigger">
         <v-button
@@ -62,33 +90,6 @@
     </div>
   </v-popover>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-
-import { getCSSVariable } from '@/helpers/cssVariablesHelper';
-import VPopover from '@/components/kit/VPopover.vue';
-import VButton from '@/components/kit/VButton.vue';
-import VMenuButton from '@/components/kit/VMenuButton.vue';
-import VIcon from '@/components/kit/VIcon.vue';
-
-import PenIcon from '@/assets/icons/pen.svg?url';
-import CloseIcon from '@/assets/icons/x.svg?url';
-import UserIcon from '@/assets/icons/user.svg?url';
-import GroupIcon from '@/assets/icons/group.svg?url';
-
-const isShow = ref(false);
-
-const iconColor = getCSSVariable('--color-icon-secondary');
-
-const onClickHandler = () => {
-  isShow.value = !isShow.value;
-};
-
-const onClickOutsideHandler = () => {
-  isShow.value = false;
-};
-</script>
 
 <style lang="scss" scoped>
 .new-chat-button-trigger {
