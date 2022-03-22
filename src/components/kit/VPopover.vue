@@ -1,3 +1,51 @@
+<script lang="ts" setup>
+import { NPopover } from 'naive-ui';
+import {
+  computed, onMounted, PropType, watch,
+} from 'vue';
+import { setCSSVariable } from '@/use/useCssVariables';
+
+const props = defineProps({
+  isShow: {
+    type: Boolean,
+    required: true,
+  },
+  to: {
+    type: String,
+    required: true,
+  },
+  placement: {
+    type: String as PropType<'top-start' | 'top' | 'top-end' | 'right-start'
+    | 'right' | 'right-end' | 'bottom-start' | 'bottom' | 'bottom-end' | 'left-start' | 'left' | 'left-end'>,
+    required: true,
+  },
+});
+
+const emit = defineEmits(['clickOutside']);
+
+const isShowValue = computed(() => props.isShow);
+
+const followerContainerPointerEventsVar = `--${props.to.slice(1)}-pointer-events`;
+
+let popoverRenderElement: HTMLElement | null = null;
+onMounted(() => {
+  popoverRenderElement = document.querySelector(props.to);
+  if (popoverRenderElement !== null) {
+    popoverRenderElement.style.pointerEvents = `var(${followerContainerPointerEventsVar})`;
+  }
+});
+
+watch((isShowValue), showValue => {
+  setCSSVariable(followerContainerPointerEventsVar, showValue ? 'all' : 'none');
+});
+
+const onClickOutsideHandler = (e: MouseEvent) => {
+  if (e.type === 'mouseup') {
+    emit('clickOutside', e);
+  }
+};
+</script>
+
 <template>
   <n-popover
     class="v-popover"
@@ -15,48 +63,6 @@
   </n-popover>
 </template>
 
-<script setup>
-import { NPopover } from 'naive-ui';
-import { setCSSVariable } from '@/helpers/cssVariablesHelper';
-import { computed, onMounted, watch } from 'vue';
-
-const props = defineProps({
-  isShow: {
-    type: Boolean,
-    required: true,
-  },
-  to: {
-    type: String,
-    required: true,
-  },
-  placement: {
-    type: String,
-    required: true,
-  },
-});
-
-const emit = defineEmits(['clickOutside']);
-
-const isShowValue = computed(() => props.isShow);
-
-const followerContainerPointerEventsVar = `--${props.to.slice(1)}-pointer-events`;
-
-let popoverRenderElement = null;
-onMounted(() => {
-  popoverRenderElement = document.querySelector(props.to);
-  popoverRenderElement.style.pointerEvents = `var(${followerContainerPointerEventsVar})`;
-});
-
-watch((isShowValue), showValue => {
-  setCSSVariable(followerContainerPointerEventsVar, showValue ? 'all' : 'none');
-});
-
-const onClickOutsideHandler = e => {
-  if (e.type === 'mouseup') {
-    emit('clickOutside', e);
-  }
-};
-</script>
 <style lang="scss" scoped>
 :global(.v-popover) {
   :deep(.n-popover) {
