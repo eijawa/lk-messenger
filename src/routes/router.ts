@@ -1,7 +1,6 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from 'vue-router';
 
 import MessengerView from '@/views/MessengerView.vue';
-import ChatInDepth from '@/views/ChatInDepth.vue';
 import AuthView from '@/views/AuthView.vue';
 import ComponentsTesting from '@/views/ComponentsTestingView.vue';
 
@@ -10,13 +9,13 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'MessengerView',
     component: MessengerView,
-    children: [
-      {
-        name: 'chats',
-        path: 'chats/:id',
-        component: ChatInDepth,
-      },
-    ],
+    // children: [
+    //   {
+    //     name: 'chats',
+    //     path: 'chats/:id',
+    //     component: ChatInDepth,
+    //   },
+    // ],
   },
   {
     path: '/auth',

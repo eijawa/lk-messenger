@@ -3,7 +3,7 @@ import { NPopover } from 'naive-ui';
 import {
   computed, onMounted, PropType, watch,
 } from 'vue';
-import { useSetCSSVariable } from '@/use/useCssVariables';
+import { useSetCSSVariable } from '@/hooks/useCssVariables';
 
 const props = defineProps({
   isShow: {

@@ -1,4 +1,4 @@
-import { useFetch } from '@/use/useService';
+import { useFetch } from '@/hooks/useService';
 import config from '@/config';
 import { User } from '@/services/UserService';
 
@@ -35,6 +35,7 @@ export interface Conversation {
   peer: ConversationPeer,
   info: User | ChatInfo,
   unReadCount: number,
+  markedUnRead?: boolean,
   pinned: boolean,
   pushSettings: PushSettings,
 }

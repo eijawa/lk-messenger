@@ -1,23 +1,10 @@
-<template>
-  <v-empty v-if="chats.length === 0">
-    Нет начатых бесед...
-  </v-empty>
-
-  <div v-else class="chats-list">
-    <chats-list-item
-      v-for="chat in chats"
-      :key="chat.conversation.id"
-      :chat="chat"
-      @click="chatsItemClickHandler(chat.conversation.id)"
-    ></chats-list-item>
-  </div>
-</template>
-
-<script setup>
-import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
+<script lang="ts" setup>
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { useChatsStore } from '@/stores/chatsStore';
+import { Chats } from '@/services/ChatsService';
 
 import ChatsListItem from '@/components/chat/ChatsListItem.vue';
 import VEmpty from '@/components/kit/VEmpty.vue';
@@ -26,21 +13,36 @@ const chatsStore = useChatsStore();
 const messengerSettingsStore = useMessengerSettingsStore();
 const router = useRouter();
 
-const chats = computed(() => chatsStore.chats ?? []);
+const chats = computed<Chats>(() => chatsStore.chats ?? []);
 
 const openedChatId = ref(-1);
 
-const onOpenHandler = chatId => {
+const onOpenHandler = async (chatId: number) => {
   openedChatId.value = chatId;
-  router.push(`/chats/${chatId}`);
+  await router.push(`/chats/${chatId}`);
 };
 
-const chatsItemClickHandler = chatId => {
+const chatsItemClickHandler = () => {
   messengerSettingsStore.$patch({
     isChatOpened: true,
   });
 };
 </script>
+
+<template>
+  <v-empty v-if="chats.length === 0">
+    Нет начатых бесед...
+  </v-empty>
+
+  <div v-else class="chats-list">
+    <chats-list-item
+      v-for="chat in chats"
+      :key="chat.conversation.peer.id"
+      :chat="chat"
+      @click="chatsItemClickHandler()"
+    />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .chats-list {

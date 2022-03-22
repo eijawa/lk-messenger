@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-import ChatCard from '@/components/kit/Cards/ChatCard.vue';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useChatsStore } from '@/stores/chatsStore';
-import BaseListItem from './base/BaseListItem.vue';
 
 const router = useRouter();
 const chatsStore = useChatsStore();
@@ -17,18 +15,20 @@ const props = defineProps({
 });
 
 // Чаты и беседы
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 const usersAndChats = computed(() => props.date.users);
 
 // Поиск по сообщениям
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 const messages = computed(() => props.date.messages);
 
-const onOpenHandler = userOrChat => {
-  chatsStore.$patch(state => {
-    const chat = userOrChat;
-    chat.title = chat.username;
-    state.chats.push(userOrChat);
-  });
-  router.push(`/chats/${userOrChat.id}`);
+const onOpenHandler = (userOrChat: any) => {
+  // chatsStore.$patch(state => {
+  //   const chat = userOrChat;
+  //   chat.title = chat.username;
+  //   state.chats.push(userOrChat);
+  // });
+  // router.push(`/chats/${userOrChat.id}`);
 };
 </script>
 
@@ -37,18 +37,6 @@ const onOpenHandler = userOrChat => {
     <div class="search-header">
       <div class="search-header-title">Chats and Contacts</div>
       <div>Show more</div>
-    </div>
-
-    <div class="search-list">
-      <base-list-item
-        v-for="userOrChat in usersAndChats"
-        :key="userOrChat.id"
-        render-tag="div"
-        is-rounded
-        @click="onOpenHandler(userOrChat)"
-      >
-        <chat-card :title="userOrChat.username" />
-      </base-list-item>
     </div>
   </div>
 </template>

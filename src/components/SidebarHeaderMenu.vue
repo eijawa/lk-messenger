@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useGetCSSVariable } from '@/use/useCssVariables';
+import { useGetCSSVariable } from '@/hooks/useCssVariables';
 import VMenuButton from '@/components/kit/VMenuButton.vue';
 import VIcon from '@/components/kit/VIcon.vue';
 import SettingsIcon from '@/assets/icons/settings.svg?url';

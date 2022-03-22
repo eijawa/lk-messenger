@@ -7,7 +7,7 @@ import {
   GlobalThemeOverrides,
 } from 'naive-ui';
 
-import { useGetCSSVariable } from '@/use/useCssVariables';
+import { useGetCSSVariable } from '@/hooks/useCssVariables';
 
 const borderRadiusDefault = useGetCSSVariable('--border-radius-default');
 const colorText = useGetCSSVariable('--color-text');

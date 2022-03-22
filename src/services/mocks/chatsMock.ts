@@ -52,6 +52,8 @@ export const generateChat = async (index: number, currentUser: User): Promise<Ch
 
   if (chatLastMessageFrom.id !== currentUser.id) {
     conversation.unReadCount = faker.random.arrayElement([0, faker.datatype.number(24)]);
+  } else {
+    conversation.markedUnRead = faker.random.arrayElement([false, false, true]);
   }
 
   const lastMessage: Message = generateMessage(chatLastMessageFrom);

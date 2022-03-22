@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useFirstLetters } from '@/use/useStringFormatter';
+import { useFirstLetters } from '@/hooks/useStringFormatter';
 import { computed } from 'vue';
 
 const props = defineProps({
   title: {
     type: String,
-    default: '',
+    required: true,
   },
   size: {
     type: Number,
@@ -13,7 +13,7 @@ const props = defineProps({
   },
   src: {
     type: String,
-    default: '',
+    default: undefined,
   },
   status: {
     type: Boolean,
@@ -30,12 +30,12 @@ const srcValue = computed(() => props.src);
   <div class="v-avatar-container">
     <div class="v-avatar" :style="{ width: size, height: size }">
       <img
-        v-if="srcValue"
+        v-if="typeof srcValue !== 'undefined'"
         :style="{ width: size, height: size }"
         :src="srcValue"
         alt="avatar"
       >
-      <span v-else>М</span>
+      <span v-else>{{ titleFirstLetters }}</span>
     </div>
   </div>
 </template>

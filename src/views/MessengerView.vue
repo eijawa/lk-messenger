@@ -99,10 +99,10 @@ onMounted(async () => {
       <div class="sidebar-header-menu-popover" />
 
       <div class="sidebar-list">
-<!--        <n-scrollbar class="sidebar-scrollbar" @scroll="sidebarScrollingHandler">-->
-<!--          <chats-list v-if="!isSearchActive" />-->
-<!--          <messenger-search v-else :date="searchData" />-->
-<!--        </n-scrollbar>-->
+        <n-scrollbar class="sidebar-scrollbar" @scroll="sidebarScrollingHandler">
+          <chats-list v-if="!isSearchActive" />
+          <messenger-search v-else :date="searchData" />
+        </n-scrollbar>
       </div>
 
       <new-chat-button />

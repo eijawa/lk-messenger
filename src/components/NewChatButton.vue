@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-import { useGetCSSVariable } from '@/use/useCssVariables';
+import { useGetCSSVariable } from '@/hooks/useCssVariables';
 import VPopover from '@/components/kit/VPopover.vue';
 import VButton from '@/components/kit/VButton.vue';
 import VMenuButton from '@/components/kit/VMenuButton.vue';

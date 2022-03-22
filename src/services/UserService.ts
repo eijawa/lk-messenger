@@ -1,4 +1,4 @@
-import { useFetch } from '@/use/useService';
+import { useFetch } from '@/hooks/useService';
 import config from '@/config';
 
 export interface User {
