@@ -81,7 +81,8 @@ const touchEndHandler = (e: TouchEvent) => {
     @touchstart.passive="touchStartHandler"
     @touchmove.passive="touchMoveHandler"
     @touchend="touchEndHandler"
-    @touchcancel="touchEndHandler">
+    @touchcancel="touchEndHandler"
+  >
     <div class="layout-swiping-content">
       <slot name="default" />
     </div>
