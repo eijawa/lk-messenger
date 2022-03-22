@@ -1,25 +1,4 @@
-<template>
-  <div class="messenger-search">
-    <div class="search-header">
-      <div class="search-header-title">Chats and Contacts</div>
-      <div>Show more</div>
-    </div>
-
-    <div class="search-list">
-      <base-list-item
-        v-for="userOrChat in usersAndChats"
-        :key="userOrChat.id"
-        render-tag="div"
-        is-rounded
-        @click="onOpenHandler(userOrChat)"
-      >
-        <chat-card :title="userOrChat.username" />
-      </base-list-item>
-    </div>
-  </div>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import ChatCard from '@/components/kit/Cards/ChatCard.vue';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
@@ -52,6 +31,27 @@ const onOpenHandler = userOrChat => {
   router.push(`/chats/${userOrChat.id}`);
 };
 </script>
+
+<template>
+  <div class="messenger-search">
+    <div class="search-header">
+      <div class="search-header-title">Chats and Contacts</div>
+      <div>Show more</div>
+    </div>
+
+    <div class="search-list">
+      <base-list-item
+        v-for="userOrChat in usersAndChats"
+        :key="userOrChat.id"
+        render-tag="div"
+        is-rounded
+        @click="onOpenHandler(userOrChat)"
+      >
+        <chat-card :title="userOrChat.username" />
+      </base-list-item>
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .messenger-search {

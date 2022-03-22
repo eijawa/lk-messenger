@@ -1,6 +1,6 @@
-export const useFetch = async (url: string, params: RequestInit = {}) => {
+export const useFetch = async <T>(url: RequestInfo, params: RequestInit = {}): Promise<T> => {
   const token = localStorage.getItem('jwt');
-  let paramsValue = null;
+  let paramsValue: RequestInit = {};
 
   if (token) {
     if (params === {}) {
@@ -18,8 +18,9 @@ export const useFetch = async (url: string, params: RequestInit = {}) => {
     }
 
     const response = await fetch(url, paramsValue);
-    return response.json();
+    const result = await response.json() as Promise<T>;
+    return result;
   }
   // window.location.href = 'https://lk.volsu.ru';
-  return {};
+  return {} as Promise<T>;
 };
