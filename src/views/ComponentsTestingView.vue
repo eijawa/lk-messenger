@@ -1,3 +1,36 @@
+<script lang="ts" setup>
+import { ref } from 'vue';
+import VButton from '@/components/kit/VButton.vue';
+import VInput from '@/components/kit/VInput.vue';
+import VIcon from '@/components/kit/VIcon.vue';
+import MenuIcon from '@/assets/icons/menu.svg?url';
+import SearchIcon from '@/assets/icons/search.svg?url';
+
+const inputValueDefault = ref('');
+const inputValueForm = ref('');
+
+const root = document.querySelector(':root');
+
+let searchFillColorActive = 'black';
+let searchFillColorDefault = 'black';
+const searchFillColor = ref(searchFillColorDefault);
+
+if (root) {
+  const rootStyle = getComputedStyle(root);
+  searchFillColorDefault = `rgba(${rootStyle.getPropertyValue('--color-text-secondary-rgb')}, 0.5)`;
+  searchFillColorActive = rootStyle.getPropertyValue('--color-primary');
+  searchFillColor.value = searchFillColorDefault;
+}
+
+const onFocus = () => {
+  searchFillColor.value = searchFillColorActive;
+};
+
+const onFocusOut = () => {
+  searchFillColor.value = searchFillColorDefault;
+};
+</script>
+
 <template>
   <div class="components-testing-container">
     <div class="components-container">
@@ -5,32 +38,60 @@
       <div class="components-groups">
         <div>Basic</div>
         <div class="components-list">
-          <v-button type="default">Default</v-button>
-          <v-button type="primary">Primary</v-button>
-          <v-button type="success">Success</v-button>
-          <v-button type="warning">Warning</v-button>
-          <v-button type="error">Error</v-button>
+          <v-button type="default">
+            Default
+          </v-button>
+          <v-button type="primary">
+            Primary
+          </v-button>
+          <v-button type="success">
+            Success
+          </v-button>
+          <v-button type="warning">
+            Warning
+          </v-button>
+          <v-button type="error">
+            Error
+          </v-button>
         </div>
       </div>
 
       <div class="components-groups">
         <div>Ghost</div>
         <div class="components-list">
-          <v-button type="default" ghost>Default</v-button>
-          <v-button type="primary" ghost>Primary</v-button>
-          <v-button type="success" ghost>Success</v-button>
-          <v-button type="warning" ghost>Warning</v-button>
-          <v-button type="error" ghost>Error</v-button>
+          <v-button type="default" ghost>
+            Default
+          </v-button>
+          <v-button type="primary" ghost>
+            Primary
+          </v-button>
+          <v-button type="success" ghost>
+            Success
+          </v-button>
+          <v-button type="warning" ghost>
+            Warning
+          </v-button>
+          <v-button type="error" ghost>
+            Error
+          </v-button>
         </div>
       </div>
 
       <div class="components-groups">
         <div>Quaternary</div>
         <div class="components-list">
-          <v-button type="default" quaternary>Default</v-button>
-          <v-button type="primary" quaternary>Primary</v-button>
-          <v-button type="success" quaternary>Success</v-button>
-          <v-button type="warning" quaternary>Warning</v-button>
+          <v-button type="default" quaternary>
+            Default
+          </v-button>
+          <v-button type="primary" quaternary>
+            Primary
+          </v-button>
+          <v-button type="success" quaternary>
+            Success
+          </v-button>
+          <v-button type="warning" quaternary>
+            Warning
+          </v-button>
           <div>
             <v-button
               type="default"
@@ -48,8 +109,12 @@
       <div class="components-groups">
         <div>Disabled</div>
         <div class="components-list">
-          <v-button type="default" disabled>Default</v-button>
-          <v-button type="primary" disabled>Primary</v-button>
+          <v-button type="default" disabled>
+            Default
+          </v-button>
+          <v-button type="primary" disabled>
+            Primary
+          </v-button>
         </div>
       </div>
 
@@ -60,26 +125,29 @@
             type="primary"
             size="small"
             round
-          >small
+          >
+            small
           </v-button>
           <v-button
             type="primary"
             size="medium"
-          >medium
+          >
+            medium
           </v-button>
           <v-button
             type="primary"
             size="large"
-          >large
+          >
+            large
           </v-button>
           <v-button
             type="primary"
             :size="4.5"
-          >4.5 rem
+          >
+            4.5 rem
           </v-button>
         </div>
       </div>
-
     </div>
     <div class="components-container">
       <h3>Inputs</h3>
@@ -114,36 +182,9 @@
           />
         </div>
       </div>
-
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-import VButton from '@/components/kit/VButton.vue';
-import VInput from '@/components/kit/VInput.vue';
-import VIcon from '@/components/kit/VIcon.vue';
-import MenuIcon from '@/assets/icons/menu.svg?url';
-import SearchIcon from '@/assets/icons/search.svg?url';
-
-const inputValueDefault = ref('');
-const inputValueForm = ref('');
-
-const root = document.querySelector(':root');
-const rootStyle = getComputedStyle(root);
-const searchFillColorDefault = `rgba(${rootStyle.getPropertyValue('--color-text-secondary-rgb')}, 0.5)`;
-const searchFillColorActive = rootStyle.getPropertyValue('--color-primary');
-const searchFillColor = ref(searchFillColorDefault);
-
-const onFocus = () => {
-  searchFillColor.value = searchFillColorActive;
-};
-
-const onFocusOut = () => {
-  searchFillColor.value = searchFillColorDefault;
-};
-</script>
 
 <style lang="scss" scoped>
 .components-testing-container {
