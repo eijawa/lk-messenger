@@ -1,3 +1,91 @@
+<script lang="ts" setup>
+import { computed, onMounted, ref } from 'vue';
+import { NScrollbar } from 'naive-ui';
+
+import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
+import { useChatsStore } from '@/stores/chatsStore';
+import SidebarHeader from '@/components/SidebarHeader.vue';
+import MessengerSearch from '@/components/MessengerSearch.vue';
+import ChatsList from '@/components/chat/ChatsList.vue';
+import NewChatButton from '@/components/NewChatButton.vue';
+import VButton from '@/components/kit/VButton.vue';
+import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
+import { SearchService } from '@/services/SearchService';
+
+const messengerSettingsStore = useMessengerSettingsStore();
+const chatsStore = useChatsStore();
+const searchService = new SearchService();
+
+const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
+
+const onCloseHandler = () => {
+  messengerSettingsStore.$patch({
+    isChatOpened: false,
+  });
+};
+
+const searchData = ref({
+  users: [],
+  chats: [],
+  messages: [],
+});
+
+const isSearchActive = ref(false);
+
+const searchStateChange = (state: boolean) => {
+  isSearchActive.value = state;
+  searchData.value = {
+    users: [],
+    chats: [],
+    messages: [],
+  };
+};
+
+// eslint-disable-next-line @typescript-eslint/require-await
+const onSearch = async (query: string) => {
+  console.log(query);
+  // if (query) {
+  //   const data = await searchService.messengerSearch(query);
+  //   if (data?.status) {
+  //     searchData.value.users = data.result.users;
+  //   }
+  //
+  // } else {
+  //   searchData.value = {
+  //     users: [],
+  //     chats: [],
+  //     messages: [],
+  //   };
+  // }
+};
+
+const onClickButtonBackHandler = () => {
+  messengerSettingsStore.$patch({
+    isChatOpened: false,
+  });
+};
+
+const isMoreInfoOpened = ref(false);
+const middleColumnCollapse = computed(() => (isMoreInfoOpened.value ? 'collapse' : ''));
+const onClickButtonMoreInfo = () => {
+  isMoreInfoOpened.value = true;
+};
+
+const onCloseMoreInfoHandler = () => {
+  isMoreInfoOpened.value = false;
+};
+
+const isSideBarScrolling = ref(false);
+const sidebarScrollingHandler = (e: Event) => {
+  isSideBarScrolling.value = (e.target as HTMLElement).scrollTop !== 0;
+};
+
+onMounted(async () => {
+  await chatsStore.getChats();
+  console.log(chatsStore.chats);
+});
+</script>
+
 <template>
   <div class="messenger">
     <div class="messenger-sidebar">
@@ -8,27 +96,32 @@
         @back-click="searchStateChange(false)"
         @search="onSearch"
       />
-      <div class="sidebar-header-menu-popover"></div>
+      <div class="sidebar-header-menu-popover" />
 
       <div class="sidebar-list">
-        <n-scrollbar class="sidebar-scrollbar" @scroll="sidebarScrollingHandler">
-          <chats-list v-if="!isSearchActive" />
-          <messenger-search v-else :date="searchData" />
-        </n-scrollbar>
+<!--        <n-scrollbar class="sidebar-scrollbar" @scroll="sidebarScrollingHandler">-->
+<!--          <chats-list v-if="!isSearchActive" />-->
+<!--          <messenger-search v-else :date="searchData" />-->
+<!--        </n-scrollbar>-->
       </div>
 
       <new-chat-button />
-      <div class="new-chat-popover"></div>
+      <div class="new-chat-popover" />
     </div>
 
     <v-layout-swiping
       :is-opened="isChatOpened"
       class="middle-column"
       :class="[middleColumnCollapse]"
-      @close="onCloseHandler">
+      @close="onCloseHandler"
+    >
       <div class="middle-column-content">
-        <v-button type="primary" @click="onClickButtonBackHandler">Назад</v-button>
-        <v-button type="primary" @click="onClickButtonMoreInfo">Информация</v-button>
+        <v-button type="primary" @click="onClickButtonBackHandler">
+          Назад
+        </v-button>
+        <v-button type="primary" @click="onClickButtonMoreInfo">
+          Информация
+        </v-button>
         <div>
           <h4>Lorem</h4>
           <h4>Lorem</h4>
@@ -92,7 +185,9 @@
       @close="onCloseMoreInfoHandler"
     >
       <div class="left-column-content">
-        <v-button type="primary" @click="onCloseMoreInfoHandler">Назад</v-button>
+        <v-button type="primary" @click="onCloseMoreInfoHandler">
+          Назад
+        </v-button>
         <div>
           <h4>Lorem</h4>
           <h4>Lorem</h4>
@@ -116,94 +211,6 @@
     </v-layout-swiping>
   </div>
 </template>
-
-<script setup>
-import { computed, onMounted, ref } from 'vue';
-import { NScrollbar } from 'naive-ui';
-
-import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
-import { useChatsStore } from '@/stores/chatsStore';
-import SidebarHeader from '@/components/SidebarHeader.vue';
-import MessengerSearch from '@/components/MessengerSearch.vue';
-import ChatsList from '@/components/chat/ChatsList.vue';
-import NewChatButton from '@/components/NewChatButton.vue';
-import VButton from '@/components/kit/VButton.vue';
-import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
-import { SearchService } from '@/services/SearchService';
-
-const messengerSettingsStore = useMessengerSettingsStore();
-const chatsStore = useChatsStore();
-const searchService = new SearchService();
-
-const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
-
-const onCloseHandler = () => {
-  messengerSettingsStore.$patch({
-    isChatOpened: false,
-  });
-};
-
-const searchData = ref({
-  users: [],
-  chats: [],
-  messages: [],
-});
-
-const isSearchActive = ref(false);
-
-
-const searchStateChange = async state => {
-  isSearchActive.value = state;
-  searchData.value = {
-    users: [],
-    chats: [],
-    messages: [],
-  };
-};
-
-const onSearch = async query => {
-  if (query) {
-    const data = await searchService.messengerSearch(query);
-    if (data?.status) {
-      searchData.value.users = data.result.users;
-    }
-
-  } else {
-    searchData.value = {
-      users: [],
-      chats: [],
-      messages: [],
-    };
-  }
-};
-
-const onClickButtonBackHandler = () => {
-  messengerSettingsStore.$patch({
-    isChatOpened: false,
-  });
-};
-
-const isMoreInfoOpened = ref(false);
-const middleColumnCollapse = computed(() => isMoreInfoOpened.value ? 'collapse' : '');
-const onClickButtonMoreInfo = () => {
-  isMoreInfoOpened.value = true;
-};
-
-const onCloseMoreInfoHandler = () => {
-  isMoreInfoOpened.value = false;
-};
-
-const isSideBarScrolling = ref(false);
-const sidebarScrollingHandler = e => {
-  isSideBarScrolling.value = e.target.scrollTop !== 0;
-};
-
-
-onMounted(async () => {
-  await chatsStore.getChats();
-  console.log(chatsStore.chats);
-});
-</script>
 
 <style lang="scss" scoped>
 .messenger {
@@ -230,7 +237,7 @@ onMounted(async () => {
 
     @media (min-width: 927px) {
       min-width: var(--left-column-width);
-      max-width:  var(--left-column-width);
+      max-width: var(--left-column-width);
     }
 
     @media (max-width: 926px) {
