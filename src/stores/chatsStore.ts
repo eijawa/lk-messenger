@@ -10,7 +10,7 @@ import { User } from '@/services/UserService';
 
 const chatsService = new ChatsService();
 
-export const useMessengerSettingsStore = defineStore('chatsStore', () => {
+export const useChatsStore = defineStore('chatsStore', () => {
   const chats = ref<Chats>([]);
 
   const getChats = async () => {
