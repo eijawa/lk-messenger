@@ -1,19 +1,4 @@
-<template>
-  <div
-    class="layout-swiping"
-    :class="[{ 'layout-swiping-opened': props.isOpened, 'layout-swiping-touch-start': isXTouch }]"
-    :style="{ transform: viewTransform }"
-    @touchstart.passive="touchStartHandler"
-    @touchmove.passive="touchMoveHandler"
-    @touchend="touchEndHandler"
-    @touchcancel="touchEndHandler">
-    <div class="layout-swiping-content">
-      <slot name="default" />
-    </div>
-  </div>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 
 const props = defineProps({
@@ -32,24 +17,25 @@ const touchStartValue = {
   y: 0,
 };
 
-let dateStart = null;
+let dateStart = 0;
 
 let isSecondTouch = false;
 const isXTouch = ref(false);
 
-const touchStartHandler = e => {
+const touchStartHandler = (e: TouchEvent) => {
   touchStartValue.x = e.changedTouches[0].clientX;
   touchStartValue.y = e.changedTouches[0].clientY;
   dateStart = Date.now();
 };
 
-const touchMoveHandler = e => {
+const touchMoveHandler = (e: TouchEvent) => {
   const touchDistanceTmp = touchDistanceX;
   touchDistanceX = Math.round(e.touches[0].clientX - touchStartValue.x);
 
   if (!isSecondTouch) {
     isSecondTouch = true;
-    if (touchDistanceX > 1 && Math.abs(e.touches[0].clientY - touchStartValue.y) < 7 && window.innerWidth < 927) {
+    if (touchDistanceX > 1 && Math.abs(e.touches[0].clientY - touchStartValue.y) < 7
+      && window.innerWidth < 927) {
       isXTouch.value = true;
     }
   }
@@ -69,9 +55,10 @@ const touchMoveHandler = e => {
   }
 };
 
-const touchEndHandler = e => {
+const touchEndHandler = (e: TouchEvent) => {
   const dateEnd = Date.now();
-  const touchDistance = Math.sqrt((e.changedTouches[0].clientX - touchStartValue.x) ** 2 + (e.changedTouches[0].clientY - touchStartValue.y) ** 2);
+  const touchDistance = Math.sqrt((e.changedTouches[0].clientX - touchStartValue.x) ** 2
+    + (e.changedTouches[0].clientY - touchStartValue.y) ** 2);
 
   const touchSeconds = (dateEnd - dateStart) / 1000;
   const touchSpeed = touchDistance / touchSeconds;
@@ -85,6 +72,21 @@ const touchEndHandler = e => {
   viewTransform.value = 'translateX(0)';
 };
 </script>
+
+<template>
+  <div
+    class="layout-swiping"
+    :class="[{ 'layout-swiping-opened': props.isOpened, 'layout-swiping-touch-start': isXTouch }]"
+    :style="{ transform: viewTransform }"
+    @touchstart.passive="touchStartHandler"
+    @touchmove.passive="touchMoveHandler"
+    @touchend="touchEndHandler"
+    @touchcancel="touchEndHandler">
+    <div class="layout-swiping-content">
+      <slot name="default" />
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .layout-swiping {
