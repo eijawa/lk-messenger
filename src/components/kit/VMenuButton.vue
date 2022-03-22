@@ -1,25 +1,5 @@
-<template>
-  <button
-    ref="buttonBaseRef"
-    class="v-button-menu-base"
-    :class="[typeValue, disabledValue]"
-    :style="{ fontSize: `${buttonMenuStyle.fontSize}rem`, fontWeight: buttonMenuStyle.fontWeight }"
-  >
-    <span class="v-button-menu-icon">
-      <slot name="icon" />
-    </span>
-    <span class="v-button-menu-text">
-      <slot name="default" />
-    </span>
-    <span class="v-button-menu-right">
-      <slot name="right" />
-    </span>
-  </button>
-</template>
-
-<script setup>
-
-import { ref, computed } from 'vue';
+<script lang="ts" setup>
+import { computed, PropType } from 'vue';
 
 const props = defineProps({
   type: {
@@ -27,7 +7,7 @@ const props = defineProps({
     default: 'default',
   },
   size: {
-    type: [String, Number],
+    type: [String, Number] as PropType<number | 'small' | 'medium' | 'large'>,
     default: 'medium',
   },
   fontSize: {
@@ -44,21 +24,18 @@ const props = defineProps({
   },
 });
 
-const buttonBaseRef = ref(null);
 const typeValue = computed(() => props.type);
-const disabledValue = computed(() => props.disabled ? 'disabled' : '');
+const disabledValue = computed(() => (props.disabled ? 'disabled' : ''));
 const fontSize = computed(() => props.fontSize);
 const fontWeight = computed(() => props.fontWeight);
 
-const sizeCalculate = size => {
+const sizeCalculate = (size: string | number) => {
   if (size === 'medium') {
     return 2.75;
   }
-
   if (size === 'small') {
     return 2;
   }
-
   return 3.5;
 };
 
@@ -76,6 +53,24 @@ const buttonMenuStyle = computed(() => ({
   borderRadiusRound: `${sizeValue.value}rem`,
 }));
 </script>
+
+<template>
+  <button
+    class="v-button-menu-base"
+    :class="[typeValue, disabledValue]"
+    :style="{ fontSize: `${buttonMenuStyle.fontSize}rem`, fontWeight: buttonMenuStyle.fontWeight }"
+  >
+    <span class="v-button-menu-icon">
+      <slot name="icon" />
+    </span>
+    <span class="v-button-menu-text">
+      <slot name="default" />
+    </span>
+    <span class="v-button-menu-right">
+      <slot name="right" />
+    </span>
+  </button>
+</template>
 
 <style lang="scss" scoped>
 .v-button-menu-base {
