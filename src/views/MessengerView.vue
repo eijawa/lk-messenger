@@ -1,20 +1,19 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
-import { NScrollbar } from 'naive-ui';
+import {
+  computed, shallowRef, onMounted, ref,
+} from 'vue';
 
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { useChatsStore } from '@/stores/chatsStore';
-import SidebarHeader from '@/components/SidebarHeader.vue';
-import MessengerSearch from '@/components/MessengerSearch.vue';
-import ChatsList from '@/components/chat/ChatsList.vue';
-import NewChatButton from '@/components/NewChatButton.vue';
+
 import VButton from '@/components/kit/VButton.vue';
 import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
-import { SearchService } from '@/services/SearchService';
+import Sidebar from '@/components/Sidebar.vue';
 
 const messengerSettingsStore = useMessengerSettingsStore();
 const chatsStore = useChatsStore();
-const searchService = new SearchService();
+
+const leftColumnActiveComponent = shallowRef(Sidebar);
 
 const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
 
@@ -22,41 +21,6 @@ const onCloseHandler = () => {
   messengerSettingsStore.$patch({
     isChatOpened: false,
   });
-};
-
-const searchData = ref({
-  users: [],
-  chats: [],
-  messages: [],
-});
-
-const isSearchActive = ref(false);
-
-const searchStateChange = (state: boolean) => {
-  isSearchActive.value = state;
-  searchData.value = {
-    users: [],
-    chats: [],
-    messages: [],
-  };
-};
-
-// eslint-disable-next-line @typescript-eslint/require-await
-const onSearch = async (query: string) => {
-  console.log(query);
-  // if (query) {
-  //   const data = await searchService.messengerSearch(query);
-  //   if (data?.status) {
-  //     searchData.value.users = data.result.users;
-  //   }
-  //
-  // } else {
-  //   searchData.value = {
-  //     users: [],
-  //     chats: [],
-  //     messages: [],
-  //   };
-  // }
 };
 
 const onClickButtonBackHandler = () => {
@@ -75,11 +39,6 @@ const onCloseMoreInfoHandler = () => {
   isMoreInfoOpened.value = false;
 };
 
-const isSideBarScrolling = ref(false);
-const sidebarScrollingHandler = (e: Event) => {
-  isSideBarScrolling.value = (e.target as HTMLElement).scrollTop !== 0;
-};
-
 onMounted(async () => {
   await chatsStore.getChats();
   console.log(chatsStore.chats);
@@ -88,25 +47,8 @@ onMounted(async () => {
 
 <template>
   <div class="messenger">
-    <div class="messenger-sidebar">
-      <sidebar-header
-        class="v-sidebar-header"
-        :class="{ 'scroll': isSideBarScrolling }"
-        @search-focus="searchStateChange(true)"
-        @back-click="searchStateChange(false)"
-        @search="onSearch"
-      />
-      <div class="sidebar-header-menu-popover" />
-
-      <div class="sidebar-list">
-        <n-scrollbar class="sidebar-scrollbar" @scroll="sidebarScrollingHandler">
-          <chats-list v-if="!isSearchActive" />
-          <messenger-search v-else :date="searchData" />
-        </n-scrollbar>
-      </div>
-
-      <new-chat-button />
-      <div class="new-chat-popover" />
+    <div class="left-column">
+      <component :is="leftColumnActiveComponent" />
     </div>
 
     <v-layout-swiping
@@ -181,10 +123,10 @@ onMounted(async () => {
     <v-layout-swiping
       :is-opened="isMoreInfoOpened"
       standing-style="modal"
-      class="left-column modal"
+      class="modal right-column"
       @close="onCloseMoreInfoHandler"
     >
-      <div class="left-column-content">
+      <div class="right-column-content">
         <v-button type="primary" @click="onCloseMoreInfoHandler">
           Назад
         </v-button>
@@ -227,7 +169,7 @@ onMounted(async () => {
     grid-template-rows: 100%;
   }
 
-  .messenger-sidebar {
+  .left-column {
     height: 100%;
     width: 100%;
     display: flex;
@@ -245,39 +187,6 @@ onMounted(async () => {
       left: 0;
       top: 0;
       height: calc(var(--vh, 1vh) * 100);
-    }
-
-    .v-sidebar-header {
-      transition: box-shadow, border-bottom-color .3s ease;
-      background: var(--color-background);
-    }
-
-    .v-sidebar-header.scroll {
-      box-shadow: 0 2px 2px var(--color-light-shadow);
-    }
-
-    .sidebar-list {
-      flex: 1;
-      overflow: hidden;
-      contain: strict;
-
-      :deep(.sidebar-scrollbar) {
-        .n-scrollbar-rail {
-          display: none;
-          right: 0;
-        }
-
-        @media (min-width: 927px) {
-          .n-scrollbar-rail {
-            display: block;
-          }
-        }
-
-        .n-scrollbar-content {
-          display: flex;
-          min-height: 100%;
-        }
-      }
     }
   }
 
@@ -301,7 +210,7 @@ onMounted(async () => {
     }
   }
 
-  .left-column {
+  .right-column {
     background-color: #fb8c00;
     width: 100%;
     z-index: 2;
@@ -327,7 +236,7 @@ onMounted(async () => {
       width: var(--right-column-width);
     }
 
-    .left-column-content {
+    .right-column-content {
       display: flex;
       flex-direction: column;
       width: 100%;

@@ -29,7 +29,7 @@ const iconColor = useGetCSSVariable('--color-icon-secondary');
           :fill="iconColor"
         />
       </template>
-      Настройки
+      Пункт 2
     </v-menu-button>
     <v-menu-button size="small" :font-size="0.875">
       <template #icon>
@@ -40,7 +40,7 @@ const iconColor = useGetCSSVariable('--color-icon-secondary');
           :fill="iconColor"
         />
       </template>
-      Настройки
+      Пункт 3
     </v-menu-button>
     <v-menu-button size="small" :font-size="0.875">
       <template #icon>
@@ -51,7 +51,7 @@ const iconColor = useGetCSSVariable('--color-icon-secondary');
           :fill="iconColor"
         />
       </template>
-      Настройки
+      Пункт 4
     </v-menu-button>
   </div>
 </template>
