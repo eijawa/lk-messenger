@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {
-  computed, shallowRef, onMounted, ref,
+  computed, onMounted, ref,
 } from 'vue';
 
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
@@ -8,12 +8,10 @@ import { useChatsStore } from '@/stores/chatsStore';
 
 import VButton from '@/components/kit/VButton.vue';
 import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
-import Sidebar from '@/components/Sidebar.vue';
 
 const messengerSettingsStore = useMessengerSettingsStore();
-const chatsStore = useChatsStore();
 
-const leftColumnActiveComponent = shallowRef(Sidebar);
+const chatsStore = useChatsStore();
 
 const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
 
@@ -43,12 +41,13 @@ onMounted(async () => {
   await chatsStore.getChats();
   console.log(chatsStore.chats);
 });
+
 </script>
 
 <template>
   <div class="messenger">
     <div class="left-column">
-      <component :is="leftColumnActiveComponent" />
+      <component :is="messengerSettingsStore.leftColumnActiveComponentGetter" />
     </div>
 
     <v-layout-swiping

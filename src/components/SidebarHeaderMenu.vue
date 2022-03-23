@@ -1,15 +1,27 @@
 <script lang="ts" setup>
+import { LeftColumnComponentsName } from '@/types/MessengerSettings';
+import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { useGetCSSVariable } from '@/hooks/useCssVariables';
 import VMenuButton from '@/components/kit/VMenuButton.vue';
 import VIcon from '@/components/kit/VIcon.vue';
 import SettingsIcon from '@/assets/icons/settings.svg?url';
 
+const messengerSettingsStore = useMessengerSettingsStore();
+
 const iconColor = useGetCSSVariable('--color-icon-secondary');
+
+const menuItemClickHandler = async (componentName: LeftColumnComponentsName) => {
+  await messengerSettingsStore.leftColumnActiveComponentChange(componentName);
+};
 </script>
 
 <template>
   <div class="sidebar-header-menu">
-    <v-menu-button size="small" :font-size="0.875">
+    <v-menu-button
+      size="small"
+      :font-size="0.875"
+      @click="menuItemClickHandler('Settings')"
+    >
       <template #icon>
         <v-icon
           :src="SettingsIcon"
