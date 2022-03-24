@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { useChatsStore } from '@/stores/chatsStore';
 import { Chats } from '@/services/ChatsService';
 
@@ -10,7 +9,6 @@ import ChatsListItem from '@/components/chat/ChatsListItem.vue';
 import VEmpty from '@/components/kit/VEmpty.vue';
 
 const chatsStore = useChatsStore();
-const messengerSettingsStore = useMessengerSettingsStore();
 const router = useRouter();
 
 const chats = computed<Chats>(() => chatsStore.chats ?? []);
@@ -22,10 +20,14 @@ const onOpenHandler = async (chatId: number) => {
   await router.push(`/chats/${chatId}`);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const { isChatOpenedChangeState } = inject('isChatOpened') ?? { isChatOpenedChangeState: null };
+
 const chatsItemClickHandler = () => {
-  messengerSettingsStore.$patch({
-    isChatOpened: true,
-  });
+  if (isChatOpenedChangeState !== null) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    isChatOpenedChangeState(true);
+  }
 };
 </script>
 
@@ -39,7 +41,7 @@ const chatsItemClickHandler = () => {
       v-for="chat in chats"
       :key="chat.conversation.peer.id"
       :chat="chat"
-      @click="chatsItemClickHandler()"
+      @click="chatsItemClickHandler"
     />
   </div>
 </template>

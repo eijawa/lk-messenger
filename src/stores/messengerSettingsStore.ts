@@ -3,7 +3,7 @@ import {
   computed, DefineComponent, ref, shallowRef,
 } from 'vue';
 import { LeftColumnComponentsList, LeftColumnComponent } from '@/types/MessengerSettings';
-import Sidebar from '@/components/Sidebar.vue';
+import Sidebar from '@/views/leftColumn/SidebarView.vue';
 
 export const useMessengerSettingsStore = defineStore('messengerSettingsStore', () => {
   const leftColumnActiveComponent = shallowRef(Sidebar);
@@ -11,11 +11,11 @@ export const useMessengerSettingsStore = defineStore('messengerSettingsStore', (
   const leftColumnComponentsList: LeftColumnComponentsList = [
     {
       name: 'Sidebar',
-      path: '../components/Sidebar.vue',
+      path: 'components/SidebarView.vue',
     },
     {
       name: 'Settings',
-      path: '../components/leftColumn/settings/Settings.vue',
+      path: 'views/leftColumn/settings/SettingsView.vue',
     },
   ];
 
@@ -25,7 +25,7 @@ export const useMessengerSettingsStore = defineStore('messengerSettingsStore', (
     );
     if (typeof searchedComponentInfo !== 'undefined') {
       leftColumnActiveComponent.value = (
-        await import(searchedComponentInfo.path) as DefineComponent
+        await import(`../${searchedComponentInfo.path}`) as DefineComponent
       ).default as DefineComponent;
     } else {
       throw new Error(`component "${componentName}" not found`);

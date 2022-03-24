@@ -66,7 +66,6 @@ const sidebarScrollingHandler = (e: Event) => {
         <chats-list v-if="!isSearchActive" />
         <messenger-search v-else :date="searchData" />
       </n-scrollbar>
-      <!--        <component :is="sideBarActiveComponent" />-->
     </div>
 
     <new-chat-button />

@@ -1,14 +1,14 @@
 <template>
   <a-empty v-if="messages?.length === 0" />
   <a-space
-      v-else
-      direction="vertical"
+    v-else
+    direction="vertical"
   >
     <messages-list-item
-        v-for="m in messages"
-        :key="m.id"
-        :message="m"
-    ></messages-list-item>
+      v-for="m in messages"
+      :key="m.id"
+      :message="m"
+    />
   </a-space>
 </template>
 
@@ -22,8 +22,6 @@ defineProps({
   },
 });
 </script>
-
-
 
 <style lang="scss" scoped>
 </style>

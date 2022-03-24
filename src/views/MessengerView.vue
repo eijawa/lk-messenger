@@ -1,155 +1,83 @@
 <script lang="ts" setup>
 import {
-  computed, onMounted, ref,
+  computed, onMounted, provide, ref,
 } from 'vue';
 
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { useChatsStore } from '@/stores/chatsStore';
 
-import VButton from '@/components/kit/VButton.vue';
+import VViewSwitchController from '@/components/kit/VViewsSwitchController.vue';
 import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
+import ChatView from '@/views/middleColumn/ChatView.vue';
+import MoreInfoView from '@/views/rightColumn/MoreInfoView.vue';
 
 const messengerSettingsStore = useMessengerSettingsStore();
 
 const chatsStore = useChatsStore();
 
-const isChatOpened = computed(() => messengerSettingsStore.isChatOpened);
+const isMobileVersion = ref<boolean>(window.innerWidth < 927);
+window.addEventListener('resize', (e: Event) => {
+  isMobileVersion.value = (e.target as Window).innerWidth < 927;
+});
 
-const onCloseHandler = () => {
-  messengerSettingsStore.$patch({
-    isChatOpened: false,
-  });
+const isChatOpened = ref(false);
+const isChatOpenedChangeState = (state: boolean) => {
+  isChatOpened.value = state;
 };
 
-const onClickButtonBackHandler = () => {
-  messengerSettingsStore.$patch({
-    isChatOpened: false,
-  });
-};
+provide('isChatOpened', {
+  isChatOpened,
+  isChatOpenedChangeState,
+});
 
 const isMoreInfoOpened = ref(false);
-const middleColumnCollapse = computed(() => (isMoreInfoOpened.value ? 'collapse' : ''));
-const onClickButtonMoreInfo = () => {
-  isMoreInfoOpened.value = true;
+const isMoreInfoOpenedChangeState = (state: boolean) => {
+  isMoreInfoOpened.value = state;
 };
 
-const onCloseMoreInfoHandler = () => {
-  isMoreInfoOpened.value = false;
-};
+provide('isMoreInfoOpened', {
+  isMoreInfoOpened,
+  isMoreInfoOpenedChangeState,
+});
+
+const middleColumnCollapse = computed(() => (isMoreInfoOpened.value ? 'collapse' : ''));
 
 onMounted(async () => {
   await chatsStore.getChats();
   console.log(chatsStore.chats);
 });
-
 </script>
 
 <template>
   <div class="messenger">
-    <div class="left-column">
-      <component :is="messengerSettingsStore.leftColumnActiveComponentGetter" />
-    </div>
+    <template v-if="isMobileVersion">
+      <v-view-switch-controller />
+    </template>
 
-    <v-layout-swiping
-      :is-opened="isChatOpened"
-      class="middle-column"
-      :class="[middleColumnCollapse]"
-      @close="onCloseHandler"
-    >
-      <div class="middle-column-content">
-        <v-button type="primary" @click="onClickButtonBackHandler">
-          Назад
-        </v-button>
-        <v-button type="primary" @click="onClickButtonMoreInfo">
-          Информация
-        </v-button>
-        <div>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-        </div>
+    <template v-else>
+      <div class="left-column">
+        <router-view />
+<!--        <component :is="messengerSettingsStore.leftColumnActiveComponentGetter" />-->
       </div>
-    </v-layout-swiping>
 
-    <v-layout-swiping
-      :is-opened="isMoreInfoOpened"
-      standing-style="modal"
-      class="modal right-column"
-      @close="onCloseMoreInfoHandler"
-    >
-      <div class="right-column-content">
-        <v-button type="primary" @click="onCloseMoreInfoHandler">
-          Назад
-        </v-button>
-        <div>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-          <h4>Lorem</h4>
-        </div>
-      </div>
-    </v-layout-swiping>
+      <v-layout-swiping
+        :is-opened="isChatOpened"
+        class="middle-column"
+        :class="[middleColumnCollapse]"
+        @close="isChatOpenedChangeState(false)"
+      >
+        <router-view name="ChatView" />
+      </v-layout-swiping>
+
+      <v-layout-swiping
+        :is-opened="isMoreInfoOpened"
+        standing-style="modal"
+        class="modal right-column"
+        @close="isMoreInfoOpenedChangeState(false)"
+      >
+        <router-view name="MoreInfoView" />
+      </v-layout-swiping>
+    </template>
   </div>
 </template>
 
@@ -200,12 +128,6 @@ onMounted(async () => {
       &.collapse {
         width: calc(100% - var(--right-column-width));
       }
-    }
-
-    .middle-column-content {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
     }
   }
 

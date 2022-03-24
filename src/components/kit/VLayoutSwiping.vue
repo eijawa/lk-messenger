@@ -115,9 +115,9 @@ const touchEndHandler = (e: TouchEvent) => {
     animation-timing-function: linear;
     overflow: hidden;
 
-    &:not(.layout-swiping-touch-start) {
-      transition: transform .09s linear;
-    }
+    //&:not(.layout-swiping-touch-start) {
+    //  transition: transform .09s linear;
+    //}
 
     &.layout-swiping-touch-start {
       .layout-swiping-content {
@@ -126,9 +126,9 @@ const touchEndHandler = (e: TouchEvent) => {
       }
     }
 
-    &:not(.layout-swiping-opened) {
-      transform: translateX(100vw) !important;
-    }
+    //&:not(.layout-swiping-opened) {
+    //  transform: translateX(100vw) !important;
+    //}
   }
 }
 </style>
