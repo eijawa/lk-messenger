@@ -1,14 +1,20 @@
 <script lang="ts" setup>
 import VButton from '@/components/kit/VButton.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const changeLang = async (tmp: string) => {
+  await router.push({ name: tmp });
+};
 
 </script>
 
 <template>
   <div class="settings">
     <div>Настройки</div>
-
     <router-link :to="{ name: 'lang' }">
-      <v-button type="default">
+      <v-button>
         Изменить язык
       </v-button>
     </router-link>

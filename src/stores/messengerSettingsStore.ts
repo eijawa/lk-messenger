@@ -11,11 +11,11 @@ export const useMessengerSettingsStore = defineStore('messengerSettingsStore', (
   const leftColumnComponentsList: LeftColumnComponentsList = [
     {
       name: 'Sidebar',
-      path: 'components/SidebarView.vue',
+      path: 'components/SidebarView',
     },
     {
       name: 'Settings',
-      path: 'views/leftColumn/settings/SettingsView.vue',
+      path: 'views/leftColumn/settings/SettingsView',
     },
   ];
 
@@ -25,7 +25,7 @@ export const useMessengerSettingsStore = defineStore('messengerSettingsStore', (
     );
     if (typeof searchedComponentInfo !== 'undefined') {
       leftColumnActiveComponent.value = (
-        await import(`../${searchedComponentInfo.path}`) as DefineComponent
+        await import(`../${searchedComponentInfo.path}.vue`) as DefineComponent
       ).default as DefineComponent;
     } else {
       throw new Error(`component "${componentName}" not found`);
