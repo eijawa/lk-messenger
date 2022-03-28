@@ -11,6 +11,8 @@ import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
 const router = useRouter();
 const route = useRoute();
 
+const transitionDurationMs = ref(90);
+
 const backViewRoute = computed(() => (route.matched.length > 2 ? route.matched[
   route.matched.length - 2
 ] : null));
@@ -23,16 +25,15 @@ const isViewOpened = ref(true);
 const isViewAnimated = ref(true);
 const isGoBackEvent = ref(false);
 
-const isViewOpenedChangeState = async (state: boolean) => {
+const isViewOpenedChangeState = (state: boolean) => {
   console.log('swipe');
   if (backViewRoute.value !== null) {
     isViewOpened.value = state;
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     setTimeout(async () => {
       await router.push({ name: backViewRoute.value?.name });
       isViewAnimated.value = false;
       isViewOpened.value = !state;
-    }, 90);
+    }, transitionDurationMs.value);
     isViewAnimated.value = true;
   }
   isGoBackEvent.value = false;
@@ -68,6 +69,7 @@ provide('isViewOpened', {
     :is-opened="isViewOpened"
     :is-active="backViewRoute !== null"
     :is-animated="isViewAnimated"
+    :transition-duration-ms="transitionDurationMs"
     standing-style="modal"
     class="front-view"
     @close="isGoBackEvent = true; isViewOpenedChangeState(false)"

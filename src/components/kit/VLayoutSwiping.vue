@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
   isOpened: {
@@ -14,9 +14,15 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  transitionDurationMs: {
+    type: Number,
+    default: 90,
+  },
 });
 
 const emit = defineEmits(['close']);
+
+const transition = computed(() => `transform ${props.transitionDurationMs}ms linear`);
 
 let touchDistanceX = 0;
 const viewTransform = ref('translateX(0)');
@@ -131,7 +137,7 @@ const touchEndHandler = (e: TouchEvent) => {
     transition: none;
 
     &:not(.layout-swiping-touch-start) {
-      transition: transform .09s linear;
+      transition: v-bind('transition');
     }
 
     &.layout-swiping-touch-start {

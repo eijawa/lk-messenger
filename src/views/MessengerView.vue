@@ -10,6 +10,7 @@ import VViewSwitchController from '@/components/kit/VViewsSwitchController.vue';
 import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
 import ChatView from '@/views/middleColumn/ChatView.vue';
 import MoreInfoView from '@/views/rightColumn/MoreInfoView.vue';
+import SidebarView from '@/views/leftColumn/SidebarView.vue';
 
 const messengerSettingsStore = useMessengerSettingsStore();
 
@@ -57,7 +58,6 @@ onMounted(async () => {
     <template v-else>
       <div class="left-column">
         <router-view />
-<!--        <component :is="messengerSettingsStore.leftColumnActiveComponentGetter" />-->
       </div>
 
       <v-layout-swiping
@@ -66,7 +66,7 @@ onMounted(async () => {
         :class="[middleColumnCollapse]"
         @close="isChatOpenedChangeState(false)"
       >
-        <router-view name="ChatView" />
+        <router-view name="middle" />
       </v-layout-swiping>
 
       <v-layout-swiping
@@ -75,7 +75,7 @@ onMounted(async () => {
         class="modal right-column"
         @close="isMoreInfoOpenedChangeState(false)"
       >
-        <router-view name="MoreInfoView" />
+        <MoreInfoView />
       </v-layout-swiping>
     </template>
   </div>
