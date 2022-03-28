@@ -39,21 +39,21 @@ const isViewOpenedChangeState = (state: boolean) => {
   isGoBackEvent.value = false;
 };
 
-onBeforeRouteUpdate(() => {
-  if (!isGoBackEvent.value) {
-    console.log('ROUTE UPDATE');
-    isViewAnimated.value = false;
-    isViewOpened.value = false;
-  }
-});
-
-watch((frontViewRoute), () => {
-  if (!isGoBackEvent.value) {
-    console.log('VIEW MOUNT');
-    isViewAnimated.value = true;
-    isViewOpened.value = true;
-  }
-});
+// onBeforeRouteUpdate(() => {
+//   if (!isGoBackEvent.value) {
+//     console.log('ROUTE UPDATE');
+//     isViewAnimated.value = false;
+//     isViewOpened.value = false;
+//   }
+// });
+//
+// watch((frontViewRoute), () => {
+//   if (!isGoBackEvent.value) {
+//     console.log('VIEW MOUNT');
+//     isViewAnimated.value = true;
+//     isViewOpened.value = true;
+//   }
+// });
 
 provide('isViewOpened', {
   isViewOpened,
