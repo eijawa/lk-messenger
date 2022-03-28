@@ -122,7 +122,7 @@ const onClick = (e: MouseEvent) => {
     :class="[typeValue, fluidValue, roundValue, circleValue,
              ghostValue, disabledValue, quaternaryValue]"
     :style="{ fontSize: `${buttonStyle.fontSize}rem`, fontWeight: buttonStyle.fontWeight }"
-    @click.stop="onClick"
+    @click="onClick"
   >
     <span class="v-button-text"><slot name="default" /></span>
     <span class="v-button-icon">
