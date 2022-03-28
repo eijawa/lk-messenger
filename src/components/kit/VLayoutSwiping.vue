@@ -6,6 +6,14 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  isAnimated: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const emit = defineEmits(['close']);
@@ -32,7 +40,7 @@ const touchMoveHandler = (e: TouchEvent) => {
   const touchDistanceTmp = touchDistanceX;
   touchDistanceX = Math.round(e.touches[0].clientX - touchStartValue.x);
 
-  if (!isSecondTouch) {
+  if (!isSecondTouch && props.isActive) {
     isSecondTouch = true;
     if (touchDistanceX > 1 && Math.abs(e.touches[0].clientY - touchStartValue.y) < 7
       && window.innerWidth < 927) {
@@ -67,8 +75,8 @@ const touchEndHandler = (e: TouchEvent) => {
     emit('close');
   }
 
-  isSecondTouch = false;
   isXTouch.value = false;
+  isSecondTouch = false;
   viewTransform.value = 'translateX(0)';
 };
 </script>
@@ -76,7 +84,13 @@ const touchEndHandler = (e: TouchEvent) => {
 <template>
   <div
     class="layout-swiping"
-    :class="[{ 'layout-swiping-opened': props.isOpened, 'layout-swiping-touch-start': isXTouch }]"
+    :class="[
+      {
+        'layout-swiping-opened': props.isOpened,
+        'layout-swiping-touch-start': isXTouch,
+        'layout-swiping-animated-disable': !props.isAnimated
+      }
+    ]"
     :style="{ transform: viewTransform }"
     @touchstart.passive="touchStartHandler"
     @touchmove.passive="touchMoveHandler"
@@ -114,10 +128,11 @@ const touchEndHandler = (e: TouchEvent) => {
     height: calc(var(--vh, 1vh) * 100);
     animation-timing-function: linear;
     overflow: hidden;
+    transition: none;
 
-    //&:not(.layout-swiping-touch-start) {
-    //  transition: transform .09s linear;
-    //}
+    &:not(.layout-swiping-touch-start) {
+      transition: transform .09s linear;
+    }
 
     &.layout-swiping-touch-start {
       .layout-swiping-content {
@@ -126,9 +141,14 @@ const touchEndHandler = (e: TouchEvent) => {
       }
     }
 
-    //&:not(.layout-swiping-opened) {
-    //  transform: translateX(100vw) !important;
-    //}
+    &.layout-swiping-animated-disable {
+      transition: none;
+      animation-timing-function: unset;
+    }
+
+    &:not(.layout-swiping-opened) {
+      transform: translateX(100vw) !important;
+    }
   }
 }
 </style>

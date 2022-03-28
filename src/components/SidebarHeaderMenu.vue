@@ -17,21 +17,23 @@ const menuItemClickHandler = async (componentName: LeftColumnComponentsName) => 
 
 <template>
   <div class="sidebar-header-menu">
-    <v-menu-button
-      size="small"
-      :font-size="0.875"
-      @click="menuItemClickHandler('Settings')"
-    >
-      <template #icon>
-        <v-icon
-          :src="SettingsIcon"
-          name="settings"
-          :size="20"
-          :fill="iconColor"
-        />
-      </template>
-      Настройки
-    </v-menu-button>
+    <router-link :to="{ name: 'settings' }">
+      <v-menu-button
+        size="small"
+        :font-size="0.875"
+        @click="menuItemClickHandler('Settings')"
+      >
+        <template #icon>
+          <v-icon
+            :src="SettingsIcon"
+            name="settings"
+            :size="20"
+            :fill="iconColor"
+          />
+        </template>
+        Настройки
+      </v-menu-button>
+    </router-link>
     <v-menu-button size="small" :font-size="0.875">
       <template #icon>
         <v-icon

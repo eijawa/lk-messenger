@@ -14,7 +14,7 @@ const changeLang = async (tmp: string) => {
   <div class="settings">
     <div>Настройки</div>
     <router-link :to="{ name: 'lang' }">
-      <v-button>
+      <v-button type="primary">
         Изменить язык
       </v-button>
     </router-link>

@@ -1,6 +1,10 @@
 <script lang="ts" setup>
-import { useRoute, useRouter } from 'vue-router';
-import { computed, provide, ref } from 'vue';
+import {
+  onBeforeRouteUpdate, useRoute, useRouter,
+} from 'vue-router';
+import {
+  computed, provide, ref, watch,
+} from 'vue';
 
 import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
 
@@ -16,14 +20,39 @@ const frontViewRoute = computed(() => route.matched[
 ]);
 
 const isViewOpened = ref(true);
+const isViewAnimated = ref(true);
+const isGoBackEvent = ref(false);
+
 const isViewOpenedChangeState = async (state: boolean) => {
+  console.log('swipe');
   if (backViewRoute.value !== null) {
     isViewOpened.value = state;
-    await router.push({ name: backViewRoute.value?.name });
-    isViewOpened.value = !state;
-    console.log(frontViewRoute);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    setTimeout(async () => {
+      await router.push({ name: backViewRoute.value?.name });
+      isViewAnimated.value = false;
+      isViewOpened.value = !state;
+    }, 90);
+    isViewAnimated.value = true;
   }
+  isGoBackEvent.value = false;
 };
+
+onBeforeRouteUpdate(() => {
+  if (!isGoBackEvent.value) {
+    console.log('ROUTE UPDATE');
+    isViewAnimated.value = false;
+    isViewOpened.value = false;
+  }
+});
+
+watch((frontViewRoute), () => {
+  if (!isGoBackEvent.value) {
+    console.log('VIEW MOUNT');
+    isViewAnimated.value = true;
+    isViewOpened.value = true;
+  }
+});
 
 provide('isViewOpened', {
   isViewOpened,
@@ -34,15 +63,14 @@ provide('isViewOpened', {
 <template>
   <div class="back-view">
     <component :is="backViewRoute.components.default" v-if="backViewRoute !== null" />
-    <div v-else>
-      123
-    </div>
   </div>
   <v-layout-swiping
     :is-opened="isViewOpened"
+    :is-active="backViewRoute !== null"
+    :is-animated="isViewAnimated"
     standing-style="modal"
     class="front-view"
-    @close="isViewOpenedChangeState(false)"
+    @close="isGoBackEvent = true; isViewOpenedChangeState(false)"
   >
     <component :is="frontViewRoute.components.default" />
   </v-layout-swiping>
