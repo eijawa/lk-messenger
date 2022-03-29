@@ -12,7 +12,6 @@ window.addEventListener('resize', () => {
 });
 
 const router = useRouter();
-console.log(router.getRoutes());
 
 // if (window.innerWidth > 926) {
 //   console.log('Route replace');

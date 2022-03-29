@@ -2,19 +2,17 @@
 import {
   computed, onMounted, provide, ref,
 } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
-import { useChatsStore } from '@/stores/chatsStore';
-
-import VViewSwitchController from '@/components/kit/VViewsSwitchController.vue';
 import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
-import ChatView from '@/views/middleColumn/ChatView.vue';
 import MoreInfoView from '@/views/rightColumn/MoreInfoView.vue';
-import SidebarView from '@/views/leftColumn/SidebarView.vue';
 
-const messengerSettingsStore = useMessengerSettingsStore();
+const router = useRouter();
+const route = useRoute();
 
-const chatsStore = useChatsStore();
+onMounted(() => {
+  console.log(route.matched);
+});
 
 const isMobileVersion = ref<boolean>(window.innerWidth < 927);
 window.addEventListener('resize', (e: Event) => {
@@ -25,7 +23,6 @@ const isChatOpened = ref(false);
 const isChatOpenedChangeState = (state: boolean) => {
   isChatOpened.value = state;
 };
-
 provide('isChatOpened', {
   isChatOpened,
   isChatOpenedChangeState,
@@ -35,7 +32,6 @@ const isMoreInfoOpened = ref(false);
 const isMoreInfoOpenedChangeState = (state: boolean) => {
   isMoreInfoOpened.value = state;
 };
-
 provide('isMoreInfoOpened', {
   isMoreInfoOpened,
   isMoreInfoOpenedChangeState,
@@ -43,41 +39,71 @@ provide('isMoreInfoOpened', {
 
 const middleColumnCollapse = computed(() => (isMoreInfoOpened.value ? 'collapse' : ''));
 
-onMounted(async () => {
-  await chatsStore.getChats();
-  console.log(chatsStore.chats);
-});
+const transitionDurationMs = ref(90);
+
+const backViewRoute = computed(() => (route.matched.length > 2 ? route.matched[
+  route.matched.length - 2
+] : null));
+
+const frontViewRoute = computed(() => route.matched[
+  route.matched.length - 1
+]);
+
+const isViewOpened = ref(true);
+const isViewAnimated = ref(true);
+const isGoBackEvent = ref(false);
+
+const isViewOpenedChangeState = (state: boolean) => {
+  console.log('swipe');
+  if (backViewRoute.value !== null) {
+    isViewOpened.value = state;
+    setTimeout(async () => {
+      await router.push({ name: backViewRoute.value?.name });
+      isViewAnimated.value = false;
+      isViewOpened.value = !state;
+    }, transitionDurationMs.value);
+    isViewAnimated.value = true;
+  }
+  isGoBackEvent.value = false;
+};
 </script>
 
 <template>
   <div class="messenger">
-    <template v-if="isMobileVersion">
-      <v-view-switch-controller />
-    </template>
-
-    <template v-else>
-      <div class="left-column">
-        <router-view />
+    <div class="left-column">
+      <div class="back-view">
+        <component :is="backViewRoute.components.default" v-if="backViewRoute !== null" />
       </div>
-
       <v-layout-swiping
-        :is-opened="isChatOpened"
-        class="middle-column"
-        :class="[middleColumnCollapse]"
-        @close="isChatOpenedChangeState(false)"
-      >
-        <router-view name="middle" />
-      </v-layout-swiping>
-
-      <v-layout-swiping
-        :is-opened="isMoreInfoOpened"
+        :is-opened="isViewOpened"
+        :is-active="backViewRoute !== null"
+        :is-animated="isViewAnimated"
+        :transition-duration-ms="transitionDurationMs"
         standing-style="modal"
-        class="modal right-column"
-        @close="isMoreInfoOpenedChangeState(false)"
+        class="front-view"
+        @close="isGoBackEvent = true; isViewOpenedChangeState(false)"
       >
-        <MoreInfoView />
+        <component :is="frontViewRoute.components.default" />
       </v-layout-swiping>
-    </template>
+    </div>
+
+    <v-layout-swiping
+      :is-opened="isChatOpened"
+      class="middle-column"
+      :class="[middleColumnCollapse]"
+      @close="isChatOpenedChangeState(false)"
+    >
+      <router-view name="middle" />
+    </v-layout-swiping>
+
+    <v-layout-swiping
+      :is-opened="isMoreInfoOpened"
+      standing-style="modal"
+      class="modal right-column"
+      @close="isMoreInfoOpenedChangeState(false)"
+    >
+      <MoreInfoView />
+    </v-layout-swiping>
   </div>
 </template>
 
@@ -99,8 +125,6 @@ onMounted(async () => {
   .left-column {
     height: 100%;
     width: 100%;
-    display: flex;
-    flex-direction: column;
     overflow: hidden;
     position: relative;
 
@@ -114,6 +138,33 @@ onMounted(async () => {
       left: 0;
       top: 0;
       height: calc(var(--vh, 1vh) * 100);
+    }
+
+    .back-view {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+
+      @media (max-width: 926px) {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: calc(var(--vh, 1vh) * 100);
+      }
+    }
+
+    .front-view {
+      background-color: #ffffff;
+      width: 100%;
+      z-index: 1;
+
+      @media (max-width: 926px) {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: calc(var(--vh, 1vh) * 100);
+      }
     }
   }
 
