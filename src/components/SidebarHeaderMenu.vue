@@ -6,13 +6,7 @@ import VMenuButton from '@/components/kit/VMenuButton.vue';
 import VIcon from '@/components/kit/VIcon.vue';
 import SettingsIcon from '@/assets/icons/settings.svg?url';
 
-const messengerSettingsStore = useMessengerSettingsStore();
-
 const iconColor = useGetCSSVariable('--color-icon-secondary');
-
-const menuItemClickHandler = async (componentName: LeftColumnComponentsName) => {
-  await messengerSettingsStore.leftColumnActiveComponentChange(componentName);
-};
 </script>
 
 <template>
@@ -21,7 +15,6 @@ const menuItemClickHandler = async (componentName: LeftColumnComponentsName) => 
       <v-menu-button
         size="small"
         :font-size="0.875"
-        @click="menuItemClickHandler('Settings')"
       >
         <template #icon>
           <v-icon

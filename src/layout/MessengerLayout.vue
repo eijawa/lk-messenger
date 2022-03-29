@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import {
-  computed, onMounted, provide, ref,
+  computed, onMounted, ref,
 } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
-import MoreInfoView from '@/views/rightColumn/MoreInfoView.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -19,25 +18,13 @@ window.addEventListener('resize', (e: Event) => {
   isMobileVersion.value = (e.target as Window).innerWidth < 927;
 });
 
-const isChatOpened = ref(false);
-const isChatOpenedChangeState = (state: boolean) => {
-  isChatOpened.value = state;
-};
-provide('isChatOpened', {
-  isChatOpened,
-  isChatOpenedChangeState,
-});
-
-const isMoreInfoOpened = ref(false);
-const isMoreInfoOpenedChangeState = (state: boolean) => {
-  isMoreInfoOpened.value = state;
-};
-provide('isMoreInfoOpened', {
-  isMoreInfoOpened,
-  isMoreInfoOpenedChangeState,
-});
+const isSidebarOpened = computed(() => route.name === 'messenger');
+const isChatOpened = computed(() => route.name === 'chat');
+const isMoreInfoOpened = computed(() => route.name === 'chatInfo');
 
 const middleColumnCollapse = computed(() => (isMoreInfoOpened.value ? 'collapse' : ''));
+
+// Layout Controller
 
 const transitionDurationMs = ref(90);
 
@@ -49,6 +36,9 @@ const frontViewRoute = computed(() => route.matched[
   route.matched.length - 1
 ]);
 
+const sidebarView = computed(() => route.matched.find(routeItem => routeItem.name === 'messenger'));
+const chatView = computed(() => route.matched.find(routeItem => routeItem.name === 'chat'));
+
 const isViewOpened = ref(true);
 const isViewAnimated = ref(true);
 const isGoBackEvent = ref(false);
@@ -57,6 +47,7 @@ const isViewOpenedChangeState = (state: boolean) => {
   console.log('swipe');
   if (backViewRoute.value !== null) {
     isViewOpened.value = state;
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     setTimeout(async () => {
       await router.push({ name: backViewRoute.value?.name });
       isViewAnimated.value = false;
@@ -83,27 +74,28 @@ const isViewOpenedChangeState = (state: boolean) => {
         class="front-view"
         @close="isGoBackEvent = true; isViewOpenedChangeState(false)"
       >
-        <component :is="frontViewRoute.components.default" />
+        <component
+          :is="sidebarView.components.default"
+          v-if="(isSidebarOpened || isChatOpened || isMoreInfoOpened) && !isMobileVersion
+            && typeof sidebarView !== 'undefined'"
+        />
+        <component :is="frontViewRoute.components.default" v-else />
       </v-layout-swiping>
     </div>
 
-    <v-layout-swiping
-      :is-opened="isChatOpened"
-      class="middle-column"
-      :class="[middleColumnCollapse]"
-      @close="isChatOpenedChangeState(false)"
-    >
-      <router-view name="middle" />
-    </v-layout-swiping>
+    <template v-if="!isMobileVersion">
+      <div class="middle-column" :class="[middleColumnCollapse]">
+        <component
+          :is="chatView.components.default"
+          v-if="(isChatOpened || isMoreInfoOpened)
+            && typeof chatView !== 'undefined'"
+        />
+      </div>
 
-    <v-layout-swiping
-      :is-opened="isMoreInfoOpened"
-      standing-style="modal"
-      class="modal right-column"
-      @close="isMoreInfoOpenedChangeState(false)"
-    >
-      <MoreInfoView />
-    </v-layout-swiping>
+      <div class="modal right-column" :class="{ opened: isMoreInfoOpened }">
+        <component :is="frontViewRoute.components.default" v-if="isMoreInfoOpened" />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -141,28 +133,33 @@ const isViewOpenedChangeState = (state: boolean) => {
     }
 
     .back-view {
+      position: relative;
+      left: 0;
+      top: 0;
       height: 100%;
       width: 100%;
       overflow: hidden;
-      position: relative;
 
       @media (max-width: 926px) {
-        position: fixed;
-        left: 0;
-        top: 0;
         height: calc(var(--vh, 1vh) * 100);
       }
     }
 
     .front-view {
-      background-color: #ffffff;
-      width: 100%;
       z-index: 1;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background-color: #ffffff;
+
+      @media (min-width: 927px) {
+        min-width: var(--left-column-width);
+        max-width: var(--left-column-width);
+      }
 
       @media (max-width: 926px) {
-        position: fixed;
-        left: 0;
-        top: 0;
         height: calc(var(--vh, 1vh) * 100);
       }
     }
@@ -195,7 +192,7 @@ const isViewOpenedChangeState = (state: boolean) => {
         height: calc(var(--vh, 1vh) * 100);
         overflow: hidden;
 
-        &:not(.layout-swiping-opened) {
+        &:not(.opened) {
           width: 0;
         }
       }

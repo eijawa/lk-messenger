@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useChatsStore } from '@/stores/chatsStore';
@@ -15,19 +15,8 @@ const chats = computed<Chats>(() => chatsStore.chats ?? []);
 
 const openedChatId = ref(-1);
 
-const onOpenHandler = async (chatId: number) => {
-  openedChatId.value = chatId;
-  await router.push(`/chats/${chatId}`);
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const { isChatOpenedChangeState } = inject('isChatOpened') ?? { isChatOpenedChangeState: null };
-
-const chatsItemClickHandler = () => {
-  if (isChatOpenedChangeState !== null) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    isChatOpenedChangeState(true);
-  }
+const chatsItemClickHandler = async () => {
+  await router.push('/messenger/chat/313');
 };
 </script>
 

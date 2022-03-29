@@ -3,7 +3,7 @@ import {
   computed, DefineComponent, ref, shallowRef,
 } from 'vue';
 import { LeftColumnComponentsList, LeftColumnComponent } from '@/types/MessengerSettings';
-import Sidebar from '@/views/leftColumn/SidebarView.vue';
+import Sidebar from '@/views/messenger/SidebarView.vue';
 
 export const useMessengerSettingsStore = defineStore('messengerSettingsStore', () => {
   const leftColumnActiveComponent = shallowRef(Sidebar);
