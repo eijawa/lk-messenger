@@ -10,7 +10,11 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  isAnimated: {
+  isInstantsRender: {
+    type: Boolean,
+    default: false,
+  },
+  isViewAnimated: {
     type: Boolean,
     default: true,
   },
@@ -20,9 +24,15 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'transition-close-end']);
 
 const transition = computed(() => `transform ${props.transitionDurationMs}ms linear`);
+
+const transitionEndHandler = (e: TransitionEvent) => {
+  if (e.elapsedTime === 0.09) {
+    emit('transition-close-end');
+  }
+};
 
 let touchDistanceX = 0;
 const viewTransform = ref('translateX(0)');
@@ -92,9 +102,10 @@ const touchEndHandler = (e: TouchEvent) => {
     class="layout-swiping"
     :class="[
       {
-        'layout-swiping-opened': props.isOpened,
+        'layout-swiping-opened': props.isOpened || props.isInstantsRender,
         'layout-swiping-touch-start': isXTouch,
-        'layout-swiping-animated-disable': !props.isAnimated
+        'layout-swiping-animated-disable': !props.isViewAnimated,
+        'layout-swiping-instants-render': props.isInstantsRender,
       }
     ]"
     :style="{ transform: viewTransform }"
@@ -102,6 +113,7 @@ const touchEndHandler = (e: TouchEvent) => {
     @touchmove.passive="touchMoveHandler"
     @touchend="touchEndHandler"
     @touchcancel="touchEndHandler"
+    @transitionend="transitionEndHandler"
   >
     <div class="layout-swiping-content">
       <slot name="default" />
@@ -135,8 +147,13 @@ const touchEndHandler = (e: TouchEvent) => {
     animation-timing-function: linear;
     overflow: hidden;
     transition: none;
+    transform: unset;
 
     &:not(.layout-swiping-touch-start) {
+      transition: transform .1s linear;
+    }
+
+    &:not(.layout-swiping-opened) {
       transition: v-bind('transition');
     }
 
@@ -152,8 +169,13 @@ const touchEndHandler = (e: TouchEvent) => {
       animation-timing-function: unset;
     }
 
+    &.layout-swiping-instants-render {
+      transition: none;
+      animation-timing-function: unset;
+    }
+
     &:not(.layout-swiping-opened) {
-      transform: translateX(100vw) !important;
+      transform: translateX(110vw) !important;
     }
   }
 }

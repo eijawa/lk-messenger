@@ -1,17 +1,13 @@
 <script lang="ts" setup>
 import {
-  computed, onMounted, ref,
+  computed, ref, watch,
 } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 
 import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
 
 const router = useRouter();
 const route = useRoute();
-
-onMounted(() => {
-  console.log(route.matched);
-});
 
 const isMobileVersion = ref<boolean>(window.innerWidth < 927);
 window.addEventListener('resize', (e: Event) => {
@@ -23,8 +19,6 @@ const isChatOpened = computed(() => route.name === 'chat');
 const isMoreInfoOpened = computed(() => route.name === 'chatInfo');
 
 const middleColumnCollapse = computed(() => (isMoreInfoOpened.value ? 'collapse' : ''));
-
-// Layout Controller
 
 const transitionDurationMs = ref(90);
 
@@ -40,23 +34,39 @@ const sidebarView = computed(() => route.matched.find(routeItem => routeItem.nam
 const chatView = computed(() => route.matched.find(routeItem => routeItem.name === 'chat'));
 
 const isViewOpened = ref(true);
+const isInstantsRender = ref(false);
 const isViewAnimated = ref(true);
 const isGoBackEvent = ref(false);
 
-const isViewOpenedChangeState = (state: boolean) => {
-  console.log('swipe');
+const isViewOpenedChangeState = () => {
   if (backViewRoute.value !== null) {
-    isViewOpened.value = state;
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    setTimeout(async () => {
-      await router.push({ name: backViewRoute.value?.name });
-      isViewAnimated.value = false;
-      isViewOpened.value = !state;
-    }, transitionDurationMs.value);
-    isViewAnimated.value = true;
+    isViewOpened.value = false;
   }
-  isGoBackEvent.value = false;
 };
+
+const isViewChangeComponent = async () => {
+  if (backViewRoute.value !== null) {
+    isInstantsRender.value = true;
+    await router.push({ name: backViewRoute.value?.name });
+    isViewOpened.value = true;
+    isInstantsRender.value = false;
+    isGoBackEvent.value = false;
+  }
+};
+
+onBeforeRouteUpdate(() => {
+  if (!isGoBackEvent.value) {
+    isViewAnimated.value = false;
+    isViewOpened.value = false;
+  }
+});
+
+watch((route), () => {
+  if (!isGoBackEvent.value) {
+    isViewAnimated.value = true;
+    isViewOpened.value = true;
+  }
+});
 </script>
 
 <template>
@@ -68,11 +78,13 @@ const isViewOpenedChangeState = (state: boolean) => {
       <v-layout-swiping
         :is-opened="isViewOpened"
         :is-active="backViewRoute !== null"
-        :is-animated="isViewAnimated"
+        :is-view-animated="isViewAnimated"
+        :is-instants-render="isInstantsRender"
         :transition-duration-ms="transitionDurationMs"
         standing-style="modal"
         class="front-view"
         @close="isGoBackEvent = true; isViewOpenedChangeState(false)"
+        @transition-close-end="isViewChangeComponent"
       >
         <component
           :is="sidebarView.components.default"
