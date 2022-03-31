@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 import { NScrollbar } from 'naive-ui';
 
@@ -8,13 +8,6 @@ import MessengerSearch from '@/components/MessengerSearch.vue';
 import ChatsList from '@/components/chat/ChatsList.vue';
 import NewChatButton from '@/components/NewChatButton.vue';
 import { SearchService } from '@/services/SearchService';
-import { useChatsStore } from '@/stores/chatsStore';
-
-const chatsStore = useChatsStore();
-
-onMounted(async () => {
-  await chatsStore.getChats();
-});
 
 const searchService = new SearchService();
 

@@ -1,10 +1,14 @@
 <script lang="ts" setup>
 import {
-  computed, ref, watch,
+  computed, onMounted, ref, watch,
 } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 
+import { useChatsStore } from '@/stores/chatsStore';
 import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
+import SideBar from '@/views/messenger/SidebarView.vue';
+import ChatView from '@/views/messenger/chat/ChatView.vue';
+import MoreInfoView from '@/views/messenger/chat/MoreInfoView.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -67,6 +71,12 @@ watch((route), () => {
     isViewOpened.value = true;
   }
 });
+
+const chatStore = useChatsStore();
+
+onMounted(async () => {
+  await chatStore.getChats();
+});
 </script>
 
 <template>
@@ -86,26 +96,27 @@ watch((route), () => {
         @close="isGoBackEvent = true; isViewOpenedChangeState(false)"
         @transition-close-end="isViewChangeComponent"
       >
-        <component
-          :is="sidebarView.components.default"
+        <SideBar
           v-if="(isSidebarOpened || isChatOpened || isMoreInfoOpened) && !isMobileVersion
             && typeof sidebarView !== 'undefined'"
         />
-        <component :is="frontViewRoute.components.default" v-else />
+        <component
+          :is="frontViewRoute.components.default"
+          v-else
+        />
       </v-layout-swiping>
     </div>
 
     <template v-if="!isMobileVersion">
       <div class="middle-column" :class="[middleColumnCollapse]">
-        <component
-          :is="chatView.components.default"
+        <ChatView
           v-if="(isChatOpened || isMoreInfoOpened)
             && typeof chatView !== 'undefined'"
         />
       </div>
 
       <div class="modal right-column" :class="{ opened: isMoreInfoOpened }">
-        <component :is="frontViewRoute.components.default" v-if="isMoreInfoOpened" />
+        <MoreInfoView v-if="isMoreInfoOpened" />
       </div>
     </template>
   </div>
