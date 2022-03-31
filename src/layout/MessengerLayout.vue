@@ -58,19 +58,19 @@ const isViewChangeComponent = async () => {
   }
 };
 
-onBeforeRouteUpdate(() => {
-  if (!isGoBackEvent.value) {
-    isViewAnimated.value = false;
-    isViewOpened.value = false;
-  }
-});
-
-watch((route), () => {
-  if (!isGoBackEvent.value) {
-    isViewAnimated.value = true;
-    isViewOpened.value = true;
-  }
-});
+// onBeforeRouteUpdate(() => {
+//   if (!isGoBackEvent.value) {
+//     isViewAnimated.value = false;
+//     isViewOpened.value = false;
+//   }
+// });
+//
+// watch((route), () => {
+//   if (!isGoBackEvent.value) {
+//     isViewAnimated.value = true;
+//     isViewOpened.value = true;
+//   }
+// });
 
 const chatStore = useChatsStore();
 
