@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import {
-  computed, onMounted, ref, watch,
+  computed, onMounted, ref, watch, shallowRef,
 } from 'vue';
-import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
+import {
+  useRoute, useRouter, onBeforeRouteUpdate, RouteLocationMatched,
+} from 'vue-router';
 
 import { useChatsStore } from '@/stores/chatsStore';
 import VLayoutSwiping from '@/components/kit/VLayoutSwiping.vue';
@@ -26,13 +28,19 @@ const middleColumnCollapse = computed(() => (isMoreInfoOpened.value ? 'collapse'
 
 const transitionDurationMs = ref(90);
 
-const backViewRoute = computed(() => (route.matched.length > 2 ? route.matched[
-  route.matched.length - 2
-] : null));
+const viewsList = shallowRef<Array<RouteLocationMatched>>([]);
+if (route.matched.length > 2) {
+  viewsList.value.push(route.matched[route.matched.length - 2]);
+}
+viewsList.value.push(route.matched[route.matched.length - 1]);
 
-const frontViewRoute = computed(() => route.matched[
-  route.matched.length - 1
-]);
+// const backViewRoute = computed(() => (route.matched.length > 2 ? route.matched[
+//   route.matched.length - 2
+// ] : null));
+//
+// const frontViewRoute = computed(() => route.matched[
+//   route.matched.length - 1
+// ]);
 
 const sidebarView = computed(() => route.matched.find(routeItem => routeItem.name === 'messenger'));
 const chatView = computed(() => route.matched.find(routeItem => routeItem.name === 'chat'));
@@ -42,34 +50,41 @@ const isInstantsRender = ref(false);
 const isViewAnimated = ref(true);
 const isGoBackEvent = ref(false);
 
-const isViewOpenedChangeState = () => {
-  if (backViewRoute.value !== null) {
-    isViewOpened.value = false;
-  }
+const isLayoutCloseHandler = () => {
+  // if (backViewRoute.value !== null) {
+  //   console.log('Close event');
+  //   isViewOpened.value = false;
+  // }
 };
 
 const isViewChangeComponent = async () => {
-  if (backViewRoute.value !== null) {
-    isInstantsRender.value = true;
-    await router.push({ name: backViewRoute.value?.name });
-    isViewOpened.value = true;
-    isInstantsRender.value = false;
-    isGoBackEvent.value = false;
-  }
+  // if (backViewRoute.value !== null) {
+  //   console.log('Transition event');
+  //   isInstantsRender.value = true;
+  //   await router.push({ name: backViewRoute.value?.name });
+  //   isViewOpened.value = true;
+  //   isInstantsRender.value = false;
+  //   isGoBackEvent.value = false;
+  // }
 };
 
-onBeforeRouteUpdate(() => {
-  if (!isGoBackEvent.value) {
-    isViewAnimated.value = false;
-    isViewOpened.value = false;
+onBeforeRouteUpdate((nextRoute, prevRoute) => {
+  console.log(nextRoute);
+  if (nextRoute.matched.length > prevRoute.matched.length) {
+    viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
+  } else {
+    viewsList.value.pop();
   }
 });
 
-watch((route), () => {
-  if (!isGoBackEvent.value) {
-    isViewAnimated.value = true;
-    isViewOpened.value = true;
-  }
+watch((route), (nextRoute, prevRoute) => {
+  // console.log(prevRoute);
+  // console.log(nextRoute);
+  // if (!isGoBackEvent.value) {
+  //   console.log('Route update');
+  //   isViewAnimated.value = true;
+  //   isViewOpened.value = true;
+  // }
 });
 
 const chatStore = useChatsStore();
@@ -82,29 +97,53 @@ onMounted(async () => {
 <template>
   <div class="messenger">
     <div class="left-column">
-      <div class="back-view">
-        <component :is="backViewRoute.components.default" v-if="backViewRoute !== null" />
-      </div>
-      <v-layout-swiping
-        :is-opened="isViewOpened"
-        :is-active="backViewRoute !== null"
-        :is-view-animated="isViewAnimated"
-        :is-instants-render="isInstantsRender"
-        :transition-duration-ms="transitionDurationMs"
-        standing-style="modal"
-        class="front-view"
-        @close="isGoBackEvent = true; isViewOpenedChangeState(false)"
-        @transition-close-end="isViewChangeComponent"
+      <template
+        v-for="(view, index) in viewsList"
+        :key="view.path"
       >
-        <SideBar
-          v-if="(isSidebarOpened || isChatOpened || isMoreInfoOpened) && !isMobileVersion
-            && typeof sidebarView !== 'undefined'"
-        />
-        <component
-          :is="frontViewRoute.components.default"
+        <div v-if="index !== viewsList.length - 1" class="view">
+          <Component :is="view.components.default" />
+        </div>
+        <v-layout-swiping
           v-else
-        />
-      </v-layout-swiping>
+          :is-opened="isViewOpened"
+          :is-active="viewsList.length > 1"
+          :is-view-animated="isViewAnimated"
+          :is-instants-render="isInstantsRender"
+          :transition-duration-ms="transitionDurationMs"
+          standing-style="modal"
+          class="front-view"
+          @close="isGoBackEvent = true; isLayoutCloseHandler()"
+          @transition-close-end="isViewChangeComponent"
+          >
+          <SideBar
+            v-if="(isSidebarOpened || isChatOpened || isMoreInfoOpened) && !isMobileVersion
+              && typeof sidebarView !== 'undefined'"
+          />
+          <component :is="view.components.default" v-else />
+        </v-layout-swiping>
+      </template>
+
+      <!--      <div class="back-view">-->
+      <!--        <component :is="viewsList[0].components.default" v-if="viewsList.lenght > 1" />-->
+      <!--      </div>-->
+      <!--      <v-layout-swiping-->
+      <!--        :is-opened="isViewOpened"-->
+      <!--        :is-active="backViewRoute !== null"-->
+      <!--        :is-view-animated="isViewAnimated"-->
+      <!--        :is-instants-render="isInstantsRender"-->
+      <!--        :transition-duration-ms="transitionDurationMs"-->
+      <!--        standing-style="modal"-->
+      <!--        class="front-view"-->
+      <!--        @close="isGoBackEvent = true; isLayoutCloseHandler()"-->
+      <!--        @transition-close-end="isViewChangeComponent"-->
+      <!--      >-->
+      <!--        <SideBar-->
+      <!--          v-if="(isSidebarOpened || isChatOpened || isMoreInfoOpened) && !isMobileVersion-->
+      <!--            && typeof sidebarView !== 'undefined'"-->
+      <!--        />-->
+      <!--        <component :is="frontViewRoute.components.default" v-else />-->
+      <!--      </v-layout-swiping>-->
     </div>
 
     <template v-if="!isMobileVersion">
@@ -153,6 +192,24 @@ onMounted(async () => {
       left: 0;
       top: 0;
       height: calc(var(--vh, 1vh) * 100);
+    }
+
+    .view {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background-color: #ffffff;
+
+      @media (min-width: 927px) {
+        min-width: var(--left-column-width);
+        max-width: var(--left-column-width);
+      }
+
+      @media (max-width: 926px) {
+        height: calc(var(--vh, 1vh) * 100);
+      }
     }
 
     .back-view {

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { NScrollbar } from 'naive-ui';
 
@@ -48,6 +48,10 @@ const isSideBarScrolling = ref(false);
 const sidebarScrollingHandler = (e: Event) => {
   isSideBarScrolling.value = (e.target as HTMLElement).scrollTop !== 0;
 };
+
+onMounted(() => {
+  console.log('mounted');
+});
 </script>
 
 <template>

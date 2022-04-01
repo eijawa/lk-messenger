@@ -67,12 +67,6 @@ export const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
-    return {
-      el: document.querySelector('.sidebar-scrollbar'),
-      top: 40,
-    };
-  },
 });
 
 export default router;
