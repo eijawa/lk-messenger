@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {
-  computed, onMounted, ref, watch, shallowRef,
+  computed, onMounted, ref, shallowRef, triggerRef,
 } from 'vue';
 import {
   useRoute, useRouter, onBeforeRouteUpdate, RouteLocationMatched,
@@ -26,7 +26,17 @@ const isMoreInfoOpened = computed(() => route.name === 'chatInfo');
 
 const middleColumnCollapse = computed(() => (isMoreInfoOpened.value ? 'collapse' : ''));
 
+const isViewOpened = ref(true);
 const transitionDurationMs = ref(90);
+const layoutTransitionName = computed(() => `layout${!isViewOpened.value ? 'active' : ''}`);
+
+const isLayoutCloseHandler = () => {
+  isViewOpened.value = false;
+};
+
+const isViewChangeComponent = () => {
+  router.back();
+};
 
 const viewsList = shallowRef<Array<RouteLocationMatched>>([]);
 if (route.matched.length > 2) {
@@ -34,57 +44,21 @@ if (route.matched.length > 2) {
 }
 viewsList.value.push(route.matched[route.matched.length - 1]);
 
-// const backViewRoute = computed(() => (route.matched.length > 2 ? route.matched[
-//   route.matched.length - 2
-// ] : null));
-//
-// const frontViewRoute = computed(() => route.matched[
-//   route.matched.length - 1
-// ]);
-
-const sidebarView = computed(() => route.matched.find(routeItem => routeItem.name === 'messenger'));
-const chatView = computed(() => route.matched.find(routeItem => routeItem.name === 'chat'));
-
-const isViewOpened = ref(true);
-const isInstantsRender = ref(false);
-const isViewAnimated = ref(true);
-const isGoBackEvent = ref(false);
-
-const isLayoutCloseHandler = () => {
-  // if (backViewRoute.value !== null) {
-  //   console.log('Close event');
-  //   isViewOpened.value = false;
-  // }
-};
-
-const isViewChangeComponent = async () => {
-  // if (backViewRoute.value !== null) {
-  //   console.log('Transition event');
-  //   isInstantsRender.value = true;
-  //   await router.push({ name: backViewRoute.value?.name });
-  //   isViewOpened.value = true;
-  //   isInstantsRender.value = false;
-  //   isGoBackEvent.value = false;
-  // }
-};
-
 onBeforeRouteUpdate((nextRoute, prevRoute) => {
-  console.log(nextRoute);
+  isViewOpened.value = true;
   if (nextRoute.matched.length > prevRoute.matched.length) {
+    if (viewsList.value.length > 1) {
+      viewsList.value.shift();
+    }
     viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
+    triggerRef(viewsList);
   } else {
+    if (nextRoute.matched.length > 2) {
+      viewsList.value.unshift(prevRoute.matched[nextRoute.matched.length - 2]);
+    }
     viewsList.value.pop();
+    triggerRef(viewsList);
   }
-});
-
-watch((route), (nextRoute, prevRoute) => {
-  // console.log(prevRoute);
-  // console.log(nextRoute);
-  // if (!isGoBackEvent.value) {
-  //   console.log('Route update');
-  //   isViewAnimated.value = true;
-  //   isViewOpened.value = true;
-  // }
 });
 
 const chatStore = useChatsStore();
@@ -97,61 +71,37 @@ onMounted(async () => {
 <template>
   <div class="messenger">
     <div class="left-column">
-      <template
-        v-for="(view, index) in viewsList"
-        :key="view.path"
-      >
-        <div v-if="index !== viewsList.length - 1" class="view">
-          <Component :is="view.components.default" />
-        </div>
-        <v-layout-swiping
-          v-else
-          :is-opened="isViewOpened"
-          :is-active="viewsList.length > 1"
-          :is-view-animated="isViewAnimated"
-          :is-instants-render="isInstantsRender"
-          :transition-duration-ms="transitionDurationMs"
-          standing-style="modal"
-          class="front-view"
-          @close="isGoBackEvent = true; isLayoutCloseHandler()"
-          @transition-close-end="isViewChangeComponent"
+      <transition-group :name="layoutTransitionName">
+        <div
+          v-for="(view, index) in viewsList"
+          :key="view.path"
+          class="view"
+        >
+          <template v-if="index !== viewsList.length - 1">
+            <Component :is="view.components.default" />
+          </template>
+          <v-layout-swiping
+            v-else
+            :is-opened="isViewOpened"
+            :is-active="viewsList.length > 1"
+            :transition-duration-ms="transitionDurationMs"
+            standing-style="modal"
+            @close="isLayoutCloseHandler"
+            @transition-close-end="isViewChangeComponent"
           >
-          <SideBar
-            v-if="(isSidebarOpened || isChatOpened || isMoreInfoOpened) && !isMobileVersion
-              && typeof sidebarView !== 'undefined'"
-          />
-          <component :is="view.components.default" v-else />
-        </v-layout-swiping>
-      </template>
-
-      <!--      <div class="back-view">-->
-      <!--        <component :is="viewsList[0].components.default" v-if="viewsList.lenght > 1" />-->
-      <!--      </div>-->
-      <!--      <v-layout-swiping-->
-      <!--        :is-opened="isViewOpened"-->
-      <!--        :is-active="backViewRoute !== null"-->
-      <!--        :is-view-animated="isViewAnimated"-->
-      <!--        :is-instants-render="isInstantsRender"-->
-      <!--        :transition-duration-ms="transitionDurationMs"-->
-      <!--        standing-style="modal"-->
-      <!--        class="front-view"-->
-      <!--        @close="isGoBackEvent = true; isLayoutCloseHandler()"-->
-      <!--        @transition-close-end="isViewChangeComponent"-->
-      <!--      >-->
-      <!--        <SideBar-->
-      <!--          v-if="(isSidebarOpened || isChatOpened || isMoreInfoOpened) && !isMobileVersion-->
-      <!--            && typeof sidebarView !== 'undefined'"-->
-      <!--        />-->
-      <!--        <component :is="frontViewRoute.components.default" v-else />-->
-      <!--      </v-layout-swiping>-->
+            <SideBar
+              v-if="(isSidebarOpened || isChatOpened || isMoreInfoOpened)
+                && !isMobileVersion"
+            />
+            <component :is="view.components.default" v-else />
+          </v-layout-swiping>
+        </div>
+      </transition-group>
     </div>
 
     <template v-if="!isMobileVersion">
       <div class="middle-column" :class="[middleColumnCollapse]">
-        <ChatView
-          v-if="(isChatOpened || isMoreInfoOpened)
-            && typeof chatView !== 'undefined'"
-        />
+        <ChatView v-if="isChatOpened || isMoreInfoOpened" />
       </div>
 
       <div class="modal right-column" :class="{ opened: isMoreInfoOpened }">
@@ -200,7 +150,6 @@ onMounted(async () => {
       top: 0;
       height: 100%;
       width: 100%;
-      background-color: #ffffff;
 
       @media (min-width: 927px) {
         min-width: var(--left-column-width);
@@ -212,36 +161,13 @@ onMounted(async () => {
       }
     }
 
-    .back-view {
-      position: relative;
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-
-      @media (max-width: 926px) {
-        height: calc(var(--vh, 1vh) * 100);
-      }
+    .layout-enter-active,
+    .layout-leave-active {
+      transition: all .09s linear;
     }
-
-    .front-view {
-      z-index: 1;
-      position: fixed;
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: 100%;
-      background-color: #ffffff;
-
-      @media (min-width: 927px) {
-        min-width: var(--left-column-width);
-        max-width: var(--left-column-width);
-      }
-
-      @media (max-width: 926px) {
-        height: calc(var(--vh, 1vh) * 100);
-      }
+    .layout-enter-from,
+    .layout-leave-to {
+      transform: translateX(100vw);
     }
   }
 

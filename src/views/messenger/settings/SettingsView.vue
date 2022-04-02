@@ -25,5 +25,6 @@ const changeLang = async (tmp: string) => {
 .settings {
   height: 100%;
   width: 100%;
+  background-color: #ffffff;
 }
 </style>

@@ -10,14 +10,6 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  isInstantsRender: {
-    type: Boolean,
-    default: false,
-  },
-  isViewAnimated: {
-    type: Boolean,
-    default: true,
-  },
   transitionDurationMs: {
     type: Number,
     default: 90,
@@ -29,7 +21,7 @@ const emit = defineEmits(['close', 'transition-close-end']);
 const transition = computed(() => `transform ${props.transitionDurationMs}ms linear`);
 
 const transitionEndHandler = (e: TransitionEvent) => {
-  if (e.elapsedTime === 0.09) {
+  if (e.elapsedTime === props.transitionDurationMs / 1000) {
     emit('transition-close-end');
   }
 };
@@ -102,10 +94,8 @@ const touchEndHandler = (e: TouchEvent) => {
     class="layout-swiping"
     :class="[
       {
-        'layout-swiping-opened': props.isOpened || props.isInstantsRender,
+        'layout-swiping-opened': props.isOpened,
         'layout-swiping-touch-start': isXTouch,
-        'layout-swiping-animated-disable': !props.isViewAnimated,
-        'layout-swiping-instants-render': props.isInstantsRender,
       }
     ]"
     :style="{ transform: viewTransform }"
@@ -175,7 +165,7 @@ const touchEndHandler = (e: TouchEvent) => {
     }
 
     &:not(.layout-swiping-opened) {
-      transform: translateX(110vw) !important;
+      transform: translateX(100vw) !important;
     }
   }
 }

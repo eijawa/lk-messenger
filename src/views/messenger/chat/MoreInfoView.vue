@@ -16,6 +16,10 @@ const router = useRouter();
   </div>
 </template>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.right-column-content {
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+}
 </style>
