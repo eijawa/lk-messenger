@@ -46,17 +46,18 @@ viewsList.value.push(route.matched[route.matched.length - 1]);
 
 onBeforeRouteUpdate((nextRoute, prevRoute) => {
   isViewOpened.value = true;
-  if (nextRoute.matched.length > prevRoute.matched.length) {
+  if (typeof nextRoute.matched.find(routeChildren => routeChildren?.name === prevRoute?.name) !== 'undefined'
+      && typeof prevRoute.matched.find(routeChildren => routeChildren?.name === nextRoute?.name) === 'undefined') {
     if (viewsList.value.length > 1) {
       viewsList.value.shift();
     }
     viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
     triggerRef(viewsList);
   } else {
-    if (nextRoute.matched.length > 2) {
-      viewsList.value.unshift(prevRoute.matched[nextRoute.matched.length - 2]);
+    if (viewsList.value.length > 1) {
+      viewsList.value.shift();
     }
-    viewsList.value.pop();
+    viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
     triggerRef(viewsList);
   }
 });
@@ -71,15 +72,23 @@ onMounted(async () => {
 <template>
   <div class="messenger">
     <div class="left-column">
-      <transition-group :name="layoutTransitionName">
+      <div
+        v-if="!isMobileVersion
+          && (isSidebarOpened || isChatOpened || isMoreInfoOpened)"
+        class="view"
+      >
+        <SideBar />
+      </div>
+      <transition-group v-else :name="layoutTransitionName">
         <div
           v-for="(view, index) in viewsList"
           :key="view.path"
           class="view"
         >
-          <template v-if="index !== viewsList.length - 1">
-            <Component :is="view.components.default" />
-          </template>
+          <Component
+            :is="view.components.default"
+            v-if="index !== viewsList.length - 1 || viewsList.length === 1"
+          />
           <v-layout-swiping
             v-else
             :is-opened="isViewOpened"
@@ -89,11 +98,7 @@ onMounted(async () => {
             @close="isLayoutCloseHandler"
             @transition-close-end="isViewChangeComponent"
           >
-            <SideBar
-              v-if="(isSidebarOpened || isChatOpened || isMoreInfoOpened)
-                && !isMobileVersion"
-            />
-            <component :is="view.components.default" v-else />
+            <component :is="view.components.default" />
           </v-layout-swiping>
         </div>
       </transition-group>
@@ -104,8 +109,8 @@ onMounted(async () => {
         <ChatView v-if="isChatOpened || isMoreInfoOpened" />
       </div>
 
-      <div class="modal right-column" :class="{ opened: isMoreInfoOpened }">
-        <MoreInfoView v-if="isMoreInfoOpened" />
+      <div class="right-column" :class="{ opened: isMoreInfoOpened }">
+        <MoreInfoView v-if="isChatOpened || isMoreInfoOpened" />
       </div>
     </template>
   </div>
@@ -155,15 +160,11 @@ onMounted(async () => {
         min-width: var(--left-column-width);
         max-width: var(--left-column-width);
       }
-
-      @media (max-width: 926px) {
-        height: calc(var(--vh, 1vh) * 100);
-      }
     }
 
     .layout-enter-active,
     .layout-leave-active {
-      transition: all .09s linear;
+      transition: all .9s linear;
     }
     .layout-enter-from,
     .layout-leave-to {
@@ -186,29 +187,25 @@ onMounted(async () => {
   }
 
   .right-column {
-    background-color: #fb8c00;
     width: 100%;
     z-index: 2;
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    overflow: hidden;
+    transition: width .2s ease-out;
 
     @media (min-width: 927px) {
-      &.modal {
-        position: fixed;
-        right: 0;
-        top: 0;
-        height: calc(var(--vh, 1vh) * 100);
-        overflow: hidden;
-
-        &:not(.opened) {
-          width: 0;
-        }
-      }
-
       width: calc(100% - var(--left-column-width));
-      transition: width .2s ease-out;
     }
 
     @media (min-width: 1300px) {
       width: var(--right-column-width);
+    }
+
+    &:not(.opened) {
+      width: 0;
     }
 
     .right-column-content {
