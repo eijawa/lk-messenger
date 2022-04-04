@@ -5,6 +5,7 @@ import VInput from '@/components/kit/VInput.vue';
 import VIcon from '@/components/kit/VIcon.vue';
 import MenuIcon from '@/assets/icons/menu.svg?url';
 import SearchIcon from '@/assets/icons/search.svg?url';
+import VInlineSvg from '@/lib/v-inline-svg/VInlineSvg.vue';
 
 const inputValueDefault = ref('');
 const inputValueForm = ref('');
@@ -34,6 +35,12 @@ const onFocusOut = () => {
 <template>
   <div class="components-testing-container">
     <div class="components-container">
+      <h3>Icons</h3>
+      <div class="components-groups">
+        <div class="components-list">
+          <v-inline-svg :src="MenuIcon" title="Меню" />
+        </div>
+      </div>
       <h3>Buttons</h3>
       <div class="components-groups">
         <div>Basic</div>
@@ -194,6 +201,7 @@ const onFocusOut = () => {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  overflow: auto;
 
   .components-container {
     display: flex;

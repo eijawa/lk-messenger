@@ -86,11 +86,10 @@ onMounted(async () => {
           :key="view.path"
           class="view"
         >
-          <keep-alive v-if="index !== viewsList.length - 1 || viewsList.length === 1">
-            <Component
-              :is="view.components.default"
-            />
-          </keep-alive>
+          <Component
+            :is="view.components.default"
+            v-if="index !== viewsList.length - 1 || viewsList.length === 1"
+          />
           <v-layout-swiping
             v-else
             :is-opened="isViewOpened"
@@ -100,9 +99,7 @@ onMounted(async () => {
             @close="isLayoutCloseHandler"
             @transition-close-end="isViewChangeComponent"
           >
-            <keep-alive>
-              <component :is="view.components.default" />
-            </keep-alive>
+            <component :is="view.components.default" />
           </v-layout-swiping>
         </div>
       </transition-group>
