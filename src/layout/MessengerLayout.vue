@@ -46,14 +46,13 @@ viewsList.value.push(route.matched[route.matched.length - 1]);
 
 onBeforeRouteUpdate((nextRoute, prevRoute) => {
   isViewOpened.value = true;
-  if (typeof nextRoute.matched.find(routeChildren => routeChildren?.name === prevRoute?.name) !== 'undefined'
-      && typeof prevRoute.matched.find(routeChildren => routeChildren?.name === nextRoute?.name) === 'undefined') {
+  if (typeof nextRoute.matched[nextRoute.matched.length - 1]?.children.find(routeChildren => routeChildren?.name === prevRoute?.name) !== 'undefined') { // back
     if (viewsList.value.length > 1) {
-      viewsList.value.shift();
+      viewsList.value.pop();
     }
-    viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
+    viewsList.value.unshift(nextRoute.matched[nextRoute.matched.length - 2]);
     triggerRef(viewsList);
-  } else {
+  } else { // next
     if (viewsList.value.length > 1) {
       viewsList.value.shift();
     }
@@ -164,7 +163,7 @@ onMounted(async () => {
 
     .layout-enter-active,
     .layout-leave-active {
-      transition: all .9s linear;
+      transition: all .09s linear;
     }
     .layout-enter-from,
     .layout-leave-to {
