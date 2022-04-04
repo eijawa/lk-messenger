@@ -50,7 +50,9 @@ onBeforeRouteUpdate((nextRoute, prevRoute) => {
     if (viewsList.value.length > 1) {
       viewsList.value.pop();
     }
-    viewsList.value.unshift(nextRoute.matched[nextRoute.matched.length - 2]);
+    if (nextRoute.matched.length > 2) {
+      viewsList.value.unshift(nextRoute.matched[nextRoute.matched.length - 2]);
+    }
     triggerRef(viewsList);
   } else { // next
     if (viewsList.value.length > 1) {
