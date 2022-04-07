@@ -23,7 +23,7 @@ export interface ConversationInfo {
 }
 
 export interface PushSettings {
-  disabledForever: boolean,
+  disabledForever?: boolean,
   disabledUntil?: number,
   mute: boolean,
 }
