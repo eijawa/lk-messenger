@@ -1,14 +1,11 @@
 <script lang="ts" setup>
 import { computed, PropType } from 'vue';
 import { useRouter } from 'vue-router';
-import { useChatsStore } from '@/stores/chatsStore';
 import { Search } from '@/types/Search';
 import { VMessengerListItemsType, VMessengerListItemType } from '@/types/VMessengerListItemType';
-import VButton from '@/components/kit/VButton.vue';
 import VMessengerListItem from '@/components/kit/VMessengerListItem.vue';
 
 const router = useRouter();
-const chatsStore = useChatsStore();
 
 const props = defineProps({
   search: {
@@ -51,9 +48,6 @@ const chatOrContactClickHandler = async (userOrChat: VMessengerListItemType) => 
       <div class="search-header-title">
         Chats and Contacts
       </div>
-<!--      <v-button type="primary" text>-->
-<!--        Show more-->
-<!--      </v-button>-->
     </div>
     <div class="search-body">
       <v-messenger-list-item
