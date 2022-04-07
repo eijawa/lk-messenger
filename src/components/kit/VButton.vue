@@ -38,6 +38,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  text: {
+    type: Boolean,
+    default: false,
+  },
   disabled: {
     type: Boolean,
     default: false,
@@ -50,6 +54,7 @@ const fluidValue = computed(() => (props.fluid ? 'fluid' : ''));
 const circleValue = computed(() => (props.circle ? 'circle' : ''));
 const roundValue = computed(() => (props.round ? 'round' : ''));
 const ghostValue = computed(() => (props.ghost ? 'ghost' : ''));
+const textValue = computed(() => (props.text ? 'text' : ''));
 const quaternaryValue = computed(() => (props.quaternary ? 'quaternary' : ''));
 const disabledValue = computed(() => (props.disabled ? 'disabled' : ''));
 const fontSize = computed(() => props.fontSize);
@@ -105,7 +110,7 @@ const vButtonBorderEffect = () => {
 };
 
 const onClick = (e: MouseEvent) => {
-  if (disabledValue.value === '') {
+  if (disabledValue.value === '' && textValue.value === '') {
     if (ghostValue.value === '') {
       vButtonWaveEffect(e);
     } else {
@@ -120,7 +125,7 @@ const onClick = (e: MouseEvent) => {
     ref="buttonRef"
     class="v-button-base"
     :class="[typeValue, fluidValue, roundValue, circleValue,
-             ghostValue, disabledValue, quaternaryValue]"
+             ghostValue, quaternaryValue, textValue, disabledValue]"
     :style="{ fontSize: `${buttonStyle.fontSize}rem`, fontWeight: buttonStyle.fontWeight }"
     @click="onClick"
   >
@@ -263,7 +268,7 @@ const onClick = (e: MouseEvent) => {
     padding: 0.5rem;
   }
 
-  &:not(.ghost, .quaternary) {
+  &:not(.ghost, .quaternary, .text) {
     color: #ffffff;
     border: none;
 
@@ -287,6 +292,19 @@ const onClick = (e: MouseEvent) => {
     &:hover {
       background-color: var(--color-interactive-element-hover);
       border: none;
+    }
+  }
+
+  &.text {
+    height: auto;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+
+    &:hover {
+      background-color: transparent;
+      border: none;
+      text-decoration: underline;
     }
   }
 
