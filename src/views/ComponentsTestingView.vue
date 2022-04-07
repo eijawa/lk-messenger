@@ -4,6 +4,7 @@ import VButton from '@/components/kit/VButton.vue';
 import VInput from '@/components/kit/VInput.vue';
 import VIcon from '@/components/kit/VIcon.vue';
 import MenuIcon from '@/assets/icons/menu.svg?url';
+import CloseIconTest from '@/assets/icons/x.svg?url';
 import SearchIcon from '@/assets/icons/search.svg?url';
 import VInlineSvg from '@/lib/v-inline-svg/VInlineSvg.vue';
 
@@ -38,7 +39,7 @@ const onFocusOut = () => {
       <h3>Icons</h3>
       <div class="components-groups">
         <div class="components-list">
-          <v-inline-svg :src="MenuIcon" title="Меню" />
+          <v-inline-svg title="inline test" :src="CloseIconTest" />
         </div>
       </div>
       <h3>Buttons</h3>
