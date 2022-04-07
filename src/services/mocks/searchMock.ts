@@ -1,66 +1,29 @@
-import { User } from '@/services/UserService';
-import {
-  Chat, Conversation, ConversationType, Message,
-} from '@/services/ChatsService';
+import { ChatOrContact, SearchResponse } from '@/types/Search';
 
-export const generateChat = async (index: number, currentUser: User): Promise<Chat> => {
+export const generateSearch = async (): Promise<SearchResponse> => {
   const { faker } = await import('@faker-js/faker');
 
-  const generateUser = (avatar = faker.image.avatar()): User => ({
+  const generateChatOrContact = (isChat = false): ChatOrContact => ({
     id: faker.datatype.number({ max: 100000000 }),
-    username: faker.name.findName(),
-    avatar,
+    title: isChat ? faker.name.title() : faker.name.findName(),
+    avatar: faker.image.avatar(),
     verified: faker.random.arrayElement([false, false, true]),
+    label: isChat ? `${faker.datatype.number({ max: 1000000 })} subscribers`
+      : `last seen ${faker.datatype.number({ max: 10 })} hour ago`,
   });
 
-  const generateMessage = (messageFrom: User): Message => ({
-    conversationMessageId: faker.datatype.number({ max: 100000 }),
-    date: String(faker.date.recent(10)),
-    from: messageFrom,
-    text: faker.lorem.lines(),
-  });
-
-  const chatType: ConversationType = faker.random.arrayElement(['user', 'chat']);
-
-  const user = generateUser(faker.random.arrayElement([faker.image.avatar(), undefined]));
-
-  const title = chatType === 'user' ? faker.name.findName() : faker.name.title();
-
-  const avatar = chatType === 'user' ? faker.random.arrayElement([faker.image.avatar(), undefined])
-    : faker.random.arrayElement([faker.image.business(128, 128, true), undefined]);
-
-  const mute = faker.random.arrayElement([false, false, true]);
-
-  const chatLastMessageFrom = faker.random.arrayElement([user, currentUser]);
-
-  const conversation: Conversation = {
-    peer: {
-      id: faker.datatype.number({ max: 100000 }),
-      type: chatType,
-    },
-    info: {
-      avatar,
-      title,
-      verified: faker.random.arrayElement([false, false, true]),
-    },
-    unReadCount: 0,
-    pinned: faker.random.arrayElement([false, false, true]),
-    pushSettings: {
-      disabledForever: mute,
-      mute,
+  const search: SearchResponse = {
+    status: true,
+    result: {
+      chatsAndContacts: [],
     },
   };
 
-  if (chatLastMessageFrom.id !== currentUser.id) {
-    conversation.unReadCount = faker.random.arrayElement([0, faker.datatype.number(24)]);
-  } else {
-    conversation.markedUnRead = faker.random.arrayElement([false, false, true]);
-  }
+  Array.from({ length: faker.datatype.number({ max: 20 }) }).forEach(() => {
+    search.result.chatsAndContacts.push(
+      generateChatOrContact(faker.random.arrayElement([false, false, true])),
+    );
+  });
 
-  const lastMessage: Message = generateMessage(chatLastMessageFrom);
-
-  return {
-    conversation,
-    lastMessage,
-  };
+  return search;
 };
