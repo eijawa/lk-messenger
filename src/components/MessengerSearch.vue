@@ -1,26 +1,23 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, PropType } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useChatsStore } from '@/stores/chatsStore';
+import { Search } from '@/types/Search';
+import VButton from '@/components/kit/VButton.vue';
 
 const router = useRouter();
 const chatsStore = useChatsStore();
 
 const props = defineProps({
   date: {
-    type: Object,
+    type: Object as PropType<Search>,
     required: true,
   },
 });
 
 // Чаты и беседы
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-const usersAndChats = computed(() => props.date.users);
-
-// Поиск по сообщениям
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-const messages = computed(() => props.date.messages);
+const usersAndChats = computed(() => props.date.chatsAndContacts);
 
 const onOpenHandler = (userOrChat: any) => {
   // chatsStore.$patch(state => {
@@ -35,8 +32,15 @@ const onOpenHandler = (userOrChat: any) => {
 <template>
   <div class="messenger-search">
     <div class="search-header">
-      <div class="search-header-title">Chats and Contacts</div>
-      <div>Show more</div>
+      <div class="search-header-title">
+        Chats and Contacts
+      </div>
+      <v-button type="primary" text>
+        Show more
+      </v-button>
+    </div>
+    <div class="search-body">
+
     </div>
   </div>
 </template>
@@ -45,32 +49,17 @@ const onOpenHandler = (userOrChat: any) => {
 .messenger-search {
   overflow: hidden;
   height: 100%;
+  width: 100%;
+  padding: 0.5rem 0.5rem 0 0.5rem;
 
   .search-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 var(--default-horz-padding);
-  }
 
-  .search-scroll-container {
-    padding: var(--default-horz-padding);
-  }
-
-  .search-section {
-    display: flex;
-    flex-direction: column;
-    padding: 0 var(--default-horz-padding);
-    border-top: 1px solid #DADCE0FF;
-    overflow: hidden;
-    height: 100%;
-    overflow-y: auto;
-    pointer-events: auto;
-
-    .search-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .search-header-title {
+      color: var(--color-text-secondary);
+      font-weight: 500;
     }
   }
 }

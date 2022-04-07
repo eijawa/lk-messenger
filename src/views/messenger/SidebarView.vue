@@ -8,39 +8,33 @@ import MessengerSearch from '@/components/MessengerSearch.vue';
 import ChatsList from '@/components/chat/ChatsList.vue';
 import NewChatButton from '@/components/NewChatButton.vue';
 import { SearchService } from '@/services/SearchService';
+import { Search } from '@/types/Search';
 
 const searchService = new SearchService();
 
-// eslint-disable-next-line @typescript-eslint/require-await
+const searchData = ref<Search>({
+  chatsAndContacts: [],
+});
+
 const onSearch = async (query: string) => {
-  console.log(query);
-  // if (query) {
-  //   const data = await searchService.messengerSearch(query);
-  //   if (data?.status) {
-  //     searchData.value.users = data.result.users;
-  //   }
-  //
-  // } else {
-  //   searchData.value = {
-  //     users: [],
-  //     chats: [],
-  //     messages: [],
-  //   };
-  // }
+  if (query) {
+    const data = await searchService.messengerSearch(query);
+    if (data?.status) {
+      searchData.value.chatsAndContacts = data.result.chatsAndContacts;
+      console.log(searchData.value);
+    }
+  } else {
+    searchData.value = {
+      chatsAndContacts: [],
+    };
+  }
 };
 
-const searchData = ref({
-  users: [],
-  chats: [],
-  messages: [],
-});
 const isSearchActive = ref(false);
 const searchStateChange = (state: boolean) => {
   isSearchActive.value = state;
   searchData.value = {
-    users: [],
-    chats: [],
-    messages: [],
+    chatsAndContacts: [],
   };
 };
 
