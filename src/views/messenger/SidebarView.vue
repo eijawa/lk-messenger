@@ -21,7 +21,6 @@ const onSearch = async (query: string) => {
     const data = await searchService.messengerSearch(query);
     if (data?.status) {
       searchData.value.chatsAndContacts = data.result.chatsAndContacts;
-      console.log(searchData.value);
     }
   } else {
     searchData.value = {

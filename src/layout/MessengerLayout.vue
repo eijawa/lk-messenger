@@ -34,8 +34,8 @@ const isLayoutCloseHandler = () => {
   isViewOpened.value = false;
 };
 
-const isViewChangeComponent = () => {
-  router.back();
+const isViewChangeComponent = async () => {
+  await router.push({ name: 'messenger' });
 };
 
 const viewsList = shallowRef<Array<RouteLocationMatched>>([]);
@@ -46,20 +46,22 @@ viewsList.value.push(route.matched[route.matched.length - 1]);
 
 onBeforeRouteUpdate((nextRoute, prevRoute) => {
   isViewOpened.value = true;
-  if (typeof nextRoute.matched[nextRoute.matched.length - 1]?.children.find(routeChildren => routeChildren?.name === prevRoute?.name) !== 'undefined') { // back
-    if (viewsList.value.length > 1) {
-      viewsList.value.pop();
+  if (nextRoute.name !== prevRoute.name) {
+    if (typeof nextRoute.matched[nextRoute.matched.length - 1]?.children.find(routeChildren => routeChildren?.name === prevRoute?.name) !== 'undefined') { // back
+      if (viewsList.value.length > 1) {
+        viewsList.value.pop();
+      }
+      if (nextRoute.matched.length > 2) {
+        viewsList.value.unshift(nextRoute.matched[nextRoute.matched.length - 2]);
+      }
+      triggerRef(viewsList);
+    } else { // next
+      if (viewsList.value.length > 1) {
+        viewsList.value.shift();
+      }
+      viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
+      triggerRef(viewsList);
     }
-    if (nextRoute.matched.length > 2) {
-      viewsList.value.unshift(nextRoute.matched[nextRoute.matched.length - 2]);
-    }
-    triggerRef(viewsList);
-  } else { // next
-    if (viewsList.value.length > 1) {
-      viewsList.value.shift();
-    }
-    viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
-    triggerRef(viewsList);
   }
 });
 
