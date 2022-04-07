@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue';
 import { NScrollbar } from 'naive-ui';
 
 import SidebarHeader from '@/components/SidebarHeader.vue';
-import MessengerSearch from '@/components/MessengerSearch.vue';
+import MessengerSearch from '@/components/search/MessengerSearch.vue';
 import ChatsList from '@/components/chat/ChatsList.vue';
 import NewChatButton from '@/components/NewChatButton.vue';
 import { SearchService } from '@/services/SearchService';
@@ -33,9 +33,11 @@ const onSearch = async (query: string) => {
 const isSearchActive = ref(false);
 const searchStateChange = (state: boolean) => {
   isSearchActive.value = state;
-  searchData.value = {
-    chatsAndContacts: [],
-  };
+  if (!state) {
+    searchData.value = {
+      chatsAndContacts: [],
+    };
+  }
 };
 
 const isSideBarScrolling = ref(false);
@@ -62,7 +64,7 @@ onMounted(() => {
     <div class="sidebar-list">
       <n-scrollbar class="sidebar-scrollbar" @scroll="sidebarScrollingHandler">
         <chats-list v-if="!isSearchActive" />
-        <messenger-search v-else :date="searchData" />
+        <messenger-search v-else :search="searchData" />
       </n-scrollbar>
     </div>
 

@@ -3,15 +3,16 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useChatsStore } from '@/stores/chatsStore';
-import { Chats } from '@/services/ChatsService';
+import { VMessengerListItemsType } from '@/types/VMessengerListItemType';
 
-import ChatsListItem from '@/components/chat/ChatsListItem.vue';
+import VMessengerListItem from '@/components/kit/VMessengerListItem.vue';
 import VEmpty from '@/components/kit/VEmpty.vue';
 
 const chatsStore = useChatsStore();
 const router = useRouter();
 
-const chats = computed<Chats>(() => chatsStore.chats ?? []);
+const chats = computed<VMessengerListItemsType>(() => (chatsStore.chats as VMessengerListItemsType)
+  ?? []);
 
 const openedChatId = ref(-1);
 
@@ -26,10 +27,10 @@ const chatsItemClickHandler = async () => {
   </v-empty>
 
   <div v-else class="chats-list">
-    <chats-list-item
+    <v-messenger-list-item
       v-for="chat in chats"
       :key="chat.conversation.peer.id"
-      :chat="chat"
+      :item="chat"
       @click="chatsItemClickHandler"
     />
   </div>
