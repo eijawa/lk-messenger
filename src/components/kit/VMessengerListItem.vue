@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, PropType } from 'vue';
-import { Chat } from '@/services/ChatsService';
+import { VMessengerListItemType } from '@/types/VMessengerListItemType';
 import { useGetCSSVariable } from '@/hooks/useCssVariables';
 
 import VAvatar from '@/components/kit/VAvatar.vue';
@@ -12,8 +12,8 @@ import MessageReadIcon from '@/assets/icons/message-out-going-read.svg';
 import PinnedBadgeIcon from '@/assets/icons/fixing-badge.svg';
 
 const props = defineProps({
-  chat: {
-    type: Object as PropType<Chat>,
+  item: {
+    type: Object as PropType<VMessengerListItemType>,
     required: true,
   },
   isSelected: {
@@ -22,13 +22,7 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(['open']);
-
-const onClickHandler = () => {
-  emits('open', props.chat.conversation.peer.id);
-};
-
-const chatValue = computed<Chat>(() => props.chat);
+const itemValue = computed<VMessengerListItemType>(() => props.item);
 
 const primaryColor = useGetCSSVariable('--color-primary');
 const fixingBadgeIconFillColor = useGetCSSVariable('--color-pinned');
@@ -38,35 +32,35 @@ const fixingBadgeIconFillColor = useGetCSSVariable('--color-pinned');
   <div class="chats-list-items">
     <div class="chats-list-items-content">
       <v-avatar
-        :title="chatValue.conversation.info?.title"
-        :src="chatValue.conversation.info.avatar"
+        :title="itemValue.conversation.info.title"
+        :src="itemValue.conversation.info.avatar"
       />
       <div class="info">
         <div class="info-top">
           <div class="main-info">
             <div class="title">
-              {{ chatValue.conversation.info.title }}
+              {{ itemValue.conversation.info.title }}
             </div>
-            <div v-if="chatValue.conversation.pushSettings.mute" class="verified">
+            <div v-if="itemValue.conversation.info.verified" class="mute">
               <v-icon
                 :src="VerifiedIcon"
                 :size="16"
-                name="fixing-badge"
+                name="verified"
               />
             </div>
-            <div v-if="chatValue.conversation.info.verified" class="mute">
+            <div v-if="itemValue.conversation.pushSettings.mute" class="verified">
               <v-icon
                 :src="MuteIcon"
                 :fill="fixingBadgeIconFillColor"
                 :size="16"
-                name="fixing-badge"
+                name="mute"
               />
             </div>
           </div>
           <div class="last-message-info">
-            <div v-if="chatValue.conversation.markedUnRead !== undefined" class="message-out-going">
+            <div v-if="itemValue.conversation.markedUnRead !== undefined" class="message-out-going">
               <v-icon
-                v-if="!chatValue.conversation.markedUnRead"
+                v-if="!itemValue.conversation.markedUnRead"
                 :src="MessageSendIcon"
                 :fill="primaryColor"
                 :size="20"
@@ -80,27 +74,32 @@ const fixingBadgeIconFillColor = useGetCSSVariable('--color-pinned');
                 name="message-out-going-read"
               />
             </div>
-            <div class="time">
+            <div v-if="typeof itemValue.lastMessage !== 'undefined'" class="time">
               Fri
             </div>
           </div>
         </div>
         <div class="info-bottom">
           <div class="last-message">
-            <template v-if="chatValue.conversation.peer.type === 'chat'">
-              <span class="sender-name">{{ chatValue.lastMessage.from.username }}</span>
+            <template v-if="itemValue.conversation.peer.type === 'chat'">
+              <span class="sender-name">{{ itemValue.lastMessage.from.username }}</span>
               <span class="colon">:</span>
             </template>
-            {{ chatValue.lastMessage.text }}
+            <template v-if="typeof itemValue.lastMessage !== 'undefined'">
+              {{ itemValue.lastMessage.text }}
+            </template>
+            <template v-else>
+              {{ itemValue.label }}
+            </template>
           </div>
-          <div v-if="chatValue.conversation.unReadCount !== 0" class="count-message-badge">
+          <div v-if="itemValue.conversation.unReadCount !== 0" class="count-message-badge">
             <div class="count-message-badge-content">
-              {{ chatValue.conversation.unReadCount }}
+              {{ itemValue.conversation.unReadCount }}
             </div>
           </div>
           <div
-            v-if="chatValue.conversation.unReadCount === 0 &&
-              chatValue.conversation.pinned"
+            v-if="itemValue.conversation.unReadCount === 0 &&
+              itemValue.conversation.pinned"
             class="pinned-badge"
           >
             <v-icon
