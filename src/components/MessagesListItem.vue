@@ -12,8 +12,8 @@
           :date="message.date"
           :is-required-tooltip="true"
           :is-only-time="true"
-        ></date-label>
-        <readed-label v-if="isYourMessage && message.isReaded"></readed-label>
+        />
+        <readed-label v-if="isYourMessage && message.isReaded" />
       </div>
     </div>
   </a-card>
@@ -33,13 +33,13 @@ defineProps({
 });
 
 const isYourMessage = computed(() => false);
-const floatValue = computed(() => isYourMessage.value ? 'right' : 'left');
-const bgValue = computed(() => isYourMessage.value ? '#fff' : 'var(--volsu-gray)');
+const floatValue = computed(() => (isYourMessage.value ? 'right' : 'left'));
+const bgValue = computed(() => (isYourMessage.value ? '#fff' : 'var(--volsu-gray)'));
 
 // Благодаря этому можно не использовать :deep при изменении ant-card-body
 const cardBodyStyle = {
-  'padding': '0.1rem 0.75rem',
-  'background': bgValue.value,
+  padding: '0.1rem 0.75rem',
+  background: bgValue.value,
 };
 </script>
 

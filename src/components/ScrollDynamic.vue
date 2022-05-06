@@ -1,10 +1,4 @@
-<template>
-  <div class="scroll-dynamic" @scroll="onScroll">
-    <slot />
-  </div>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -32,30 +26,39 @@ const isLoadingConditionValue = computed(() => props.isLoadingCondition);
 
 const emit = defineEmits(['endAddTrigger', 'startDeleteTrigger', 'startAddTrigger', 'endDeleteTrigger']);
 
-const onScroll = async e => {
+const onScroll = (e: Event) => {
   const { target } = e;
-
-  if (Math.ceil(target.scrollTop) + props.offsetBeforeLoading >= target.scrollHeight - target.offsetHeight && isLoadingBottomDateValue.value) {
-    if (isLoadingConditionValue.value) {
-      await emit('endAddTrigger');
-    } else {
-      await emit('endAddTrigger');
-      const scrollOffset = target.scrollHeight - (target.scrollTop + target.offsetHeight);
-      await emit('startDeleteTrigger');
-      target.scrollTop = target.scrollHeight - scrollOffset - target.offsetHeight;
+  if (target) {
+    if (Math.ceil(target.scrollTop) + props.offsetBeforeLoading
+      >= target.scrollHeight - target.offsetHeight
+      && isLoadingBottomDateValue.value) {
+      if (isLoadingConditionValue.value) {
+        emit('endAddTrigger');
+      } else {
+        emit('endAddTrigger');
+        const scrollOffset = target.scrollHeight - (target.scrollTop + target.offsetHeight);
+        emit('startDeleteTrigger');
+        target.scrollTop = target.scrollHeight - scrollOffset - target.offsetHeight;
+      }
     }
-  }
 
-  if (Math.ceil(target.scrollTop) <= props.offsetBeforeLoading && isLoadingTopDateValue.value) {
-    if (isLoadingConditionValue.value) {
-      await emit('startAddTrigger');
-    } else {
-      await emit('startAddTrigger');
-      await emit('endDeleteTrigger');
+    if (Math.ceil(target.scrollTop) <= props.offsetBeforeLoading && isLoadingTopDateValue.value) {
+      if (isLoadingConditionValue.value) {
+        emit('startAddTrigger');
+      } else {
+        emit('startAddTrigger');
+        emit('endDeleteTrigger');
+      }
     }
   }
 };
 </script>
+
+<template>
+  <div class="scroll-dynamic" @scroll="onScroll">
+    <slot />
+  </div>
+</template>
 
 <style scoped>
 .scroll-dynamic {
