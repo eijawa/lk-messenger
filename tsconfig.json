@@ -1,31 +1,25 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ES2019",
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
-    "experimentalDecorators": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "useDefineForClassFields": true,
-    "resolveJsonModule": true,
     "types": [
       "node"
     ],
-    "lib": ["es6","webworker", "dom"],
+    "lib": ["esnext","webworker", "dom"],
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
   "isolatedModules": true,
-  "include": [".eslintrc.js", "vite.config.ts", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": [
-    "dist",
-    "node_modules",
-  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"],
+  "exclude": ["node_modules"],
 }

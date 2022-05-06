@@ -10,7 +10,7 @@ export interface User {
 
 export class UserService {
   getUserInfo = async (): Promise<User> => {
-    const url = `${config.baseUrl}/user-info`;
+    const url = `${config.baseUrl}/${config.apiVersion}/user-info`;
 
     const response = await useFetch<User>(url, {
       method: 'GET',

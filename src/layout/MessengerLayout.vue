@@ -35,7 +35,9 @@ const isLayoutCloseHandler = () => {
 };
 
 const isViewChangeComponent = async () => {
-  await router.push({ name: 'messenger' });
+  if (route.matched.length > 2) {
+    await router.push(route.matched[route.matched.length - 2].path);
+  }
 };
 
 const viewsList = shallowRef<Array<RouteLocationMatched>>([]);
@@ -55,14 +57,22 @@ onBeforeRouteUpdate((nextRoute, prevRoute) => {
         viewsList.value.unshift(nextRoute.matched[nextRoute.matched.length - 2]);
       }
       triggerRef(viewsList);
-    } else { // next
+    } else if (typeof prevRoute.matched[prevRoute.matched.length - 1].children.find(routeChildren => routeChildren?.name === nextRoute?.name) !== 'undefined') { // next
       if (viewsList.value.length > 1) {
         viewsList.value.shift();
       }
       viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
       triggerRef(viewsList);
+    } else { // another
+      viewsList.value = [];
+      if (nextRoute.matched.length > 2) {
+        viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 2]);
+      }
+      viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
+      triggerRef(viewsList);
     }
   }
+  console.log(viewsList.value);
 });
 
 const chatStore = useChatsStore();

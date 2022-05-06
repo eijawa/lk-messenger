@@ -10,7 +10,7 @@ export class SearchService {
       return response;
     }
 
-    const url = new URL(`${config.baseUrl}/find`);
+    const url = new URL(`${config.baseUrl}/${config.apiVersion}/users/search`);
     url.search = new URLSearchParams({ text: query }).toString();
 
     const response = await useFetch<SearchResponse>(url.toString(), {

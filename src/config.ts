@@ -1,4 +1,5 @@
 export default {
-  baseUrl: 'https://dev.lk.fokin-team.ru:2060',
-  isUseMockedData: true,
+  baseUrl: 'https://messenger.fokin-team.ru/api',
+  apiVersion: 'v1',
+  isUseMockedData: false,
 };

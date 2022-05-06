@@ -46,7 +46,7 @@ export type Chats = Array<Chat>;
 
 export class ChatsService {
   getChats = async (): Promise<Chats> => {
-    const url = `${config.baseUrl}/get-chats`;
+    const url = `${config.baseUrl}/${config.apiVersion}/get-chats`;
 
     const response = await useFetch<Chats>(url, {
       method: 'GET',

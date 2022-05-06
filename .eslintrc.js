@@ -17,8 +17,8 @@ module.exports = {
   },
   parser: 'vue-eslint-parser',
   parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: './',
+    project: 'tsconfig.json',
+    tsconfigRootDir: '.',
     parser: '@typescript-eslint/parser',
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -42,6 +42,7 @@ module.exports = {
       },
     },
   },
+  ignorePatterns: ['*.js'],
   rules: {
     'import/no-unresolved': 'error',
     'comma-dangle': ['error', 'always-multiline'],

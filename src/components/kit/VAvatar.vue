@@ -22,20 +22,21 @@ const props = defineProps({
 });
 
 const size = computed(() => `${props.size}rem`);
+const fontSize = computed(() => `${(props.size - 3.375) * 0.3 + 1.3}rem`);
 const titleFirstLetters = computed(() => useFirstLetters(props.title));
 const srcValue = computed(() => props.src);
 </script>
 
 <template>
-  <div class="v-avatar-container">
+  <div class="v-avatar-container" :style="{ width: size, height: size }">
     <div class="v-avatar" :style="{ width: size, height: size }">
       <img
-        v-if="typeof srcValue !== 'undefined'"
+        v-if="typeof srcValue !== 'undefined' && srcValue !== null"
         :style="{ width: size, height: size }"
         :src="srcValue"
         alt="avatar"
       >
-      <span v-else>{{ titleFirstLetters }}</span>
+      <span v-else :style="{ fontSize }">{{ titleFirstLetters }}</span>
     </div>
   </div>
 </template>

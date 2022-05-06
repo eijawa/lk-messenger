@@ -11,7 +11,7 @@ const iconColor = useGetCSSVariable('--color-icon-secondary');
 
 <template>
   <div class="sidebar-header-menu">
-    <router-link :to="{ name: 'settings' }">
+    <router-link :to="{ name: 'lang' }">
       <v-menu-button
         size="small"
         :font-size="0.875"

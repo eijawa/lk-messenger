@@ -14,7 +14,7 @@ export const useChatsStore = defineStore('chatsStore', () => {
   const chats = ref<Chats>([]);
 
   const getChats = async () => {
-    if (!config.isUseMockedData) {
+    if (!config.isUseMockedData && false) {
       chats.value = await chatsService.getChats();
     } else {
       const user: User = {
