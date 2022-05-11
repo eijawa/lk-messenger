@@ -72,7 +72,6 @@ onBeforeRouteUpdate((nextRoute, prevRoute) => {
       triggerRef(viewsList);
     }
   }
-  console.log(viewsList.value);
 });
 
 const chatStore = useChatsStore();

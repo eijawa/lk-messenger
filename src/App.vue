@@ -1,10 +1,16 @@
 <script lang="ts" setup>
 import AppProvider from '@/AppProvider.vue';
+import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
+
+const messengerSettingsStore = useMessengerSettingsStore();
 
 let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
 
 window.addEventListener('resize', () => {
+  messengerSettingsStore.$patch({
+    isMobileVersion: window.innerWidth < 927,
+  });
   vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 });
