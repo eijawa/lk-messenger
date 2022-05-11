@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { useGetCSSVariable } from '@/hooks/useCssVariables';
 import VAvatar from '@/components/kit/VAvatar.vue';
@@ -9,6 +9,7 @@ import VIcon from '@/components/kit/VIcon.vue';
 import BackIcon from '@/assets/icons/back.svg?url';
 
 const router = useRouter();
+const route = useRoute();
 const messengerSettingsStore = useMessengerSettingsStore();
 const isMobileVersion = computed(() => messengerSettingsStore.isMobileVersion);
 
@@ -35,7 +36,10 @@ const actionFillColor = useGetCSSVariable('--color-text-secondary');
           />
         </template>
       </v-button>
-      <div class="chat-header-info">
+      <div
+        class="chat-header-info"
+        @click="router.push({ name: 'chatInfo', params: route.params })"
+      >
         <v-avatar
           title="Мостовой Максим"
           :src="undefined"
@@ -57,22 +61,26 @@ const actionFillColor = useGetCSSVariable('--color-text-secondary');
 
 <style lang="scss" scoped>
 .chat-header {
+  width: 100%;
+  min-height: 64px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-height: 64px;
-  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  padding: 0 1rem 0 0.5rem;
   background-color: var(--color-background);
 
   .chat-header-left {
     display: flex;
     align-items: center;
+    flex-grow: 1;
     gap: 0.5rem;
 
     .chat-header-info {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      flex-grow: 1;
+      cursor: pointer;
 
       .chat-header-info-labels {
         .chat-header-title {

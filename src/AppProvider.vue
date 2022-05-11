@@ -9,13 +9,24 @@ import {
 
 import { useGetCSSVariable } from '@/hooks/useCssVariables';
 
-const borderRadiusDefault = useGetCSSVariable('--border-radius-default');
+// Color
+
 const colorText = useGetCSSVariable('--color-text');
+const colorPrimary = useGetCSSVariable('--color-primary');
+
+const borderRadiusDefault = useGetCSSVariable('--border-radius-default');
 const colorShadowDefault = useGetCSSVariable('--color-default-shadow');
 
 const themeOverrides: GlobalThemeOverrides = {
   common: {
-    // primaryColor: '#FF0000',
+    fontFamily: 'Roboto, -apple-system, "Apple Color Emoji", "Helvetica Neue", sans-serif',
+    fontSize: '16px',
+    fontSizeMedium: '16px',
+    fontSizeLarge: '18px',
+    fontSizeHuge: '18px',
+    lineHeight: '1.5rem',
+    textColorBase: colorText,
+    primaryColor: colorPrimary,
   },
   Select: {
     peers: {
@@ -25,7 +36,6 @@ const themeOverrides: GlobalThemeOverrides = {
     },
   },
   Popover: {
-    textColor: colorText,
     borderRadius: borderRadiusDefault,
     padding: '0px',
     boxShadow: `0 0.25rem 0.5rem 0.125rem ${colorShadowDefault}`,

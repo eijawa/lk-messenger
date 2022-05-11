@@ -120,8 +120,10 @@ const onSideBarActionClickHandler = computed(() => (isSearchActive.value
 <style lang="scss" scoped>
 .sidebar-header {
   width: 100%;
-  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  min-height: 64px;
+  padding: 0 1rem 0 0.5rem;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 10px;
 

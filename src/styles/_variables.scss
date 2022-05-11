@@ -146,6 +146,8 @@ $color-message-reaction-own-hover: #b5e0a4;
 
   --color-default-shadow: #72727240;
   --color-light-shadow: #7272722b;
+  // Text
+  --composer-text-size: 16px;
   // Borders
   --border-radius-default: 0.75rem;
   --border-radius-default-small: 0.625rem;
@@ -154,6 +156,7 @@ $color-message-reaction-own-hover: #b5e0a4;
   --border-radius-messages-small: 0.375rem;
   // Elements
   --header-height: 3.5rem;
+  --messages-container-width: 45.5rem;
   // ElementsHeight
   --small: 2rem;
   --medium: 2.75rem;
