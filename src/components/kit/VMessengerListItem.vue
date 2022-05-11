@@ -81,7 +81,10 @@ const fixingBadgeIconFillColor = useGetCSSVariable('--color-pinned');
         </div>
         <div class="info-bottom">
           <div class="last-message">
-            <template v-if="itemValue.conversation.peer.type === 'chat'">
+            <template
+              v-if="itemValue.conversation.peer.type === 'chat'
+                && typeof itemValue.lastMessage !== 'undefined'"
+            >
               <span class="sender-name">{{ itemValue.lastMessage.from.username }}</span>
               <span class="colon">:</span>
             </template>

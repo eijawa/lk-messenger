@@ -27,7 +27,7 @@ const isLoadingConditionValue = computed(() => props.isLoadingCondition);
 const emit = defineEmits(['endAddTrigger', 'startDeleteTrigger', 'startAddTrigger', 'endDeleteTrigger']);
 
 const onScroll = (e: Event) => {
-  const { target } = e;
+  const target = e.target as HTMLElement;
   if (target) {
     if (Math.ceil(target.scrollTop) + props.offsetBeforeLoading
       >= target.scrollHeight - target.offsetHeight

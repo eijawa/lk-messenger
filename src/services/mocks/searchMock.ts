@@ -17,6 +17,7 @@ export const generateSearch = async (): Promise<SearchResponse> => {
     result: {
       chatsAndContacts: [],
     },
+    errors: [],
   };
 
   Array.from({ length: faker.datatype.number({ max: 20 }) }).forEach(() => {
