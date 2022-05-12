@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import AppProvider from '@/AppProvider.vue';
+import MessengerLayout from '@/layout/MessengerLayout.vue';
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 
 const messengerSettingsStore = useMessengerSettingsStore();

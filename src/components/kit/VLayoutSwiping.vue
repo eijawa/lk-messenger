@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
   isOpened: {
@@ -17,6 +18,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close', 'transition-close-end']);
+const router = useRouter();
 
 const transition = computed(() => `transform ${props.transitionDurationMs}ms linear`);
 
@@ -165,7 +167,7 @@ const touchEndHandler = (e: TouchEvent) => {
     }
 
     &:not(.layout-swiping-opened) {
-      transform: translateX(100vw) !important;
+      transform: translateX(110vw) !important;
     }
   }
 }

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {
-  computed, onMounted, ref, shallowRef, triggerRef,
+  computed, onMounted, ref, shallowRef, triggerRef, watch,
 } from 'vue';
 import {
   useRoute, useRouter, onBeforeRouteUpdate, RouteLocationMatched,
@@ -34,13 +34,17 @@ const isLayoutCloseHandler = () => {
   isViewOpened.value = false;
 };
 
+const viewsList = shallowRef<Array<RouteLocationMatched>>([]);
+const routeState = ref<null | 'next' | 'back' | 'new'>(null);
+
 const isViewChangeComponent = async () => {
+  const startDate = Date.now();
   if (route.matched.length > 2) {
-    await router.push(route.matched[route.matched.length - 2].path);
+    await router.push({ name: route.matched[route.matched.length - 2].name, params: route.params });
   }
+  console.log(Date.now() - startDate);
 };
 
-const viewsList = shallowRef<Array<RouteLocationMatched>>([]);
 if (route.matched.length > 2) {
   viewsList.value.push(route.matched[route.matched.length - 2]);
 }
@@ -53,24 +57,48 @@ onBeforeRouteUpdate((nextRoute, prevRoute) => {
       if (viewsList.value.length > 1) {
         viewsList.value.pop();
       }
-      if (nextRoute.matched.length > 2) {
-        viewsList.value.unshift(nextRoute.matched[nextRoute.matched.length - 2]);
-      }
+
       triggerRef(viewsList);
+      routeState.value = 'back';
     } else if (typeof prevRoute.matched[prevRoute.matched.length - 1].children.find(routeChildren => routeChildren?.name === nextRoute?.name) !== 'undefined') { // next
-      if (viewsList.value.length > 1) {
+      viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
+
+      triggerRef(viewsList);
+      routeState.value = 'next';
+    } else { // new
+      viewsList.value = [];
+      viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
+
+      triggerRef(viewsList);
+      routeState.value = 'new';
+    }
+  }
+});
+
+watch(routeState, newValue => {
+  if (newValue) {
+    console.log(route);
+
+    if (newValue === 'back') {
+      if (route.matched.length > 3) {
+        viewsList.value.unshift(route.matched[route.matched.length - 3]);
+      }
+
+      triggerRef(viewsList);
+    } else if (newValue === 'next') {
+      if (viewsList.value.length > 2) {
         viewsList.value.shift();
       }
-      viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
+
       triggerRef(viewsList);
-    } else { // another
-      viewsList.value = [];
-      if (nextRoute.matched.length > 2) {
-        viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 2]);
+    } else if (newValue === 'new') {
+      if (route.matched.length > 2) {
+        viewsList.value.unshift(route.matched[route.matched.length - 2]);
       }
-      viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
       triggerRef(viewsList);
     }
+
+    routeState.value = null;
   }
 });
 
@@ -176,7 +204,7 @@ onMounted(async () => {
 
     .layout-enter-active,
     .layout-leave-active {
-      transition: all .09s linear;
+      transition: transform .09s linear;
     }
     .layout-enter-from,
     .layout-leave-to {
