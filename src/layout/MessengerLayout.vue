@@ -77,8 +77,6 @@ onBeforeRouteUpdate((nextRoute, prevRoute) => {
 
 watch(routeState, newValue => {
   if (newValue) {
-    console.log(route);
-
     if (newValue === 'back') {
       if (route.matched.length > 3) {
         viewsList.value.unshift(route.matched[route.matched.length - 3]);

@@ -1,15 +1,15 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from 'vue-router';
 
-import ComponentsTestingView from '@/views/ComponentsTestingView.vue';
-import AuthView from '@/views/AuthView.vue';
+const ComponentsTestingView = () => import('@/views/ComponentsTestingView.vue');
+const AuthView = () => import('@/views/AuthView.vue');
 
-import MessengerLayout from '@/layout/MessengerLayout.vue';
+const MessengerLayout = () => import('@/layout/MessengerLayout.vue');
 
-import SidebarView from '@/views/messenger/SidebarView.vue';
-import ChatView from '@/views/messenger/chat/ChatView.vue';
-import MoreInfoView from '@/views/messenger/chat/MoreInfoView.vue';
-import SettingsView from '@/views/messenger/settings/SettingsView.vue';
-import LanguageView from '@/views/messenger/settings/views/LanguageView.vue';
+const SidebarView = () => import('@/views/messenger/SidebarView.vue');
+const ChatView = () => import('@/views/messenger/chat/ChatView.vue');
+const MoreInfoView = () => import('@/views/messenger/chat/MoreInfoView.vue');
+const SettingsView = () => import('@/views/messenger/settings/SettingsView.vue');
+const LanguageView = () => import('@/views/messenger/settings/views/LanguageView.vue');
 
 export const routes: RouteRecordRaw[] = [
   {

@@ -167,7 +167,7 @@ const touchEndHandler = (e: TouchEvent) => {
     }
 
     &:not(.layout-swiping-opened) {
-      transform: translateX(110vw) !important;
+      transform: translateX(500px) !important;
     }
   }
 }
