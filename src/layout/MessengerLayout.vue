@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {
-  computed, onMounted, ref, shallowRef, triggerRef, watch,
+  computed, onMounted, ref, shallowRef, triggerRef,
 } from 'vue';
 import {
   useRoute, useRouter, onBeforeRouteUpdate, RouteLocationMatched,
@@ -58,46 +58,36 @@ onBeforeRouteUpdate((nextRoute, prevRoute) => {
         viewsList.value.pop();
       }
 
-      triggerRef(viewsList);
+      if (route.matched.length > 2) {
+        viewsList.value.unshift(route.matched[route.matched.length - 3]);
+      }
+
       routeState.value = 'back';
-    } else if (typeof prevRoute.matched[prevRoute.matched.length - 1].children.find(routeChildren => routeChildren?.name === nextRoute?.name) !== 'undefined') { // next
+    } else if (typeof prevRoute.matched[prevRoute.matched.length - 1]?.children.find(routeChildren => routeChildren?.name === nextRoute?.name) !== 'undefined') { // next
       viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
 
-      triggerRef(viewsList);
+      if (viewsList.value.length > 2) {
+        viewsList.value.shift();
+      }
+
       routeState.value = 'next';
     } else { // new
       viewsList.value = [];
       viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
 
-      triggerRef(viewsList);
-      routeState.value = 'new';
-    }
-  }
-});
-
-watch(routeState, newValue => {
-  if (newValue) {
-    if (newValue === 'back') {
-      if (route.matched.length > 3) {
-        viewsList.value.unshift(route.matched[route.matched.length - 3]);
-      }
-
-      triggerRef(viewsList);
-    } else if (newValue === 'next') {
-      if (viewsList.value.length > 2) {
-        viewsList.value.shift();
-      }
-
-      triggerRef(viewsList);
-    } else if (newValue === 'new') {
       if (route.matched.length > 2) {
         viewsList.value.unshift(route.matched[route.matched.length - 2]);
       }
-      triggerRef(viewsList);
+
+      routeState.value = 'new';
     }
 
-    routeState.value = null;
+    triggerRef(viewsList);
   }
+});
+
+router.beforeEach(() => {
+  triggerRef(viewsList);
 });
 
 const chatStore = useChatsStore();

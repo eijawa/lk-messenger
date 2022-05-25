@@ -15,23 +15,23 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'MessengerLayout',
-    component: MessengerLayout,
+    component: () => import('@/layout/MessengerLayout.vue'),
     redirect: '/messenger',
     children: [
       {
         path: 'messenger',
         name: 'messenger',
-        component: SidebarView,
+        component: () => import('@/views/messenger/SidebarView.vue'),
         children: [
           {
             path: 'chat/:id',
             name: 'chat',
-            component: ChatView,
+            component: () => import('@/views/messenger/chat/ChatView.vue'),
             children: [
               {
                 path: 'info',
                 name: 'chatInfo',
-                component: MoreInfoView,
+                component: () => import('@/views/messenger/chat/MoreInfoView.vue'),
               },
             ],
           },

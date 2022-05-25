@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useMessengerSettingsStore } from '@/stores/messengerSettingsStore';
 import { useGetCSSVariable } from '@/hooks/useCssVariables';
 import VAvatar from '@/components/kit/VAvatar.vue';
@@ -14,6 +14,17 @@ const messengerSettingsStore = useMessengerSettingsStore();
 const isMobileVersion = computed(() => messengerSettingsStore.isMobileVersion);
 
 const actionFillColor = useGetCSSVariable('--color-text-secondary');
+
+const backButtonClickHandler = async () => {
+  await router.push({ name: 'messenger' });
+};
+
+const headerInfoClickHandler = async () => {
+  await router.push({
+    name: 'chatInfo',
+    params: route.params,
+  });
+};
 </script>
 
 <template>
@@ -25,7 +36,7 @@ const actionFillColor = useGetCSSVariable('--color-text-secondary');
         class="chat-header-back"
         quaternary
         circle
-        @click="router.push({ name: 'messenger' })"
+        @click="backButtonClickHandler"
       >
         <template #icon>
           <v-icon
@@ -36,10 +47,7 @@ const actionFillColor = useGetCSSVariable('--color-text-secondary');
           />
         </template>
       </v-button>
-      <div
-        class="chat-header-info"
-        @click="router.push({ name: 'chatInfo', params: route.params })"
-      >
+      <div class="chat-header-info" @click="headerInfoClickHandler">
         <v-avatar
           title="Мостовой Максим"
           :src="undefined"
