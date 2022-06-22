@@ -13,16 +13,16 @@ import ChatView from '@/views/messenger/chat/ChatView.vue';
 import MoreInfoView from '@/views/messenger/chat/MoreInfoView.vue';
 
 const router = useRouter();
-const route = useRoute();
+const routeValue = useRoute();
 
 const isMobileVersion = ref<boolean>(window.innerWidth < 927);
 window.addEventListener('resize', (e: Event) => {
   isMobileVersion.value = (e.target as Window).innerWidth < 927;
 });
 
-const isSidebarOpened = computed(() => route.name === 'messenger');
-const isChatOpened = computed(() => route.name === 'chat');
-const isMoreInfoOpened = computed(() => route.name === 'chatInfo');
+const isSidebarOpened = computed(() => routeValue.name === 'messenger');
+const isChatOpened = computed(() => routeValue.name === 'chat');
+const isMoreInfoOpened = computed(() => routeValue.name === 'chatInfo');
 
 const middleColumnCollapse = computed(() => (isMoreInfoOpened.value ? 'collapse' : ''));
 
@@ -39,16 +39,16 @@ const routeState = ref<null | 'next' | 'back' | 'new'>(null);
 
 const isViewChangeComponent = async () => {
   const startDate = Date.now();
-  if (route.matched.length > 2) {
-    await router.push({ name: route.matched[route.matched.length - 2].name, params: route.params });
+  if (routeValue.matched.length > 2) {
+    await router.push({ name: routeValue.matched[routeValue.matched.length - 2].name, params: routeValue.params });
   }
   console.log(Date.now() - startDate);
 };
 
-if (route.matched.length > 2) {
-  viewsList.value.push(route.matched[route.matched.length - 2]);
+if (routeValue.matched.length > 2) {
+  viewsList.value.push(routeValue.matched[routeValue.matched.length - 2]);
 }
-viewsList.value.push(route.matched[route.matched.length - 1]);
+viewsList.value.push(routeValue.matched[routeValue.matched.length - 1]);
 
 onBeforeRouteUpdate((nextRoute, prevRoute) => {
   isViewOpened.value = true;
@@ -58,8 +58,8 @@ onBeforeRouteUpdate((nextRoute, prevRoute) => {
         viewsList.value.pop();
       }
 
-      if (route.matched.length > 2) {
-        viewsList.value.unshift(route.matched[route.matched.length - 3]);
+      if (routeValue.matched.length > 2) {
+        viewsList.value.unshift(routeValue.matched[routeValue.matched.length - 3]);
       }
 
       routeState.value = 'back';
@@ -75,8 +75,8 @@ onBeforeRouteUpdate((nextRoute, prevRoute) => {
       viewsList.value = [];
       viewsList.value.push(nextRoute.matched[nextRoute.matched.length - 1]);
 
-      if (route.matched.length > 2) {
-        viewsList.value.unshift(route.matched[route.matched.length - 2]);
+      if (routeValue.matched.length > 2) {
+        viewsList.value.unshift(routeValue.matched[routeValue.matched.length - 2]);
       }
 
       routeState.value = 'new';
@@ -107,29 +107,61 @@ onMounted(async () => {
       >
         <SideBar />
       </div>
-      <transition-group v-else :name="layoutTransitionName">
-        <div
-          v-for="(view, index) in viewsList"
-          :key="view.path"
-          class="view"
-        >
-          <Component
-            :is="view.components.default"
-            v-if="index !== viewsList.length - 1 || viewsList.length === 1"
-          />
+<!--      <transition-group v-else :name="layoutTransitionName">-->
+<!--        <div-->
+<!--          v-for="(view, index) in viewsList"-->
+<!--          :key="view.path"-->
+<!--          class="view"-->
+<!--        >-->
+<!--          <Component-->
+<!--            :is="view.components.default"-->
+<!--            v-if="index !== viewsList.length - 1 || viewsList.length === 1"-->
+<!--          />-->
+<!--          <v-layout-swiping-->
+<!--            v-else-->
+<!--            :is-opened="isViewOpened"-->
+<!--            :is-active="viewsList.length > 1"-->
+<!--            :transition-duration-ms="transitionDurationMs"-->
+<!--            standing-style="modal"-->
+<!--            style="background-color: #ffffff"-->
+<!--            @close="isLayoutCloseHandler"-->
+<!--            @transition-close-end="isViewChangeComponent"-->
+<!--          >-->
+<!--            <router-view v-slot="{ route }">-->
+<!--              <component-->
+<!--                :is="route.matched[route.matched.length - 1].components.default"-->
+<!--                :key="route.path"-->
+<!--              />-->
+<!--            </router-view>-->
+<!--          </v-layout-swiping>-->
+<!--        </div>-->
+<!--      </transition-group>-->
+
+      <template v-else>
+        <router-view v-slot="{ route }">
+          <template v-if="route.matched.length > 2">
+            <component
+              :is="route.matched[route.matched.length - 2].components.default"
+              :key="route.path"
+            />
+          </template>
+
           <v-layout-swiping
-            v-else
             :is-opened="isViewOpened"
-            :is-active="viewsList.length > 1"
+            :is-active="route.matched.length > 2"
             :transition-duration-ms="transitionDurationMs"
             standing-style="modal"
+            style="background-color: #ffffff"
             @close="isLayoutCloseHandler"
             @transition-close-end="isViewChangeComponent"
           >
-            <component :is="view.components.default" />
+            <component
+              :is="route.matched[route.matched.length - 1].components.default"
+              :key="route.path"
+            />
           </v-layout-swiping>
-        </div>
-      </transition-group>
+        </router-view>
+      </template>
     </div>
 
     <template v-if="!isMobileVersion">

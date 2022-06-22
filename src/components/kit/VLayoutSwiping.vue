@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
 
 const props = defineProps({
   isOpened: {
@@ -18,7 +17,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close', 'transition-close-end']);
-const router = useRouter();
 
 const transition = computed(() => `transform ${props.transitionDurationMs}ms linear`);
 
@@ -103,8 +101,8 @@ const touchEndHandler = (e: TouchEvent) => {
     :style="{ transform: viewTransform }"
     @touchstart.passive="touchStartHandler"
     @touchmove.passive="touchMoveHandler"
-    @touchend="touchEndHandler"
-    @touchcancel="touchEndHandler"
+    @touchend.passive="touchEndHandler"
+    @touchcancel.passive="touchEndHandler"
     @transitionend="transitionEndHandler"
   >
     <div class="layout-swiping-content">
